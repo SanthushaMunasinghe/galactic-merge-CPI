@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d6269967e194446b854f40abc2cd36, type: 3}
+  m_Name: MediumPackGems
+  m_EditorClassIdentifier: 
+  m_ProductID: com.galacticmergeidle.mediumpackgems
+  m_ProductIcon: {fileID: 21300000, guid: 5d95742b2837e6a4d9bc799f5c8448d9, type: 3}
+  m_ShopIAPType: 1
+  m_Quantity: 300
+  m_IconMaterial: {fileID: 2100000, guid: 230ffdbd2e88c174c842533c27b67009, type: 2}
+  m_ParticlesColor: {r: 0, g: 1, b: 0.037400246, a: 0.2}

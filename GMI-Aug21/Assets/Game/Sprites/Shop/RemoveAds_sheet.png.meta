@@ -1,0 +1,1157 @@
+fileFormatVersion: 2
+guid: b05e0de34e778764a883eb2f5f2121ec
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5794685278713442354
+    second: RemoveAds_sheet_0
+  - first:
+      213: -143507811184984673
+    second: RemoveAds_sheet_1
+  - first:
+      213: 1698368034534039750
+    second: RemoveAds_sheet_2
+  - first:
+      213: -3754941552532370349
+    second: RemoveAds_sheet_3
+  - first:
+      213: 7522974240791154011
+    second: RemoveAds_sheet_4
+  - first:
+      213: -1019029836129585798
+    second: RemoveAds_sheet_5
+  - first:
+      213: 7400192293160721489
+    second: RemoveAds_sheet_6
+  - first:
+      213: 6610668186023681510
+    second: RemoveAds_sheet_7
+  - first:
+      213: -2301626206679196572
+    second: RemoveAds_sheet_8
+  - first:
+      213: -8074477896606196269
+    second: RemoveAds_sheet_9
+  - first:
+      213: 7959238302161134500
+    second: RemoveAds_sheet_10
+  - first:
+      213: 8269795975195775914
+    second: RemoveAds_sheet_11
+  - first:
+      213: 6308977509911366483
+    second: RemoveAds_sheet_12
+  - first:
+      213: 5148269327911621505
+    second: RemoveAds_sheet_13
+  - first:
+      213: -2976926578438552616
+    second: RemoveAds_sheet_14
+  - first:
+      213: 4341158909808587753
+    second: RemoveAds_sheet_15
+  - first:
+      213: -507838288287089314
+    second: RemoveAds_sheet_16
+  - first:
+      213: 4334789080229648193
+    second: RemoveAds_sheet_17
+  - first:
+      213: 5323204643704059950
+    second: RemoveAds_sheet_18
+  - first:
+      213: 3784992057529704356
+    second: RemoveAds_sheet_19
+  - first:
+      213: 4730460039321715015
+    second: RemoveAds_sheet_20
+  - first:
+      213: 5318581749590433899
+    second: RemoveAds_sheet_21
+  - first:
+      213: 7969469767055850469
+    second: RemoveAds_sheet_22
+  - first:
+      213: -841809236025570374
+    second: RemoveAds_sheet_23
+  - first:
+      213: -1585384325263385629
+    second: RemoveAds_sheet_24
+  - first:
+      213: -360207074845595171
+    second: RemoveAds_sheet_25
+  - first:
+      213: 1296299182322378961
+    second: RemoveAds_sheet_26
+  - first:
+      213: 3807274138969054802
+    second: RemoveAds_sheet_27
+  - first:
+      213: 2197531713802917214
+    second: RemoveAds_sheet_28
+  - first:
+      213: 5274522854554936628
+    second: RemoveAds_sheet_29
+  - first:
+      213: 1875042587761358976
+    second: RemoveAds_sheet_30
+  - first:
+      213: 486013619580711854
+    second: RemoveAds_sheet_31
+  - first:
+      213: 6561330675867535141
+    second: RemoveAds_sheet_32
+  - first:
+      213: -8006414977617035358
+    second: RemoveAds_sheet_33
+  - first:
+      213: 761187127587993708
+    second: RemoveAds_sheet_34
+  - first:
+      213: 7329894799436596360
+    second: RemoveAds_sheet_35
+  - first:
+      213: -527897139471838886
+    second: RemoveAds_sheet_36
+  - first:
+      213: -1259242919336573946
+    second: RemoveAds_sheet_37
+  - first:
+      213: 6598663983155801456
+    second: RemoveAds_sheet_38
+  - first:
+      213: 3404415784859009664
+    second: RemoveAds_sheet_39
+  - first:
+      213: 7019059524669781063
+    second: RemoveAds_sheet_40
+  - first:
+      213: 339139248013618889
+    second: RemoveAds_sheet_41
+  - first:
+      213: 3483934605301909190
+    second: RemoveAds_sheet_42
+  - first:
+      213: -2345972696475663470
+    second: RemoveAds_sheet_43
+  - first:
+      213: 7100093060021552368
+    second: RemoveAds_sheet_44
+  - first:
+      213: -8460738623019715998
+    second: RemoveAds_sheet_45
+  - first:
+      213: -633259028578826807
+    second: RemoveAds_sheet_46
+  - first:
+      213: -3109377364774027666
+    second: RemoveAds_sheet_47
+  - first:
+      213: 6655837194722542249
+    second: RemoveAds_sheet_48
+  - first:
+      213: 2387633571327749411
+    second: RemoveAds_sheet_49
+  - first:
+      213: -2262260648327792574
+    second: RemoveAds_sheet_50
+  - first:
+      213: -3236055317259024175
+    second: RemoveAds_sheet_51
+  - first:
+      213: -3100181328409246658
+    second: RemoveAds_sheet_52
+  - first:
+      213: 4059765310201439186
+    second: RemoveAds_sheet_53
+  - first:
+      213: 2648927887182622165
+    second: RemoveAds_sheet_54
+  - first:
+      213: -5584905889186807503
+    second: RemoveAds_sheet_55
+  - first:
+      213: 188212454512510318
+    second: RemoveAds_sheet_56
+  - first:
+      213: -3691522137293150751
+    second: RemoveAds_sheet_57
+  - first:
+      213: 874866112452704726
+    second: RemoveAds_sheet_58
+  - first:
+      213: -691130968708317742
+    second: RemoveAds_sheet_59
+  - first:
+      213: -7199602666121398268
+    second: RemoveAds_sheet_60
+  - first:
+      213: 6869369541099572603
+    second: RemoveAds_sheet_61
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RemoveAds_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecf8919c074259fa0800000000000000
+      internalID: -5794685278713442354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9d33d3f768220ef0800000000000000
+      internalID: -143507811184984673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c0a744aab0d19710800000000000000
+      internalID: 1698368034534039750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35c44f07d84c3ebc0800000000000000
+      internalID: -3754941552532370349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5d45cca639f66860800000000000000
+      internalID: 7522974240791154011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a75b8f953cdabd1f0800000000000000
+      internalID: -1019029836129585798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15c9d67cea3c2b660800000000000000
+      internalID: 7400192293160721489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6eddaebb0bfcdbb50800000000000000
+      internalID: 6610668186023681510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46c1829d82bfe00e0800000000000000
+      internalID: -2301626206679196572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3dd5b0a2221b1ff80800000000000000
+      internalID: -8074477896606196269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a36ff2e015e47e60800000000000000
+      internalID: 7959238302161134500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_11
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa3df7acf9734c270800000000000000
+      internalID: 8269795975195775914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35b023e6e9dfd8750800000000000000
+      internalID: 6308977509911366483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18316325da3527740800000000000000
+      internalID: 5148269327911621505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d340c1ac05dfa6d0800000000000000
+      internalID: -2976926578438552616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_15
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e3b9ac2705ee3c30800000000000000
+      internalID: 4341158909808587753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5d3e4774cbc3f8f0800000000000000
+      internalID: -507838288287089314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_17
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1479457a3b3482c30800000000000000
+      internalID: 4334789080229648193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e28b0be7b62dfd940800000000000000
+      internalID: 5323204643704059950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_19
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4af9bbaf83ef68430800000000000000
+      internalID: 3784992057529704356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_20
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74183fbb758f5a140800000000000000
+      internalID: 4730460039321715015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_21
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b60a6351ce56fc940800000000000000
+      internalID: 5318581749590433899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eb3491778e399e60800000000000000
+      internalID: 7969469767055850469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_23
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abb8d0eb5fa4154f0800000000000000
+      internalID: -841809236025570374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eb143c1b559ff9e0800000000000000
+      internalID: -1585384325263385629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd9ee3ae299400bf0800000000000000
+      internalID: -360207074845595171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d864fcfc316df110800000000000000
+      internalID: 1296299182322378961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_27
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25e18c758a726d430800000000000000
+      internalID: 3807274138969054802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_28
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e55d0ef53733f7e10800000000000000
+      internalID: 2197531713802917214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_29
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4352d61379ed23940800000000000000
+      internalID: 5274522854554936628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 088be369c4d750a10800000000000000
+      internalID: 1875042587761358976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_31
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea33c1fdfcaaeb600800000000000000
+      internalID: 486013619580711854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_32
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52745fc7c778e0b50800000000000000
+      internalID: 6561330675867535141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_33
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2aff4c66fff73e090800000000000000
+      internalID: -8006414977617035358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_34
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c687b7bd8a7409a00800000000000000
+      internalID: 761187127587993708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RemoveAds_sheet_35
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 884c6611c7409b560800000000000000
+      internalID: 7329894799436596360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: e3dc950d3688b06459f3b2f106ab4c5f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      RemoveAds_sheet_0: -5794685278713442354
+      RemoveAds_sheet_1: -143507811184984673
+      RemoveAds_sheet_10: 7959238302161134500
+      RemoveAds_sheet_11: 8269795975195775914
+      RemoveAds_sheet_12: 6308977509911366483
+      RemoveAds_sheet_13: 5148269327911621505
+      RemoveAds_sheet_14: -2976926578438552616
+      RemoveAds_sheet_15: 4341158909808587753
+      RemoveAds_sheet_16: -507838288287089314
+      RemoveAds_sheet_17: 4334789080229648193
+      RemoveAds_sheet_18: 5323204643704059950
+      RemoveAds_sheet_19: 3784992057529704356
+      RemoveAds_sheet_2: 1698368034534039750
+      RemoveAds_sheet_20: 4730460039321715015
+      RemoveAds_sheet_21: 5318581749590433899
+      RemoveAds_sheet_22: 7969469767055850469
+      RemoveAds_sheet_23: -841809236025570374
+      RemoveAds_sheet_24: -1585384325263385629
+      RemoveAds_sheet_25: -360207074845595171
+      RemoveAds_sheet_26: 1296299182322378961
+      RemoveAds_sheet_27: 3807274138969054802
+      RemoveAds_sheet_28: 2197531713802917214
+      RemoveAds_sheet_29: 5274522854554936628
+      RemoveAds_sheet_3: -3754941552532370349
+      RemoveAds_sheet_30: 1875042587761358976
+      RemoveAds_sheet_31: 486013619580711854
+      RemoveAds_sheet_32: 6561330675867535141
+      RemoveAds_sheet_33: -8006414977617035358
+      RemoveAds_sheet_34: 761187127587993708
+      RemoveAds_sheet_35: 7329894799436596360
+      RemoveAds_sheet_4: 7522974240791154011
+      RemoveAds_sheet_5: -1019029836129585798
+      RemoveAds_sheet_6: 7400192293160721489
+      RemoveAds_sheet_7: 6610668186023681510
+      RemoveAds_sheet_8: -2301626206679196572
+      RemoveAds_sheet_9: -8074477896606196269
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

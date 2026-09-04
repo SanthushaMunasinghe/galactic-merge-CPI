@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92152532b04065d42be2471fe366c21c, type: 3}
+  m_Name: SpaceshipTiers
+  m_EditorClassIdentifier: 
+  m_SpaceshipTier:
+  - TierNumber: 1
+    Coins: 1
+    SpaceShipColor: {r: 1, g: 1, b: 1, a: 1}
+  - TierNumber: 2
+    Coins: 5
+    SpaceShipColor: {r: 0.9137255, g: 1, b: 0.39607844, a: 1}
+  - TierNumber: 3
+    Coins: 20
+    SpaceShipColor: {r: 0, g: 1, b: 0.13333334, a: 1}
+  - TierNumber: 4
+    Coins: 70
+    SpaceShipColor: {r: 0.2901961, g: 1, b: 0.76862746, a: 1}
+  - TierNumber: 5
+    Coins: 245
+    SpaceShipColor: {r: 0.3647059, g: 0.9411765, b: 1, a: 1}
+  - TierNumber: 6
+    Coins: 850
+    SpaceShipColor: {r: 0, g: 0.54901963, b: 1, a: 1}
+  - TierNumber: 7
+    Coins: 3000
+    SpaceShipColor: {r: 0.6509804, g: 0.7372549, b: 1, a: 1}
+  - TierNumber: 8
+    Coins: 10500
+    SpaceShipColor: {r: 0.56078434, g: 0.45490196, b: 1, a: 1}
+  - TierNumber: 9
+    Coins: 36500
+    SpaceShipColor: {r: 0.8862745, g: 0.6509804, b: 1, a: 1}
+  - TierNumber: 10
+    Coins: 125000
+    SpaceShipColor: {r: 1, g: 0.16078432, b: 0.9882353, a: 1}
+  - TierNumber: 11
+    Coins: 450000
+    SpaceShipColor: {r: 1, g: 0.13725491, b: 0.54509807, a: 1}
+  - TierNumber: 12
+    Coins: 1500000
+    SpaceShipColor: {r: 1, g: 0.61960787, b: 0.68235296, a: 1}
+  - TierNumber: 13
+    Coins: 5500000
+    SpaceShipColor: {r: 1, g: 0.27058825, b: 0.16470589, a: 1}
+  - TierNumber: 14
+    Coins: 20000000
+    SpaceShipColor: {r: 1, g: 0.5019608, b: 0, a: 1}
+  - TierNumber: 15
+    Coins: 65000000
+    SpaceShipColor: {r: 1, g: 0.80784315, b: 0.03529412, a: 1}

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d7c3902b913f2a47bb1d1c78af25434, type: 3}
+  m_Name: GameDailyChallenges
+  m_EditorClassIdentifier: 
+  m_DailyChallenges:
+  - {fileID: 11400000, guid: 01a0f50b780799d44852d63818933af4, type: 2}
+  - {fileID: 11400000, guid: a8a0bd74b5b0b634582fef5567f24c65, type: 2}
+  - {fileID: 11400000, guid: c881721bed3134641a407b4d00c2b661, type: 2}

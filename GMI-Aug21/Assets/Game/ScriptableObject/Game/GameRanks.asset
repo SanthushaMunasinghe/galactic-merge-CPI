@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 344128bc1455d104e8b738c3cdee3d0c, type: 3}
+  m_Name: GameRanks
+  m_EditorClassIdentifier: 
+  m_PlayerRanks:
+  - RankID: Rank_Cadet
+    RankName: Cadet
+    RankBadge: {fileID: 21300000, guid: f4270dd4f484e914b86a8bc78ba28bfd, type: 3}
+    RankPercentage: 0
+  - RankID: Rank_Pilot
+    RankName: Pilot
+    RankBadge: {fileID: 21300000, guid: 75e538c3844c2034bb411f09239c6542, type: 3}
+    RankPercentage: 5
+  - RankID: Rank_Navigator
+    RankName: Navigator
+    RankBadge: {fileID: 21300000, guid: 1e574065fd15c934da831786951ab5ca, type: 3}
+    RankPercentage: 12
+  - RankID: Rank_SquadLeader
+    RankName: Squad Leader
+    RankBadge: {fileID: 21300000, guid: ff63af2e71673fa44a5118c40c1c3572, type: 3}
+    RankPercentage: 20
+  - RankID: Rank_Commander
+    RankName: Commander
+    RankBadge: {fileID: 21300000, guid: ac3ad5fbd05aa8543ba5153cc38173ea, type: 3}
+    RankPercentage: 30
+  - RankID: Rank_FleetCaptain
+    RankName: Fleet Captain
+    RankBadge: {fileID: 21300000, guid: 67404307076a62f4ab7f11fbe3c865b6, type: 3}
+    RankPercentage: 42
+  - RankID: Rank_StarMarshal
+    RankName: Star Marshal
+    RankBadge: {fileID: 21300000, guid: 6d92a1fc4b4eb7c4a975be61341ba715, type: 3}
+    RankPercentage: 55
+  - RankID: Rank_SectorOverseer
+    RankName: Sector Overseer
+    RankBadge: {fileID: 21300000, guid: ecfcb3145bdc9da4285f08728fd0a364, type: 3}
+    RankPercentage: 68
+  - RankID: Rank_VoidWarden
+    RankName: Void Warden
+    RankBadge: {fileID: 21300000, guid: 71f915e0eea0a914bb90cd2e513124e8, type: 3}
+    RankPercentage: 78
+  - RankID: Rank_GalacticVanguard
+    RankName: Galactic Vanguard
+    RankBadge: {fileID: 21300000, guid: 4d9f6773a7800ad4ea5a0196dcabeac0, type: 3}
+    RankPercentage: 86
+  - RankID: Rank_CelestialArbiter
+    RankName: Celestial Arbiter
+    RankBadge: {fileID: 21300000, guid: 7a915e4ea36fa774383839040fb38ac1, type: 3}
+    RankPercentage: 92
+  - RankID: Rank_CosmicSovereign
+    RankName: Cosmic Sovereign
+    RankBadge: {fileID: 21300000, guid: d34f11317fa92d54c8716089aa5133b1, type: 3}
+    RankPercentage: 100

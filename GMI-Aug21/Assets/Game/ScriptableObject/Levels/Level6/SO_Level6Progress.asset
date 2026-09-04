@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def3496626b14d14e863267e7bdbc666, type: 3}
+  m_Name: SO_Level6Progress
+  m_EditorClassIdentifier: 
+  m_Steps:
+  - StepType: 1
+    StepObjective: 3
+    StepGoal:
+      m_Mantissa: 3
+      m_Exponent: 0
+  - StepType: 2
+    StepObjective: 4
+    StepGoal:
+      m_Mantissa: 4
+      m_Exponent: 0
+  - StepType: 3
+    StepObjective: 1
+    StepGoal:
+      m_Mantissa: 1
+      m_Exponent: 0
+  - StepType: 0
+    StepObjective: 2000
+    StepGoal:
+      m_Mantissa: 2
+      m_Exponent: 3
+  - StepType: 1
+    StepObjective: 10
+    StepGoal:
+      m_Mantissa: 1
+      m_Exponent: 1
+  - StepType: 2
+    StepObjective: 8
+    StepGoal:
+      m_Mantissa: 8
+      m_Exponent: 0
+  - StepType: 0
+    StepObjective: 50000
+    StepGoal:
+      m_Mantissa: 5
+      m_Exponent: 4

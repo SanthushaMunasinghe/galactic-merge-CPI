@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62237941bc336f4c93cf85929b3b21d, type: 3}
+  m_Name: Level12
+  m_EditorClassIdentifier: 
+  m_LevelIndex: 11
+  m_LevelPrefab: {fileID: 4420971470202287957, guid: 17ddbe8239f391a489f8bec51b5077f1, type: 3}
+  m_GemsOnCompletion: 30
+  m_LevelDescription: Exploring unknown coordinates...
+  m_LevelFinishedDescription: All missions accomplished!
+  m_InitialShips:
+  - InitialShipTier: 1
+    InitialShipsAmount: 1
+  m_PowerUpReward: {fileID: 11400000, guid: 2d32f2ede40f0d3469e8ad82e69cf153, type: 2}
+  m_PowerUpUnlockPercentage: 40

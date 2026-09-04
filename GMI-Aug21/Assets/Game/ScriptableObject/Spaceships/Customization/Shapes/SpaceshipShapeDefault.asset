@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a6e9887991dce4b87084ab84e0d76a, type: 3}
+  m_Name: SpaceshipShapeDefault
+  m_EditorClassIdentifier: 
+  m_CustomizationID: Shape_Default
+  m_CustomizationName: Default
+  m_UnlockCurrency: 1
+  m_UnlockCost:
+    m_Mantissa: 0
+    m_Exponent: 0
+  m_Preview: {fileID: 21300000, guid: 81b9fa4af38a88849acf2c7dcf7d54f3, type: 3}
+  m_Unlocked: 1
+  m_ShapePrefab: {fileID: 7000201982971513135, guid: 68660433cf298f14daa7067dd04a94b5, type: 3}

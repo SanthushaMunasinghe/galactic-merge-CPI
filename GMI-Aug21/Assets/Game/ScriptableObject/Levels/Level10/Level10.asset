@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62237941bc336f4c93cf85929b3b21d, type: 3}
+  m_Name: Level10
+  m_EditorClassIdentifier: 
+  m_LevelIndex: 9
+  m_LevelPrefab: {fileID: 7443542058733867120, guid: 2c0d624d850f21e4c96f59391a0917cf, type: 3}
+  m_GemsOnCompletion: 30
+  m_LevelDescription: Who are you?...
+  m_LevelFinishedDescription: That was scary!
+  m_InitialShips:
+  - InitialShipTier: 3
+    InitialShipsAmount: 2
+  m_PowerUpReward: {fileID: 11400000, guid: 3aa7d0cd7d4f72c4e99fa53a07f52401, type: 2}
+  m_PowerUpUnlockPercentage: 100

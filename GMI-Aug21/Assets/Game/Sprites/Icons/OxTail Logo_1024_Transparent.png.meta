@@ -1,0 +1,663 @@
+fileFormatVersion: 2
+guid: b6e8ad903abdb1d438d84e61b8b52390
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 321497406858985403
+    second: OxTail Logo_1024_Transparent_0
+  - first:
+      213: -8603196111289978025
+    second: OxTail Logo_1024_Transparent_1
+  - first:
+      213: 8519850281900730371
+    second: OxTail Logo_1024_Transparent_2
+  - first:
+      213: -6126446549844147175
+    second: OxTail Logo_1024_Transparent_3
+  - first:
+      213: -7883971028393001709
+    second: OxTail Logo_1024_Transparent_4
+  - first:
+      213: 7206543968650218634
+    second: OxTail Logo_1024_Transparent_5
+  - first:
+      213: 7426516986958343551
+    second: OxTail Logo_1024_Transparent_6
+  - first:
+      213: -7016172105018916090
+    second: OxTail Logo_1024_Transparent_7
+  - first:
+      213: 2563836978723386833
+    second: OxTail Logo_1024_Transparent_8
+  - first:
+      213: -6296362456721634005
+    second: OxTail Logo_1024_Transparent_9
+  - first:
+      213: -5447583633478965200
+    second: OxTail Logo_1024_Transparent_10
+  - first:
+      213: 2584026499637553936
+    second: OxTail Logo_1024_Transparent_11
+  - first:
+      213: 7314943934852363342
+    second: OxTail Logo_1024_Transparent_12
+  - first:
+      213: -420061078732550839
+    second: OxTail Logo_1024_Transparent_13
+  - first:
+      213: -4787927540971631046
+    second: OxTail Logo_1024_Transparent_14
+  - first:
+      213: 367895345171434107
+    second: OxTail Logo_1024_Transparent_15
+  - first:
+      213: 7710737003504056611
+    second: OxTail Logo_1024_Transparent_16
+  - first:
+      213: -202749466617830059
+    second: OxTail Logo_1024_Transparent_17
+  - first:
+      213: 4454518866983663875
+    second: OxTail Logo_1024_Transparent_18
+  - first:
+      213: -2443920465733232937
+    second: OxTail Logo_1024_Transparent_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_0
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 523
+        width: 894
+        height: 440
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbff90c2030367400800000000000000
+      internalID: 321497406858985403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_1
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 428
+        width: 106
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753f98de7be4b9880800000000000000
+      internalID: -8603196111289978025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_2
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 428
+        width: 117
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3086438f0b69c3670800000000000000
+      internalID: 8519850281900730371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_3
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 428
+        width: 105
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9144f1d725d7afaa0800000000000000
+      internalID: -6126446549844147175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_4
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 428
+        width: 106
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31df929ee12869290800000000000000
+      internalID: -7883971028393001709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_5
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 428
+        width: 62
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8c41adbe89c20460800000000000000
+      internalID: 7206543968650218634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_6
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 428
+        width: 89
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7d6e0e2ad9401760800000000000000
+      internalID: 7426516986958343551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_7
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 170
+        width: 87
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 603c75dc4ac81ae90800000000000000
+      internalID: -7016172105018916090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_8
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 256
+        width: 60
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d571daf524949320800000000000000
+      internalID: 2563836978723386833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_9
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 251
+        width: 106
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2d400684b3de98a0800000000000000
+      internalID: -6296362456721634005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_10
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 251
+        width: 106
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03821424c8b4664b0800000000000000
+      internalID: -5447583633478965200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_11
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 251
+        width: 133
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01ba711296e4cd320800000000000000
+      internalID: 2584026499637553936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_12
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 251
+        width: 88
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e44f5c4a0c6e38560800000000000000
+      internalID: 7314943934852363342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_13
+      rect:
+        serializedVersion: 2
+        x: 705
+        y: 251
+        width: 97
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94dcd2aaca4ab2af0800000000000000
+      internalID: -420061078732550839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_14
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 114
+        width: 112
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3e831ed44ddd8db0800000000000000
+      internalID: -4787927540971631046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_15
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 107
+        width: 114
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7a86730ed60b1500800000000000000
+      internalID: 367895345171434107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_16
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 137
+        width: 96
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 329b152937a020b60800000000000000
+      internalID: 7710737003504056611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_17
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 171
+        width: 101
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55528df2f60bf2df0800000000000000
+      internalID: -202749466617830059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_18
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 178
+        width: 113
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30936d7fe41a1dd30800000000000000
+      internalID: 4454518866983663875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxTail Logo_1024_Transparent_19
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 55
+        width: 170
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d6d9ace843751ed0800000000000000
+      internalID: -2443920465733232937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      OxTail Logo_1024_Transparent_0: 321497406858985403
+      OxTail Logo_1024_Transparent_1: -8603196111289978025
+      OxTail Logo_1024_Transparent_10: -5447583633478965200
+      OxTail Logo_1024_Transparent_11: 2584026499637553936
+      OxTail Logo_1024_Transparent_12: 7314943934852363342
+      OxTail Logo_1024_Transparent_13: -420061078732550839
+      OxTail Logo_1024_Transparent_14: -4787927540971631046
+      OxTail Logo_1024_Transparent_15: 367895345171434107
+      OxTail Logo_1024_Transparent_16: 7710737003504056611
+      OxTail Logo_1024_Transparent_17: -202749466617830059
+      OxTail Logo_1024_Transparent_18: 4454518866983663875
+      OxTail Logo_1024_Transparent_19: -2443920465733232937
+      OxTail Logo_1024_Transparent_2: 8519850281900730371
+      OxTail Logo_1024_Transparent_3: -6126446549844147175
+      OxTail Logo_1024_Transparent_4: -7883971028393001709
+      OxTail Logo_1024_Transparent_5: 7206543968650218634
+      OxTail Logo_1024_Transparent_6: 7426516986958343551
+      OxTail Logo_1024_Transparent_7: -7016172105018916090
+      OxTail Logo_1024_Transparent_8: 2563836978723386833
+      OxTail Logo_1024_Transparent_9: -6296362456721634005
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3ed58f55b5f2f46832fdeabdee71c8, type: 3}
+  m_Name: SpaceshipCustomization
+  m_EditorClassIdentifier: 
+  m_Shapes:
+  - {fileID: 11400000, guid: 750e931992095e34db53b2fd1763e415, type: 2}
+  - {fileID: 11400000, guid: fb9548c68ddb0f04caadea46a5b8066e, type: 2}
+  - {fileID: 11400000, guid: 8d525858878c0c44aa69d7deddb4affa, type: 2}
+  m_DefaultShape: {fileID: 11400000, guid: 750e931992095e34db53b2fd1763e415, type: 2}
+  m_Effects:
+  - {fileID: 11400000, guid: b3b01f599d728394880690a2677fe1b6, type: 2}
+  - {fileID: 11400000, guid: f859f30d37dc9b246a28b072334116a5, type: 2}
+  m_DefaultEffect: {fileID: 11400000, guid: b3b01f599d728394880690a2677fe1b6, type: 2}
+  m_Trails:
+  - {fileID: 11400000, guid: 8b93f593dc8405c4fa578a4939f9f54e, type: 2}
+  - {fileID: 11400000, guid: a38fbfd1e28177742ac68ec00bebf837, type: 2}
+  m_DefaultTrail: {fileID: 11400000, guid: 8b93f593dc8405c4fa578a4939f9f54e, type: 2}

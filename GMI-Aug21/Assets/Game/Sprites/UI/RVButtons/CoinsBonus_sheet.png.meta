@@ -1,0 +1,1244 @@
+fileFormatVersion: 2
+guid: 6673b48d0f966a847ae2e812bd6f932c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1149093320560235126
+    second: CoinsBonus_sheet_0
+  - first:
+      213: -8638549215670707800
+    second: CoinsBonus_sheet_1
+  - first:
+      213: 6774034006445843727
+    second: CoinsBonus_sheet_2
+  - first:
+      213: 489514617220404234
+    second: CoinsBonus_sheet_3
+  - first:
+      213: -1064299357051103859
+    second: CoinsBonus_sheet_4
+  - first:
+      213: -3393648105934107784
+    second: CoinsBonus_sheet_5
+  - first:
+      213: -1470868523063338823
+    second: CoinsBonus_sheet_6
+  - first:
+      213: -4748551725305355690
+    second: CoinsBonus_sheet_7
+  - first:
+      213: 8118484788476997955
+    second: CoinsBonus_sheet_8
+  - first:
+      213: -984780539396906235
+    second: CoinsBonus_sheet_9
+  - first:
+      213: -1248754169709799758
+    second: CoinsBonus_sheet_10
+  - first:
+      213: 8113483283234869786
+    second: CoinsBonus_sheet_11
+  - first:
+      213: -2780579125594693741
+    second: CoinsBonus_sheet_12
+  - first:
+      213: -3473478342986339359
+    second: CoinsBonus_sheet_13
+  - first:
+      213: -3072443360606646462
+    second: CoinsBonus_sheet_14
+  - first:
+      213: 1237718203351429520
+    second: CoinsBonus_sheet_15
+  - first:
+      213: 5466902439610669867
+    second: CoinsBonus_sheet_16
+  - first:
+      213: -1985891720474721678
+    second: CoinsBonus_sheet_17
+  - first:
+      213: 4999344318740018921
+    second: CoinsBonus_sheet_18
+  - first:
+      213: 2155180636141252173
+    second: CoinsBonus_sheet_19
+  - first:
+      213: 2382846893103996529
+    second: CoinsBonus_sheet_20
+  - first:
+      213: 3624279033341185165
+    second: CoinsBonus_sheet_21
+  - first:
+      213: 7381291167275024774
+    second: CoinsBonus_sheet_22
+  - first:
+      213: -7018628999971378957
+    second: CoinsBonus_sheet_23
+  - first:
+      213: -517041673376677890
+    second: CoinsBonus_sheet_24
+  - first:
+      213: 7868059369621004458
+    second: CoinsBonus_sheet_25
+  - first:
+      213: 6365214358722443715
+    second: CoinsBonus_sheet_26
+  - first:
+      213: -3017858607812173622
+    second: CoinsBonus_sheet_27
+  - first:
+      213: 7519158044829528021
+    second: CoinsBonus_sheet_28
+  - first:
+      213: 6470046796063970623
+    second: CoinsBonus_sheet_29
+  - first:
+      213: -4387637116519457563
+    second: CoinsBonus_sheet_30
+  - first:
+      213: 5846417341144472229
+    second: CoinsBonus_sheet_31
+  - first:
+      213: 1906899601602079883
+    second: CoinsBonus_sheet_32
+  - first:
+      213: -7345890805333064820
+    second: CoinsBonus_sheet_33
+  - first:
+      213: 1965355347194659688
+    second: CoinsBonus_sheet_34
+  - first:
+      213: 362923991087922225
+    second: CoinsBonus_sheet_35
+  - first:
+      213: 540953992732796281
+    second: CoinsBonus_sheet_36
+  - first:
+      213: -5005592202245878673
+    second: CoinsBonus_sheet_37
+  - first:
+      213: -3116322539185146492
+    second: CoinsBonus_sheet_38
+  - first:
+      213: -8235868940572619968
+    second: CoinsBonus_sheet_39
+  - first:
+      213: -3610212620142043801
+    second: CoinsBonus_sheet_40
+  - first:
+      213: 4955896326019372598
+    second: CoinsBonus_sheet_41
+  - first:
+      213: -166487982897408854
+    second: CoinsBonus_sheet_42
+  - first:
+      213: 5500448270283495434
+    second: CoinsBonus_sheet_43
+  - first:
+      213: -2627476179630290217
+    second: CoinsBonus_sheet_44
+  - first:
+      213: -608143531218621016
+    second: CoinsBonus_sheet_45
+  - first:
+      213: -4306076293974295259
+    second: CoinsBonus_sheet_46
+  - first:
+      213: 4410462782531848085
+    second: CoinsBonus_sheet_47
+  - first:
+      213: -8574477532182479347
+    second: CoinsBonus_sheet_48
+  - first:
+      213: 7308461643464879385
+    second: CoinsBonus_sheet_49
+  - first:
+      213: -7559829107904929180
+    second: CoinsBonus_sheet_50
+  - first:
+      213: 1847081982168034983
+    second: CoinsBonus_sheet_51
+  - first:
+      213: -8802550587670026457
+    second: CoinsBonus_sheet_52
+  - first:
+      213: -3758801631387812900
+    second: CoinsBonus_sheet_53
+  - first:
+      213: -494199855385451514
+    second: CoinsBonus_sheet_54
+  - first:
+      213: 3990490994542489096
+    second: CoinsBonus_sheet_55
+  - first:
+      213: 871591722722526528
+    second: CoinsBonus_sheet_56
+  - first:
+      213: -759697201546927420
+    second: CoinsBonus_sheet_57
+  - first:
+      213: 8139270098482808615
+    second: CoinsBonus_sheet_58
+  - first:
+      213: -3189241155716825336
+    second: CoinsBonus_sheet_59
+  - first:
+      213: 1692584117070708884
+    second: CoinsBonus_sheet_60
+  - first:
+      213: 2564934224840813543
+    second: CoinsBonus_sheet_61
+  - first:
+      213: 2194677998262512019
+    second: CoinsBonus_sheet_62
+  - first:
+      213: -5069764832713966543
+    second: CoinsBonus_sheet_63
+  - first:
+      213: 5739393495337928216
+    second: CoinsBonus_sheet_64
+  - first:
+      213: -8971592797732453108
+    second: CoinsBonus_sheet_65
+  - first:
+      213: 162183519818670795
+    second: CoinsBonus_sheet_66
+  - first:
+      213: -5367728713003247937
+    second: CoinsBonus_sheet_67
+  - first:
+      213: -7296863396524786594
+    second: CoinsBonus_sheet_68
+  - first:
+      213: -9180469332487972656
+    second: CoinsBonus_sheet_69
+  - first:
+      213: 1540729815045995547
+    second: CoinsBonus_sheet_70
+  - first:
+      213: 7548668163610179071
+    second: CoinsBonus_sheet_71
+  - first:
+      213: 1306133375107974635
+    second: CoinsBonus_sheet_72
+  - first:
+      213: 672286815866681410
+    second: CoinsBonus_sheet_73
+  - first:
+      213: -7976550610797344864
+    second: CoinsBonus_sheet_74
+  - first:
+      213: 4213581187572170889
+    second: CoinsBonus_sheet_75
+  - first:
+      213: -4521631293446190938
+    second: CoinsBonus_sheet_76
+  - first:
+      213: -8682431952708934175
+    second: CoinsBonus_sheet_77
+  - first:
+      213: -5997757101593478968
+    second: CoinsBonus_sheet_78
+  - first:
+      213: 1496991568463738209
+    second: CoinsBonus_sheet_79
+  - first:
+      213: 990359509704764998
+    second: CoinsBonus_sheet_80
+  - first:
+      213: -7427797076900994154
+    second: CoinsBonus_sheet_81
+  - first:
+      213: -5038391810693252359
+    second: CoinsBonus_sheet_82
+  - first:
+      213: 2812589198005980396
+    second: CoinsBonus_sheet_83
+  - first:
+      213: -5931805280396840607
+    second: CoinsBonus_sheet_84
+  - first:
+      213: 7180188559066413459
+    second: CoinsBonus_sheet_85
+  - first:
+      213: 6397528103683312064
+    second: CoinsBonus_sheet_86
+  - first:
+      213: -338277804555297207
+    second: CoinsBonus_sheet_87
+  - first:
+      213: 7142585211231951220
+    second: CoinsBonus_sheet_88
+  - first:
+      213: -5788359860343519559
+    second: CoinsBonus_sheet_89
+  - first:
+      213: 6752346239283406891
+    second: CoinsBonus_sheet_90
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8dab3e86b99d00f0800000000000000
+      internalID: -1149093320560235126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a9d731e145bd1880800000000000000
+      internalID: -8638549215670707800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f05ee9ad904320e50800000000000000
+      internalID: 6774034006445843727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0498c763fa1bc600800000000000000
+      internalID: 489514617220404234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d85da48af59da31f0800000000000000
+      internalID: -1064299357051103859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87bce19270757e0d0800000000000000
+      internalID: -3393648105934107784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b8918b0fdc669be0800000000000000
+      internalID: -1470868523063338823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6522b9f5d51c91eb0800000000000000
+      internalID: -4748551725305355690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 341759bc6e6aaa070800000000000000
+      internalID: 8118484788476997955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 503a787215b5552f0800000000000000
+      internalID: -984780539396906235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b6d8a6e2b88baee0800000000000000
+      internalID: -1248754169709799758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_11
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a12d84c1f02e89070800000000000000
+      internalID: 8113483283234869786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39fdf0574066969d0800000000000000
+      internalID: -2780579125594693741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1eb694fa9d9bbcfc0800000000000000
+      internalID: -3473478342986339359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f8882ca0d7c55d0800000000000000
+      internalID: -3072443360606646462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_15
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 091fbc2f5224d2110800000000000000
+      internalID: 1237718203351429520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2bd5becdc65edb40800000000000000
+      internalID: 5466902439610669867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_17
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27207be7002b074e0800000000000000
+      internalID: -1985891720474721678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e6bd549b2d316540800000000000000
+      internalID: 4999344318740018921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_19
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4eeff3be5db8ed10800000000000000
+      internalID: 2155180636141252173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_20
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e5b99df92911120800000000000000
+      internalID: 2382846893103996529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_21
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8c823d14960c4230800000000000000
+      internalID: 3624279033341185165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6810829753d9f6660800000000000000
+      internalID: 7381291167275024774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_23
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f8637e5c12d89e90800000000000000
+      internalID: -7018628999971378957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eff3f44665913d8f0800000000000000
+      internalID: -517041673376677890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa0a1f55f46f03d60800000000000000
+      internalID: 7868059369621004458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c9fdd22cb8c55850800000000000000
+      internalID: 6365214358722443715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_27
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac02003e5996e16d0800000000000000
+      internalID: -3017858607812173622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_28
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dfa510576a695860800000000000000
+      internalID: 7519158044829528021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_29
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f351c8ff7493ac950800000000000000
+      internalID: 6470046796063970623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ecd98a0a4bfb13c0800000000000000
+      internalID: -4387637116519457563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_31
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5aa999b9895a22150800000000000000
+      internalID: 5846417341144472229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_32
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8c63df951ba67a10800000000000000
+      internalID: 1906899601602079883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_33
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8380559b372e0a90800000000000000
+      internalID: -7345890805333064820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_34
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 863c3fe7648564b10800000000000000
+      internalID: 1965355347194659688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CoinsBonus_sheet_35
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13c3341727d590500800000000000000
+      internalID: 362923991087922225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 536fb2c52bd041e4d9384ebf05c9579b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CoinsBonus_sheet_0: -1149093320560235126
+      CoinsBonus_sheet_1: -8638549215670707800
+      CoinsBonus_sheet_10: -1248754169709799758
+      CoinsBonus_sheet_11: 8113483283234869786
+      CoinsBonus_sheet_12: -2780579125594693741
+      CoinsBonus_sheet_13: -3473478342986339359
+      CoinsBonus_sheet_14: -3072443360606646462
+      CoinsBonus_sheet_15: 1237718203351429520
+      CoinsBonus_sheet_16: 5466902439610669867
+      CoinsBonus_sheet_17: -1985891720474721678
+      CoinsBonus_sheet_18: 4999344318740018921
+      CoinsBonus_sheet_19: 2155180636141252173
+      CoinsBonus_sheet_2: 6774034006445843727
+      CoinsBonus_sheet_20: 2382846893103996529
+      CoinsBonus_sheet_21: 3624279033341185165
+      CoinsBonus_sheet_22: 7381291167275024774
+      CoinsBonus_sheet_23: -7018628999971378957
+      CoinsBonus_sheet_24: -517041673376677890
+      CoinsBonus_sheet_25: 7868059369621004458
+      CoinsBonus_sheet_26: 6365214358722443715
+      CoinsBonus_sheet_27: -3017858607812173622
+      CoinsBonus_sheet_28: 7519158044829528021
+      CoinsBonus_sheet_29: 6470046796063970623
+      CoinsBonus_sheet_3: 489514617220404234
+      CoinsBonus_sheet_30: -4387637116519457563
+      CoinsBonus_sheet_31: 5846417341144472229
+      CoinsBonus_sheet_32: 1906899601602079883
+      CoinsBonus_sheet_33: -7345890805333064820
+      CoinsBonus_sheet_34: 1965355347194659688
+      CoinsBonus_sheet_35: 362923991087922225
+      CoinsBonus_sheet_4: -1064299357051103859
+      CoinsBonus_sheet_5: -3393648105934107784
+      CoinsBonus_sheet_6: -1470868523063338823
+      CoinsBonus_sheet_7: -4748551725305355690
+      CoinsBonus_sheet_8: 8118484788476997955
+      CoinsBonus_sheet_9: -984780539396906235
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

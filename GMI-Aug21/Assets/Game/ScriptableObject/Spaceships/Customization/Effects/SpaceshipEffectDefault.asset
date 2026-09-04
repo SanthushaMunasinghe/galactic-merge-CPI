@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28425ccbd597cc749b7cedac694d4396, type: 3}
+  m_Name: SpaceshipEffectDefault
+  m_EditorClassIdentifier: 
+  m_CustomizationID: Effect_Default
+  m_CustomizationName: Default
+  m_UnlockCurrency: 2
+  m_UnlockCost:
+    m_Mantissa: 0
+    m_Exponent: 0
+  m_Preview: {fileID: 21300000, guid: ab3c40da9c1fd6346b7117ef8352081b, type: 3}
+  m_Unlocked: 1
+  m_EffectType: 0

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3d6269967e194446b854f40abc2cd36, type: 3}
+  m_Name: NoAdsIAP
+  m_EditorClassIdentifier: 
+  m_ProductID: com.galacticmergeidle.noads
+  m_ProductIcon: {fileID: 21300000, guid: ddb16770eca7f4aaf9b54fb326b28d6e, type: 3}
+  m_ShopIAPType: 0
+  m_Quantity: 0

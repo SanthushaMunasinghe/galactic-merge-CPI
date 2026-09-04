@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62237941bc336f4c93cf85929b3b21d, type: 3}
+  m_Name: Level8
+  m_EditorClassIdentifier: 
+  m_LevelIndex: 7
+  m_LevelPrefab: {fileID: 689691179658328547, guid: 7929b0ddc6343eb47a94acccaa1fbe71, type: 3}
+  m_GemsOnCompletion: 25
+  m_LevelDescription: Dead Planet detected...
+  m_LevelFinishedDescription: The galaxy is recovering!
+  m_InitialShips:
+  - InitialShipTier: 2
+    InitialShipsAmount: 5
+  m_PowerUpReward: {fileID: 11400000, guid: 3aa7d0cd7d4f72c4e99fa53a07f52401, type: 2}
+  m_PowerUpUnlockPercentage: 33

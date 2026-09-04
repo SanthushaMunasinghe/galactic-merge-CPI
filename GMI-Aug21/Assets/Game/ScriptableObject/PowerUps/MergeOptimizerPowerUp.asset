@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772271d0ed7da4640948b6ca0aad865b, type: 3}
+  m_Name: MergeOptimizerPowerUp
+  m_EditorClassIdentifier: 
+  m_PowerUpID: PowerUp_MergeOptimizer
+  m_PowerUpName: Merge Optimizer
+  m_PowerUpDescription: Merge price discount
+  m_PowerUpIcon: {fileID: 21300000, guid: 7b0283cac9860bf429bb075dbd29acbc, type: 3}
+  m_PowerUpType: 3
+  m_Upgrades:
+  - Level: 1
+    Value: 5
+    Cost: 10
+  - Level: 2
+    Value: 6
+    Cost: 25
+  - Level: 3
+    Value: 7
+    Cost: 50
+  - Level: 4
+    Value: 8
+    Cost: 85
+  - Level: 5
+    Value: 9
+    Cost: 130
+  - Level: 6
+    Value: 10
+    Cost: 190
+  - Level: 7
+    Value: 11
+    Cost: 270
+  - Level: 8
+    Value: 12
+    Cost: 380
+  - Level: 9
+    Value: 13
+    Cost: 520
+  - Level: 10
+    Value: 14
+    Cost: 700
+  - Level: 11
+    Value: 15
+    Cost: 950
+  - Level: 12
+    Value: 16
+    Cost: 1300
+  - Level: 13
+    Value: 17
+    Cost: 1800
+  - Level: 14
+    Value: 18
+    Cost: 2500
+  - Level: 15
+    Value: 20
+    Cost: 4000
