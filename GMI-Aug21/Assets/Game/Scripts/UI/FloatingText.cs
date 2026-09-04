@@ -16,6 +16,8 @@ namespace Oxtail.SpaceshipIncremental
 
         private Material m_FontMaterial;
 
+        private Color? m_GlowColorOverride;
+
         public event Action<FloatingText> Disabled;
 
         private void Awake()
@@ -72,7 +74,19 @@ namespace Oxtail.SpaceshipIncremental
         public void SetColor(Color color)
         {
             m_AmountText.color = color;
-            m_FontMaterial.SetColor("_GlowColor", color);
+            m_FontMaterial.SetColor("_GlowColor", m_GlowColorOverride ?? color);
+        }
+
+        /// <summary>
+        /// Forces the TMP glow color regardless of what SetColor is asked to tint the text with.
+        /// Used by CPIManager for local testing; pass null to go back to matching the text color.
+        /// </summary>
+        public void SetGlowColorOverride(Color? color)
+        {
+            m_GlowColorOverride = color;
+
+            if (color.HasValue)
+                m_FontMaterial.SetColor("_GlowColor", color.Value);
         }
     }
 }

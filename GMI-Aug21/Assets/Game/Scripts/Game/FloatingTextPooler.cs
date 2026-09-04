@@ -12,6 +12,8 @@ namespace Oxtail.SpaceshipIncremental
 
         private Queue<FloatingText> m_Pool = new();
 
+        private Color? m_GlowColorOverride;
+
         private readonly Vector3 m_DefaultScale = new Vector3(2f, 2f, 2f);
 
         protected override void Awake()
@@ -42,7 +44,23 @@ namespace Oxtail.SpaceshipIncremental
             view.transform.SetParent(transform);
             view.Disabled += TextDisabled;
             view.gameObject.SetActive(false);
+            view.SetGlowColorOverride(m_GlowColorOverride);
             m_Pool.Enqueue(view);
+        }
+
+        /// <summary>
+        /// Forces every floating text's glow color, pooled and future, regardless of what each
+        /// caller tints the text itself. Used by CPIManager for local testing; pass null to let
+        /// callers control the glow color again.
+        /// </summary>
+        public void SetGlowColorOverride(Color? color)
+        {
+            m_GlowColorOverride = color;
+
+            foreach (var text in m_Pool)
+            {
+                text.SetGlowColorOverride(color);
+            }
         }
 
         private void TextDisabled(FloatingText view)

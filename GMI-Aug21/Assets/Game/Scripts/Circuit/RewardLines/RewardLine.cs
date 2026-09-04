@@ -14,6 +14,8 @@ namespace Oxtail.SpaceshipIncremental
         private GameObject m_RvEffect;
         private Line m_Line;
 
+        private bool m_DefaultDashed;
+
         private Tween m_PulseTween;
 
         public Transform RVEffectPos => m_RvEffect.transform;
@@ -33,9 +35,23 @@ namespace Oxtail.SpaceshipIncremental
         public void Init()
         {
             m_Line = GetComponent<Line>();
+            m_DefaultDashed = m_Line.Dashed;
+
             var canvas = transform.parent.GetComponentInChildren<Canvas>(true);
             canvas.worldCamera = Camera.main;
             m_RvEffect = canvas.gameObject;
+        }
+
+        /// <summary>
+        /// Overrides this line's resting color, thickness and dashed state (used by CPIManager
+        /// for local testing). The dashed value also becomes the state DoAction restores to.
+        /// </summary>
+        public void SetAppearance(Color color, bool dashed, float thickness)
+        {
+            m_Line.Color = color;
+            m_Line.Dashed = dashed;
+            m_Line.Thickness = thickness;
+            m_DefaultDashed = dashed;
         }
 
         public void Show(bool show, bool isBoost = false)
@@ -84,7 +100,7 @@ namespace Oxtail.SpaceshipIncremental
             transform.DOPunchScale(Vector3.Scale(transform.localScale, new Vector3(0.2f, 0.2f, 1f)), 0.2f, 1)
                 .OnComplete(() =>
                 {
-                    m_Line.Dashed = true;
+                    m_Line.Dashed = m_DefaultDashed;
                 });
         }
     }

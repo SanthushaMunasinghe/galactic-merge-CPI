@@ -151,6 +151,12 @@ MonoBehaviour:
   m_StartLineCount: 1
   m_StartMoney: 1000000
   m_StartArrowsDelay: 0.5
+  m_OverrideRewardLineAppearance: 1
+  m_RewardLineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_RewardLineDashed: 0
+  m_RewardLineThickness: 0.09
+  m_OverrideFloatingTextGlowColor: 1
+  m_FloatingTextGlowColor: {r: 0.08235294, g: 0.85882354, b: 0, a: 0.5019608}
   m_InfiniteMoney: 1
   m_ScaleSpawnTier: 1
   m_UpgradeButtonsRoot: {fileID: 1591009717}
@@ -941,6 +947,34 @@ PrefabInstance:
     - target: {fileID: 3776912253032840958, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9654237
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.1658744
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.19589998
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.045454
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 19.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 22.699
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791506118836019079, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -1.387
       objectReference: {fileID: 0}
     - target: {fileID: 3938591821786942353, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_AnchorMax.x

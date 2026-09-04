@@ -27,6 +27,16 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private double m_StartMoney = 100;
         [SerializeField, Min(0f)] private float m_StartArrowsDelay = 0.5f;
 
+        [Header("CPI Reward Line Appearance")]
+        [SerializeField] private bool m_OverrideRewardLineAppearance;
+        [SerializeField] private Color m_RewardLineColor = Color.yellow;
+        [SerializeField] private bool m_RewardLineDashed = true;
+        [SerializeField, Min(0f)] private float m_RewardLineThickness = 0.05f;
+
+        [Header("CPI Floating Text")]
+        [SerializeField] private bool m_OverrideFloatingTextGlowColor;
+        [SerializeField] private Color m_FloatingTextGlowColor = new Color32(0x15, 0xDB, 0x00, 0x80);
+
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
         [SerializeField] private bool m_ScaleSpawnTier = true;
@@ -55,6 +65,7 @@ namespace Oxtail.SpaceshipIncremental
             m_Instance = this;
 
             NeutralizeProgression();
+            ApplyFloatingTextOverride();
 
             m_FloorTier = m_StartArrowTier;
             m_MaxSpaceShipTierCreated = m_StartArrowTier;
@@ -134,6 +145,9 @@ namespace Oxtail.SpaceshipIncremental
             m_CurrentCircuit = m_Circuit;
             m_CurrentCircuit.SetSpaceshipParentsPath();
 
+            if (m_OverrideRewardLineAppearance)
+                m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);
+
             return true;
         }
 
@@ -150,6 +164,21 @@ namespace Oxtail.SpaceshipIncremental
                 StepType = ProgressionObjectiveType.CompletesInTime,
                 StepGoal = BigNumber.Zero
             };
+        }
+
+        private void ApplyFloatingTextOverride()
+        {
+            if (!m_OverrideFloatingTextGlowColor)
+                return;
+
+            if (FloatingTextPooler.Instance == null)
+            {
+                Debug.LogWarning($"{nameof(CPIManager)}: no FloatingTextPooler in the scene, " +
+                    "cannot override the floating text glow color.", this);
+                return;
+            }
+
+            FloatingTextPooler.Instance.SetGlowColorOverride(m_FloatingTextGlowColor);
         }
 
         private void ApplyUIOverrides()

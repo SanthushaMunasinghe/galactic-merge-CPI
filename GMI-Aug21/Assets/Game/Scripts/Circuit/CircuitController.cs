@@ -82,6 +82,19 @@ namespace Oxtail.SpaceshipIncremental
             }
         }
 
+        /// <summary>
+        /// Overrides the resting color, thickness and dashed state of every reward line on this
+        /// circuit, shown or not yet shown. Used by CPIManager for local testing; normal gameplay
+        /// never calls this, so authored per-circuit visuals are untouched elsewhere.
+        /// </summary>
+        public void SetRewardLinesAppearance(Color color, bool dashed, float thickness)
+        {
+            foreach (var line in m_InternalRewardLines)
+            {
+                line.SetAppearance(color, dashed, thickness);
+            }
+        }
+
         public RewardLine GetNextRewardLineToShow()
         {
             foreach(var line in m_InternalRewardLines)
