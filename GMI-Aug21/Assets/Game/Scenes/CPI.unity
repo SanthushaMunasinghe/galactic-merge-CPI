@@ -119,6 +119,43 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &325274733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591009716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5d75c0fe061854d9bfbc6640bcd60a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.CPIManager
+  m_LevelView: {fileID: 1591009721}
+  m_MergeBackground: {fileID: 1591009720}
+  m_CanvasGroup: {fileID: 1591009719}
+  m_LevelProgression: {fileID: 0}
+  m_OptionalLevelProgression: {fileID: 0}
+  m_SpaceshipPrefab: {fileID: 798947834782532701, guid: c4d819253a5cffc4797b0cc5c33fc833, type: 3}
+  m_Circuits:
+  - {fileID: 1591009718}
+  m_SpeedParticleSystem: {fileID: 1451895465}
+  m_BackgroundMusic: {fileID: 8300000, guid: 5b230f29cfb34664dbfd6148745ac49e, type: 3}
+  m_MergeSound: {fileID: 8300000, guid: 1c4f1ed1e7f4191468506dd7ba4cfe78, type: 3}
+  m_CoinSound: {fileID: 8300000, guid: 3d173346f7c373c4d974dc1668be721e, type: 3}
+  m_EngineSound: {fileID: 8300000, guid: 4109124cd8ae8a14bbc72f5fa0b038c1, type: 3}
+  m_SpeedSound: {fileID: 8300000, guid: 8e1c330e458a07a4998befccea048936, type: 3}
+  m_Circuit: {fileID: 1591009718}
+  m_StartArrowCount: 1
+  m_StartArrowTier: 1
+  m_StartLineCount: 1
+  m_StartMoney: 1000000
+  m_StartArrowsDelay: 0.5
+  m_InfiniteMoney: 1
+  m_ScaleSpawnTier: 1
+  m_UpgradeButtonsRoot: {fileID: 1591009717}
+  m_ActivateOnStart: []
+  m_DeactivateOnStart: []
 --- !u!1 &506970851
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +525,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!198 &1451895465 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1109496182133759209, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1591009715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1435,8 +1477,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1464367375562524679, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 325274733}
   m_SourcePrefab: {fileID: 100100000, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+--- !u!1 &1591009716 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1464367375562524679, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1591009717 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3217162773285921330, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1591009718 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7443946171163173257, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591009721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc1bfeb030d3654ba53fc66d96da784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!225 &1591009719 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6196415890692881658, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1591009720 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4345678421309586501, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1591009721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1650973690005470276, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
+  m_PrefabInstance: {fileID: 1591009715}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1809723161
 GameObject:
   m_ObjectHideFlags: 0

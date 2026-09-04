@@ -16,7 +16,9 @@ namespace Oxtail.SpaceshipIncremental
         public BigNumber GetMergeUpgradeCost()
         {
             int level = 0;
-            if (LevelManager.Instance is StandardLevelManager)
+            if (LevelManager.Instance is CPIManager cpiManager)
+                level = cpiManager.MergeLevel;
+            else if (LevelManager.Instance is StandardLevelManager)
                 level = SaveLoadManager.Instance.GetMergeLevel();
             else if (LevelManager.Instance is DailyChallengeLevelManager)
                 level = SaveLoadManager.Instance.GetDailyChallengeMergeLevel();
@@ -32,7 +34,9 @@ namespace Oxtail.SpaceshipIncremental
         public BigNumber GetAddSpaceshipUpgradeCost()
         {
             int level = 0;
-            if (LevelManager.Instance is StandardLevelManager)
+            if (LevelManager.Instance is CPIManager cpiManager)
+                level = cpiManager.AddSpaceshipLevel;
+            else if (LevelManager.Instance is StandardLevelManager)
                 level = SaveLoadManager.Instance.GetAddSpaceshipLevel();
             else if (LevelManager.Instance is DailyChallengeLevelManager)
                 level = SaveLoadManager.Instance.GetDailyChallengeAddSpaceshipLevel();
@@ -48,7 +52,9 @@ namespace Oxtail.SpaceshipIncremental
         public BigNumber GetRewardLineUpgradeCost()
         {
             int level = 0;
-            if (LevelManager.Instance is StandardLevelManager)
+            if (LevelManager.Instance is CPIManager cpiManager)
+                level = cpiManager.RewardLineLevel;
+            else if (LevelManager.Instance is StandardLevelManager)
                 level = SaveLoadManager.Instance.GetRewardLineLevel();
             else if (LevelManager.Instance is DailyChallengeLevelManager)
                 level = SaveLoadManager.Instance.GetDailyChallengeRewardLineLevel();
@@ -64,7 +70,9 @@ namespace Oxtail.SpaceshipIncremental
         public BigNumber GetCircuitUpgradeCost()
         {
             int level = 0;
-            if (LevelManager.Instance is StandardLevelManager)
+            if (LevelManager.Instance is CPIManager cpiManager)
+                level = cpiManager.CircuitLevel;
+            else if (LevelManager.Instance is StandardLevelManager)
                 level = SaveLoadManager.Instance.GetCircuitLevel();
             else if (LevelManager.Instance is DailyChallengeLevelManager)
                 level = SaveLoadManager.Instance.GetDailyChallengeCircuitLevel();
