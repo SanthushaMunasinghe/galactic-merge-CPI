@@ -37,6 +37,10 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_OverrideFloatingTextGlowColor;
         [SerializeField] private Color m_FloatingTextGlowColor = new Color32(0x15, 0xDB, 0x00, 0x80);
 
+        [Header("CPI Spaceship Rotation")]
+        [SerializeField] private bool m_AlignSpaceshipRotationWithPath;
+        [SerializeField] private float m_SpaceshipRotationOffsetDegrees;
+
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
         [SerializeField] private bool m_ScaleSpawnTier = true;
@@ -143,7 +147,7 @@ namespace Oxtail.SpaceshipIncremental
             m_CircuitIndex = 0;
             m_Circuit.gameObject.SetActive(true);
             m_CurrentCircuit = m_Circuit;
-            m_CurrentCircuit.SetSpaceshipParentsPath();
+            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees);
 
             if (m_OverrideRewardLineAppearance)
                 m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);
