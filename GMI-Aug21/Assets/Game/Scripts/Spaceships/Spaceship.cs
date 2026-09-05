@@ -35,6 +35,12 @@ namespace Oxtail.SpaceshipIncremental
         }
     }
 
+    public struct SpaceshipHitRewardLineEvent
+    {
+        public Spaceship Spaceship;
+        public RewardLine Line;
+    }
+
     public class Spaceship : MonoBehaviour
     {
         [SerializeField, TagSelector] private string m_MoneyLineTag;
@@ -306,6 +312,8 @@ namespace Oxtail.SpaceshipIncremental
 
             RewardLine line = collision.GetComponent<RewardLine>();
             line.DoAction();
+
+            EventManager<SpaceshipHitRewardLineEvent>.TriggerEvent(new SpaceshipHitRewardLineEvent { Spaceship = this, Line = line });
 
             int coins = Mathf.CeilToInt(m_Coins * LevelManager.Instance.MoneyMultiplier);
 

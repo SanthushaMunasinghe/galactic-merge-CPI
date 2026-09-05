@@ -7,10 +7,11 @@ namespace Oxtail.SpaceshipIncremental
     /// <summary>
     /// Spawns waves of AsteroidProjectile instances around a circle in this transform's local X/Y
     /// plane (Spawn Radius), each sliding inward at the same angle to a point on a smaller circle
-    /// (Jump Radius) before homing the rest of the way toward the shared local center. Asteroids
-    /// within a wave always spawn one at a time. A wave is only ever started externally via
-    /// TriggerWave (or the "Trigger Wave" context menu item while testing); a call while a wave is
-    /// already in progress (including asteroids still mid-jump) is ignored.
+    /// (Jump Radius), offset along local Z by Jump Height Offset, before homing the rest of the way
+    /// toward the shared local center. Asteroids within a wave always spawn one at a time. A wave is
+    /// only ever started externally via TriggerWave (or the "Trigger Wave" context menu item while
+    /// testing); a call while a wave is already in progress (including asteroids still mid-jump) is
+    /// ignored.
     /// </summary>
     public class AsteroidSpawnManager : MonoBehaviour
     {
@@ -20,6 +21,7 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Spawn Area")]
         [SerializeField, Min(0f)] private float m_SpawnRadius = 10f;
         [SerializeField, Min(0f)] private float m_JumpRadius = 4f;
+        [SerializeField] private float m_JumpHeightOffset = -0.5f;
 
         [Header("Wave Settings")]
         [SerializeField] private List<int> m_WaveAsteroidCounts = new List<int> { 5 };
@@ -81,7 +83,7 @@ namespace Oxtail.SpaceshipIncremental
 
             float angle = Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnLocalPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * m_SpawnRadius;
-            Vector3 jumpLocalPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * m_JumpRadius;
+            Vector3 jumpLocalPos = new Vector3(Mathf.Cos(angle) * m_JumpRadius, Mathf.Sin(angle) * m_JumpRadius, m_JumpHeightOffset);
 
             AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
             m_AsteroidsPendingJump++;

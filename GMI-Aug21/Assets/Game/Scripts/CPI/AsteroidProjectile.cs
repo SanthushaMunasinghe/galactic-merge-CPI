@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,11 +8,12 @@ namespace Oxtail.SpaceshipIncremental
     /// <summary>
     /// Slides from its spawn point to a jump-radius point in a straight line (same local X/Y plane)
     /// using DOTween at jumpSpeed, then homes toward the shared local center (local origin of its
-    /// parent) every frame at centeringSpeed. Destroyable throughout by a trigger hit on the planet
-    /// layer. Requires a trigger Collider and a kinematic Rigidbody on this GameObject so Unity fires
-    /// OnTriggerEnter for a script-moved object. Destruction VFX will be hooked into HandlePlanetHit
-    /// later.
+    /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Destroyable throughout
+    /// by a trigger hit on the planet layer. Requires a trigger Collider and a kinematic Rigidbody on
+    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object. Destruction VFX will
+    /// be hooked into HandlePlanetHit later.
     /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class AsteroidProjectile : MonoBehaviour
     {
         private enum AsteroidState
@@ -20,12 +22,26 @@ namespace Oxtail.SpaceshipIncremental
             Homing
         }
 
+        public static readonly List<AsteroidProjectile> ActiveAsteroids = new List<AsteroidProjectile>();
+
         [SerializeField] private LayerMask m_PlanetLayerMask;
 
+        private Rigidbody m_Rigidbody;
         private AsteroidState m_State = AsteroidState.Sliding;
         private float m_CenteringSpeed;
         private Action m_OnJumpComplete;
         private bool m_NotifiedJumpComplete;
+
+        /// <summary>True once this asteroid has arrived at the shared local center.</summary>
+        public bool HasReachedCenter { get; private set; }
+
+        /// <summary>True while a bullet is currently assigned to hit this asteroid.</summary>
+        public bool IsTargeted { get; set; }
+
+        private void Awake()
+        {
+            m_Rigidbody = GetComponent<Rigidbody>();
+        }
 
         public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)
         {
@@ -47,12 +63,27 @@ namespace Oxtail.SpaceshipIncremental
             NotifyJumpComplete();
         }
 
-        private void Update()
+        private void OnEnable()
+        {
+            ActiveAsteroids.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            ActiveAsteroids.Remove(this);
+        }
+
+        private void FixedUpdate()
         {
             if (m_State != AsteroidState.Homing)
                 return;
 
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Vector3.zero, m_CenteringSpeed * Time.deltaTime);
+            Vector3 centerWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+            Vector3 newPos = Vector3.MoveTowards(m_Rigidbody.position, centerWorldPos, m_CenteringSpeed * Time.fixedDeltaTime);
+            m_Rigidbody.MovePosition(newPos);
+
+            if (newPos == centerWorldPos)
+                HasReachedCenter = true;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -65,6 +96,10 @@ namespace Oxtail.SpaceshipIncremental
 
         private void HandlePlanetHit()
         {
+            // Removed immediately (rather than waiting for the deferred OnDisable) so a bullet
+            // resolving its target later this same frame never targets an asteroid already destroyed.
+            ActiveAsteroids.Remove(this);
+
             // TODO: hook in destruction VFX here.
             Destroy(gameObject);
         }

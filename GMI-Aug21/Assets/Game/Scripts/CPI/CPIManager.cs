@@ -23,6 +23,9 @@ namespace Oxtail.SpaceshipIncremental
         [Header("CPI Asteroids")]
         [SerializeField] private AsteroidSpawnManager m_AsteroidSpawnManager;
 
+        [Header("CPI Bullets")]
+        [SerializeField] private BulletSpawnManager m_BulletSpawnManager;
+
         [Header("CPI Start Values")]
         [SerializeField, Min(0)] private int m_StartArrowCount = 1;
         [SerializeField, Min(1)] private int m_StartArrowTier = 1;
@@ -58,6 +61,7 @@ namespace Oxtail.SpaceshipIncremental
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
         public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
+        public BulletSpawnManager BulletSpawner => m_BulletSpawnManager;
 
         public int MergeLevel { get; private set; }
         public int AddSpaceshipLevel { get; private set; }
