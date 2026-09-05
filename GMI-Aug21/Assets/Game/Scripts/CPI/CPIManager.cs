@@ -26,6 +26,11 @@ namespace Oxtail.SpaceshipIncremental
         [Header("CPI Bullets")]
         [SerializeField] private BulletSpawnManager m_BulletSpawnManager;
 
+        [Header("CPI Planet Health")]
+        [SerializeField] private Renderer m_PlanetHealthRenderer;
+        [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
+        [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
+
         [Header("CPI Start Values")]
         [SerializeField, Min(0)] private int m_StartArrowCount = 1;
         [SerializeField, Min(1)] private int m_StartArrowTier = 1;
@@ -63,6 +68,8 @@ namespace Oxtail.SpaceshipIncremental
         public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
         public BulletSpawnManager BulletSpawner => m_BulletSpawnManager;
 
+        public float PlanetHealth { get; private set; }
+
         public int MergeLevel { get; private set; }
         public int AddSpaceshipLevel { get; private set; }
         public int RewardLineLevel { get; private set; }
@@ -84,22 +91,62 @@ namespace Oxtail.SpaceshipIncremental
             m_MaxSpaceShipTierCreated = m_StartArrowTier;
 
             Money.Value = m_StartMoney;
+
+            if (m_PlanetHealthRenderer != null)
+                m_PlanetHealthRenderer.material = new Material(m_PlanetHealthRenderer.material);
+
+            ApplyPlanetHealthFill();
         }
 
         private void OnEnable()
         {
             EventManager<ShortcutManager.ShortcutTriggeredEvent>.AddListener(OnShortcutTriggered);
+            EventManager<AsteroidDestroyedByBulletEvent>.AddListener(OnAsteroidDestroyedByBullet);
+            EventManager<AsteroidDestroyedByPlanetEvent>.AddListener(OnAsteroidDestroyedByPlanet);
+            EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
         }
 
         private void OnDisable()
         {
             EventManager<ShortcutManager.ShortcutTriggeredEvent>.RemoveListener(OnShortcutTriggered);
+            EventManager<AsteroidDestroyedByBulletEvent>.RemoveListener(OnAsteroidDestroyedByBullet);
+            EventManager<AsteroidDestroyedByPlanetEvent>.RemoveListener(OnAsteroidDestroyedByPlanet);
+            EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
         }
 
         private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
         {
             if (shortcutEvent.Key == KeyCode.S)
                 m_AsteroidSpawnManager.TriggerWave();
+        }
+
+        private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
+        {
+            m_AsteroidSpawnManager.SpawnCollectPoint(evt.Asteroid.transform.position);
+        }
+
+        private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
+        {
+            ChangePlanetHealth(-m_HealthLossPercent);
+        }
+
+        private void OnCollectPointCollected(CollectPointCollectedEvent evt)
+        {
+            ChangePlanetHealth(m_HealthGainPercent);
+        }
+
+        private void ChangePlanetHealth(float delta)
+        {
+            PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
+            ApplyPlanetHealthFill();
+        }
+
+        private void ApplyPlanetHealthFill()
+        {
+            if (m_PlanetHealthRenderer == null)
+                return;
+
+            m_PlanetHealthRenderer.material.SetFloat("_Fill", PlanetHealth / 100f);
         }
 
         // The circuit is built in Start, not Awake: CircuitController fills its SpaceshipParent and

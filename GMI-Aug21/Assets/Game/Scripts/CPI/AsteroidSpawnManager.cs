@@ -29,6 +29,10 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Vector2 m_JumpSpeedRange = new Vector2(2f, 6f);
         [SerializeField] private Vector2 m_CenteringSpeedRange = new Vector2(2f, 6f);
 
+        [Header("Collect Point")]
+        [SerializeField] private CollectPoint m_CollectPointPrefab;
+        [SerializeField] private float m_CollectPointSpeed = 5f;
+
         private int m_CurrentWaveIndex;
         private bool m_IsWaveInProgress;
         private int m_AsteroidsPendingJump;
@@ -96,6 +100,18 @@ namespace Oxtail.SpaceshipIncremental
         private void OnAsteroidJumpComplete()
         {
             m_AsteroidsPendingJump--;
+        }
+
+        public void SpawnCollectPoint(Vector3 worldPosition)
+        {
+            if (m_CollectPointPrefab == null)
+            {
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: Collect Point Prefab must be assigned.", this);
+                return;
+            }
+
+            CollectPoint collectPoint = Instantiate(m_CollectPointPrefab, worldPosition, Quaternion.identity, transform);
+            collectPoint.Initialize(m_CollectPointSpeed);
         }
 
         private void OnValidate()

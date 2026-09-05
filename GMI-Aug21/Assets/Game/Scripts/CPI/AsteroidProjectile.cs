@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Oxtail.Utils;
 using UnityEngine;
 
 namespace Oxtail.SpaceshipIncremental
 {
+    public struct AsteroidDestroyedByPlanetEvent
+    {
+        public AsteroidProjectile Asteroid;
+    }
+
     /// <summary>
     /// Slides from its spawn point to a jump-radius point in a straight line (same local X/Y plane)
     /// using DOTween at jumpSpeed, then homes toward the shared local center (local origin of its
@@ -99,6 +105,8 @@ namespace Oxtail.SpaceshipIncremental
             // Removed immediately (rather than waiting for the deferred OnDisable) so a bullet
             // resolving its target later this same frame never targets an asteroid already destroyed.
             ActiveAsteroids.Remove(this);
+
+            EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(new AsteroidDestroyedByPlanetEvent { Asteroid = this });
 
             // TODO: hook in destruction VFX here.
             Destroy(gameObject);

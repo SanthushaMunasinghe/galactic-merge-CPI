@@ -1,7 +1,13 @@
+using Oxtail.Utils;
 using UnityEngine;
 
 namespace Oxtail.SpaceshipIncremental
 {
+    public struct AsteroidDestroyedByBulletEvent
+    {
+        public AsteroidProjectile Asteroid;
+    }
+
     /// <summary>
     /// Flies straight toward its target's current position at a constant speed via
     /// Rigidbody.MovePosition every FixedUpdate, so it still converges onto the target even if the
@@ -86,6 +92,9 @@ namespace Oxtail.SpaceshipIncremental
 
                 hitAsteroid.IsTargeted = false;
                 AsteroidProjectile.ActiveAsteroids.Remove(hitAsteroid);
+
+                EventManager<AsteroidDestroyedByBulletEvent>.TriggerEvent(new AsteroidDestroyedByBulletEvent { Asteroid = hitAsteroid });
+
                 Destroy(hitAsteroid.gameObject);
             }
 
