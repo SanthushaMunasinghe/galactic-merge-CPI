@@ -20,6 +20,9 @@ namespace Oxtail.SpaceshipIncremental
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
 
+        [Header("CPI Asteroids")]
+        [SerializeField] private AsteroidSpawnManager m_AsteroidSpawnManager;
+
         [Header("CPI Start Values")]
         [SerializeField, Min(0)] private int m_StartArrowCount = 1;
         [SerializeField, Min(1)] private int m_StartArrowTier = 1;
@@ -54,6 +57,8 @@ namespace Oxtail.SpaceshipIncremental
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
+        public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
+
         public int MergeLevel { get; private set; }
         public int AddSpaceshipLevel { get; private set; }
         public int RewardLineLevel { get; private set; }
@@ -75,6 +80,22 @@ namespace Oxtail.SpaceshipIncremental
             m_MaxSpaceShipTierCreated = m_StartArrowTier;
 
             Money.Value = m_StartMoney;
+        }
+
+        private void OnEnable()
+        {
+            EventManager<ShortcutManager.ShortcutTriggeredEvent>.AddListener(OnShortcutTriggered);
+        }
+
+        private void OnDisable()
+        {
+            EventManager<ShortcutManager.ShortcutTriggeredEvent>.RemoveListener(OnShortcutTriggered);
+        }
+
+        private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
+        {
+            if (shortcutEvent.Key == KeyCode.S)
+                m_AsteroidSpawnManager.TriggerWave();
         }
 
         // The circuit is built in Start, not Awake: CircuitController fills its SpaceshipParent and

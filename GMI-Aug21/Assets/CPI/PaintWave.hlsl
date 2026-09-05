@@ -16,7 +16,8 @@ void PaintWave_float(
     float Fill,
     float Time,
     out float Height,
-    out float3 NormalWS)
+    out float3 NormalWS,
+    out float2 SurfaceUV)
 {
     // Primary direction, guarded so a zeroed _WaveDirection still animates.
     float lenSq = dot(Direction, Direction);
@@ -53,6 +54,12 @@ void PaintWave_float(
     // space, matching the world-space fill plane. Amplitude 0 gives (0,1,0).
     float3 gWS = TransformObjectToWorldNormal(float3(g.x, 0.0, g.y), false);
     NormalWS = SafeNormalize(float3(-gWS.x, 1.0, -gWS.z));
+
+    // Planar UV for the liquid surface. Crests sit where dot(p,d1)*k1 + t is
+    // constant, so they travel at -d1/k1; offsetting by +d1*t/k1 makes a texture
+    // sampled here ride exactly with them instead of drifting at some invented
+    // speed. Tiling is applied downstream in the graph.
+    SurfaceUV = p + d1 * (t / max(k1, 1e-4));
 }
 
 void PaintWave_half(
@@ -64,13 +71,17 @@ void PaintWave_half(
     half Fill,
     half Time,
     out half Height,
-    out half3 NormalWS)
+    out half3 NormalWS,
+    out half2 SurfaceUV)
 {
     float height;
     float3 normalWS;
-    PaintWave_float(PositionOS, Direction, Speed, Frequency, Amplitude, Fill, Time, height, normalWS);
+    float2 surfaceUV;
+    PaintWave_float(PositionOS, Direction, Speed, Frequency, Amplitude, Fill, Time,
+                    height, normalWS, surfaceUV);
     Height = height;
     NormalWS = normalWS;
+    SurfaceUV = surfaceUV;
 }
 
 #endif // PAINTWAVE_INCLUDED
