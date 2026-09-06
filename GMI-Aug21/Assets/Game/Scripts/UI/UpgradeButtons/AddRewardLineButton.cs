@@ -46,6 +46,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             LevelManager.Instance.AddRewardLine();
             LevelManager.Instance.IncreaseRewardLineLevel();
+            UIParticleActions.PlayLineAdded();
 
             EventManager<RewardLineAddedEvent>.TriggerEvent();
 

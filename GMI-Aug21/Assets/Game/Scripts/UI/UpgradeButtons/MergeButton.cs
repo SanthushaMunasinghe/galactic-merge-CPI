@@ -99,6 +99,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             LevelManager.Instance.MergeSpaceship();
             LevelManager.Instance.IncreaseMergeSpaceshipLevel();
+            UIParticleActions.PlayMerge();
 
             if (m_IsFreeMergeActive)
                 m_IsFreeMergeActive = false;

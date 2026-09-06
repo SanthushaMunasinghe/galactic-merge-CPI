@@ -58,6 +58,7 @@ namespace Oxtail.SpaceshipIncremental
 
             LevelManager.Instance.AddDefaultSpaceship();
             LevelManager.Instance.IncreaseAddSpaceshipLevel();
+            UIParticleActions.PlayShipAdded();
 
             base.UpgradePressed();
         }

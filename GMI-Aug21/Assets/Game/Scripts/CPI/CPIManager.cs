@@ -144,6 +144,11 @@ namespace Oxtail.SpaceshipIncremental
         {
             PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
             ApplyPlanetHealthFill();
+
+            if (delta > 0f)
+                UIParticleActions.PlayHpGained(delta);
+            else if (delta < 0f)
+                UIParticleActions.PlayHpLost(-delta);
         }
 
         private void ApplyPlanetHealthFill()
