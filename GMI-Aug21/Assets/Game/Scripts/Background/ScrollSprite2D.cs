@@ -33,12 +33,14 @@ namespace Oxtail.SpaceshipIncremental
         private Vector2 m_TileSize;
         private Vector2 m_Offset;
         private Vector2 m_Anchor;
+        private float m_AnchorZ;
 
         private void Start()
         {
             SpriteRenderer sr = GetComponent<SpriteRenderer>();
             m_TileSize = new Vector2(sr.bounds.size.x, sr.bounds.size.y);
             m_Anchor = transform.position;
+            m_AnchorZ = transform.position.z;
 
             Camera cam = Camera.main;
             m_Camera = cam != null ? cam.transform : null;
@@ -55,7 +57,7 @@ namespace Oxtail.SpaceshipIncremental
             GameObject container = new GameObject(name + "_container");
             m_Container = container.transform;
             m_Container.SetParent(transform.parent, false);
-            m_Container.position = m_Anchor;
+            m_Container.position = new Vector3(m_Anchor.x, m_Anchor.y, m_AnchorZ);
 
             for (int x = 0; x < tilesX; x++)
             {
@@ -85,7 +87,7 @@ namespace Oxtail.SpaceshipIncremental
                     tile.position = new Vector3(
                         m_Anchor.x + (x - centerX) * m_TileSize.x,
                         m_Anchor.y + (y - centerY) * m_TileSize.y,
-                        tile.position.z);
+                        m_AnchorZ);
                 }
             }
             Reposition(); // avoid a one-frame gap before the first Update
@@ -93,20 +95,24 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Update()
         {
-            m_Offset += m_Speed * Time.deltaTime;
+            // Wrap the offset every frame (instead of letting it grow forever) so float precision
+            // never degrades: over a long idle session an ever-growing m_Offset eventually loses
+            // enough precision that the scroll visibly stutters or appears to stop looping.
+            Vector2 delta = m_Speed * Time.deltaTime;
+            m_Offset.x = Mathf.Repeat(m_Offset.x + delta.x, m_TileSize.x);
+            m_Offset.y = Mathf.Repeat(m_Offset.y + delta.y, m_TileSize.y);
             Reposition();
         }
 
         private void Reposition()
         {
-            float ox = Mathf.Repeat(m_Offset.x, m_TileSize.x);
-            float oy = Mathf.Repeat(m_Offset.y, m_TileSize.y);
-
             Vector2 center = m_Anchor;
             if (m_FollowCamera && m_Camera != null)
                 center = m_Camera.position;
 
-            m_Container.position = new Vector3(center.x - ox, center.y - oy, m_Container.position.z);
+            // Z is always the sprite's original depth, never the camera's or the container's own
+            // (potentially already-clobbered) z, so the initial layering/depth is never lost.
+            m_Container.position = new Vector3(center.x - m_Offset.x, center.y - m_Offset.y, m_AnchorZ);
         }
 
         private void OnDestroy()

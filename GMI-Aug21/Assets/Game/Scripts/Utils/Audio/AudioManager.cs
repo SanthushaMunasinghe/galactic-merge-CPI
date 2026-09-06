@@ -116,6 +116,16 @@ namespace Oxtail.Utils
             m_MusicSource.Play();
         }
 
+        public void SetMusicPitch(float pitch)
+        {
+            m_MusicSource.pitch = pitch;
+        }
+
+        public float GetMusicPitch()
+        {
+            return m_MusicSource.pitch;
+        }
+
         public void PauseMusic()
         {
             m_MusicSource.Pause();

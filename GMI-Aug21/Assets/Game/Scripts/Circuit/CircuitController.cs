@@ -56,11 +56,11 @@ namespace Oxtail.SpaceshipIncremental
                 m_CircuitVibration.Kill();
         }
 
-        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f)
+        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, bool negateDirection = false)
         {
             foreach (var spaceshipParent in m_SpaceshipParents)
             {
-                Vector3[] path = GetPathPoints(spaceshipParent);
+                Vector3[] path = GetPathPoints(spaceshipParent, negateDirection);
                 spaceshipParent.SetPath(path, m_PathType, alignWithPathLocal, rotationOffsetDegrees);
             }
         }
@@ -115,15 +115,16 @@ namespace Oxtail.SpaceshipIncremental
             UpdateCoinsPerSecond();
         }
 
-        private Vector3[] GetPathPoints(SpaceshipParent parent)
+        private Vector3[] GetPathPoints(SpaceshipParent parent, bool negateDirection = false)
         {
             List<Vector3> pathPoints = new();
 
-            int closestIndex = m_Path.ToList().IndexOf(parent.InitialWaypoint) + 1;
+            int startIndex = m_Path.ToList().IndexOf(parent.InitialWaypoint);
+            int direction = negateDirection ? -1 : 1;
 
-            for (int i = 0; i < m_Path.Length; i++)
+            for (int i = 1; i <= m_Path.Length; i++)
             {
-                int index = (closestIndex + i) % m_Path.Length;
+                int index = ((startIndex + i * direction) % m_Path.Length + m_Path.Length) % m_Path.Length;
                 pathPoints.Add(m_Path[index].position);
             }
 

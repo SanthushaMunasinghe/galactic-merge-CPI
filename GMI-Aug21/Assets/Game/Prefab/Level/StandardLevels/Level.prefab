@@ -139296,6 +139296,7 @@ MonoBehaviour:
   m_AdaptiveProbe: 1
   m_MinAcceptableFps: 40
   m_ProbeWindowSeconds: 10
+  m_InfiniteProbeWindow: 0
 --- !u!1 &6135190976118224646
 GameObject:
   m_ObjectHideFlags: 0

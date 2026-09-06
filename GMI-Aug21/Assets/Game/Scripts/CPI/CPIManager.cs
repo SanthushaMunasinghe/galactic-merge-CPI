@@ -48,9 +48,14 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_OverrideFloatingTextGlowColor;
         [SerializeField] private Color m_FloatingTextGlowColor = new Color32(0x15, 0xDB, 0x00, 0x80);
 
+        [Header("CPI Background Music")]
+        [SerializeField] private bool m_OverrideMusicSpeed;
+        [SerializeField, Min(0.01f)] private float m_MusicSpeedMultiplier = 1f;
+
         [Header("CPI Spaceship Rotation")]
         [SerializeField] private bool m_AlignSpaceshipRotationWithPath;
         [SerializeField] private float m_SpaceshipRotationOffsetDegrees;
+        [SerializeField] private bool m_NegateSpaceshipPathDirection;
 
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
@@ -160,6 +165,11 @@ namespace Oxtail.SpaceshipIncremental
 
             CreateInitialRewardLines();
 
+            AudioManager.Instance.PlayMusic(m_BackgroundMusic);
+
+            if (m_OverrideMusicSpeed)
+                AudioManager.Instance.SetMusicPitch(m_MusicSpeedMultiplier);
+
             CanSpawnSpaceship.Value = m_CurrentCircuit.FreeSpaceShipParents;
             CanChangeCircuit.Value = true;
             CanMerge.Value = false;
@@ -219,7 +229,7 @@ namespace Oxtail.SpaceshipIncremental
             m_CircuitIndex = 0;
             m_Circuit.gameObject.SetActive(true);
             m_CurrentCircuit = m_Circuit;
-            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees);
+            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection);
 
             if (m_OverrideRewardLineAppearance)
                 m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);

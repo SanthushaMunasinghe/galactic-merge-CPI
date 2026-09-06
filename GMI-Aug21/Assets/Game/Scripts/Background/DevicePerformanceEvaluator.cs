@@ -35,6 +35,7 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_AdaptiveProbe = true;
         [SerializeField, Range(15f, 60f)] private float m_MinAcceptableFps = 40f;
         [SerializeField] private float m_ProbeWindowSeconds = 3f;
+        [SerializeField] private bool m_InfiniteProbeWindow;
 
         private float m_AccumulatedTime;
         private int m_AccumulatedFrames;
@@ -65,7 +66,7 @@ namespace Oxtail.SpaceshipIncremental
             m_AccumulatedTime += Time.unscaledDeltaTime;
             m_AccumulatedFrames++;
 
-            if (m_AccumulatedTime >= m_ProbeWindowSeconds)
+            if (!m_InfiniteProbeWindow && m_AccumulatedTime >= m_ProbeWindowSeconds)
             {
                 float fps = m_AccumulatedFrames / m_AccumulatedTime;
                 m_AccumulatedTime = 0f;
