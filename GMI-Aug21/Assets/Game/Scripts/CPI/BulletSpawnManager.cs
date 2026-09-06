@@ -6,9 +6,11 @@ namespace Oxtail.SpaceshipIncremental
     /// <summary>
     /// Listens for SpaceshipHitRewardLineEvent and, if any untargeted asteroid is currently active,
     /// hasn't already reached the center, and is outside the Dead Zone Radius, spawns a bullet at the
-    /// reward line's position that flies straight toward the closest one at a constant Speed and locks
-    /// it (IsTargeted) so no other bullet aims at it too. If no valid target exists, nothing is
-    /// spawned.
+    /// reward line's position that flies a curved path (bulging along this transform's local -Z axis)
+    /// toward the closest one at a constant Speed and locks it (IsTargeted) so no other bullet aims at
+    /// it too. The curve's height scales with spawn-to-target distance (Curve Height Per Distance),
+    /// capped at Max Curve Height — there is no minimum, so a close enough target gets a straight line
+    /// (curve height 0). If no valid target exists, nothing is spawned.
     /// </summary>
     public class BulletSpawnManager : MonoBehaviour
     {
@@ -18,6 +20,8 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Flight Settings")]
         [SerializeField] private float m_Speed = 8f;
         [SerializeField, Min(0f)] private float m_DriftLifetime = 10f;
+        [SerializeField, Min(0f)] private float m_MaxCurveHeight = 4f;
+        [SerializeField, Min(0f)] private float m_CurveHeightPerDistance = 0.2f;
 
         [Header("Targeting")]
         [SerializeField, Min(0f)] private float m_DeadZoneRadius = 2f;
@@ -49,8 +53,11 @@ namespace Oxtail.SpaceshipIncremental
 
             target.IsTargeted = true;
 
+            float distanceToTarget = Vector3.Distance(evt.Line.transform.position, target.transform.position);
+            float curveHeight = Mathf.Min(distanceToTarget * m_CurveHeightPerDistance, m_MaxCurveHeight);
+
             BulletProjectile bullet = Instantiate(m_BulletPrefab, evt.Line.transform.position, Quaternion.identity, transform);
-            bullet.Initialize(target, m_Speed, m_DriftLifetime);
+            bullet.Initialize(target, m_Speed, m_DriftLifetime, curveHeight);
         }
 
         private AsteroidProjectile FindClosestAsteroid(Vector3 fromPosition)

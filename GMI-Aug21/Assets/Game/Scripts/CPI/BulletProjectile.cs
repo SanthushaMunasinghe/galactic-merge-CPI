@@ -9,15 +9,17 @@ namespace Oxtail.SpaceshipIncremental
     }
 
     /// <summary>
-    /// Flies straight toward its target's current position at a constant speed via
+    /// Flies a curved path toward its target's current position at a constant speed via
     /// Rigidbody.MovePosition every FixedUpdate, so it still converges onto the target even if the
-    /// target keeps moving. If the target is destroyed before being hit, the bullet keeps flying
-    /// along its last heading instead of vanishing, self-destructing after Drift Lifetime seconds if
-    /// it hits nothing else first. On a trigger hit matching the asteroid layer, destroys both itself
-    /// and whatever asteroid it actually hit; if that wasn't its assigned target, the assigned
-    /// target's IsTargeted flag is released so it can be targeted again. Requires a trigger Collider
-    /// and a kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for a script-moved
-    /// object.
+    /// target keeps moving. The curve bulges along the spawner's local -Z axis by Curve Height,
+    /// following a sine curve over distance traveled that fades to zero by the time it has covered
+    /// its initial spawn-to-target distance, so it still converges exactly onto the target. If the
+    /// target is destroyed before being hit, the bullet keeps flying straight along its last heading
+    /// instead of vanishing, self-destructing after Drift Lifetime seconds if it hits nothing else
+    /// first. On a trigger hit matching the asteroid layer, destroys both itself and whatever asteroid
+    /// it actually hit; if that wasn't its assigned target, the assigned target's IsTargeted flag is
+    /// released so it can be targeted again. Requires a trigger Collider and a kinematic Rigidbody on
+    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class BulletProjectile : MonoBehaviour
@@ -32,18 +34,27 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_IsDrifting;
         private Vector3 m_DriftDirection;
         private float m_DriftElapsed;
+        private float m_CurveHeight;
+        private Vector3 m_CurveAxisWorld;
+        private float m_InitialDistance;
+        private float m_DistanceTraveled;
 
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
         }
 
-        public void Initialize(AsteroidProjectile target, float speed, float driftLifetime)
+        public void Initialize(AsteroidProjectile target, float speed, float driftLifetime, float curveHeight)
         {
             m_Target = target;
             m_Speed = speed;
             m_DriftLifetime = driftLifetime;
             m_LastTargetPosition = target.transform.position;
+
+            m_CurveHeight = curveHeight;
+            m_CurveAxisWorld = transform.parent != null ? -transform.parent.forward : Vector3.back;
+            m_InitialDistance = Vector3.Distance(transform.position, target.transform.position);
+            m_DistanceTraveled = 0f;
         }
 
         private void FixedUpdate()
@@ -55,7 +66,13 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             m_LastTargetPosition = m_Target.transform.position;
-            Vector3 newPos = Vector3.MoveTowards(m_Rigidbody.position, m_Target.transform.position, m_Speed * Time.fixedDeltaTime);
+
+            m_DistanceTraveled += m_Speed * Time.fixedDeltaTime;
+            float t = m_InitialDistance > 0f ? Mathf.Clamp01(m_DistanceTraveled / m_InitialDistance) : 1f;
+            float curveOffset = m_CurveHeight * Mathf.Sin(t * Mathf.PI);
+
+            Vector3 aimPoint = m_Target.transform.position + (m_CurveAxisWorld * curveOffset);
+            Vector3 newPos = Vector3.MoveTowards(m_Rigidbody.position, aimPoint, m_Speed * Time.fixedDeltaTime);
             m_Rigidbody.MovePosition(newPos);
         }
 
