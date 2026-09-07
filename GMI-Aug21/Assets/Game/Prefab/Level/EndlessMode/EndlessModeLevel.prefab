@@ -7709,6 +7709,7 @@ MonoBehaviour:
   m_CoinSound: {fileID: 8300000, guid: 3d173346f7c373c4d974dc1668be721e, type: 3}
   m_EngineSound: {fileID: 8300000, guid: 4109124cd8ae8a14bbc72f5fa0b038c1, type: 3}
   m_SpeedSound: {fileID: 8300000, guid: 8e1c330e458a07a4998befccea048936, type: 3}
+  RewardLinesActive: 1
 --- !u!114 &2573149816276217937 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4186979586500962515, guid: 8188f388721c1564081fd120d366993a, type: 3}

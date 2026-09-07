@@ -2170,6 +2170,7 @@ MonoBehaviour:
   m_CoinSound: {fileID: 8300000, guid: 3d173346f7c373c4d974dc1668be721e, type: 3}
   m_EngineSound: {fileID: 8300000, guid: 4109124cd8ae8a14bbc72f5fa0b038c1, type: 3}
   m_SpeedSound: {fileID: 8300000, guid: 8e1c330e458a07a4998befccea048936, type: 3}
+  RewardLinesActive: 1
   m_Targets:
   - {fileID: 3371279047232016089}
   - {fileID: 8092757660375110787}

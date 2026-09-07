@@ -112,7 +112,7 @@ namespace Oxtail.SpaceshipIncremental
 
                 EventManager<AsteroidDestroyedByBulletEvent>.TriggerEvent(new AsteroidDestroyedByBulletEvent { Asteroid = hitAsteroid });
 
-                Destroy(hitAsteroid.gameObject);
+                hitAsteroid.DestroyWithEffect();
             }
 
             Destroy(gameObject);

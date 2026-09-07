@@ -16,8 +16,9 @@ namespace Oxtail.SpaceshipIncremental
     /// using DOTween at jumpSpeed, then homes toward the shared local center (local origin of its
     /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Destroyable throughout
     /// by a trigger hit on the planet layer. Requires a trigger Collider and a kinematic Rigidbody on
-    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object. Destruction VFX will
-    /// be hooked into HandlePlanetHit later.
+    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object. On destruction (via
+    /// DestroyWithEffect), it immediately stops moving/colliding, hides Active Visual, and scatters
+    /// Debris Parent's children outward while shrinking them before the GameObject is destroyed.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class AsteroidProjectile : MonoBehaviour
@@ -32,11 +33,19 @@ namespace Oxtail.SpaceshipIncremental
 
         [SerializeField] private LayerMask m_PlanetLayerMask;
 
+        [Header("Destruction Debris")]
+        [SerializeField] private GameObject m_ActiveVisual;
+        [SerializeField] private Transform m_DebrisParent;
+        [SerializeField, Min(0f)] private float m_DebrisMaxDistance = 2f;
+        [SerializeField, Min(0f)] private float m_DebrisDuration = 1f;
+
         private Rigidbody m_Rigidbody;
+        private Collider m_Collider;
         private AsteroidState m_State = AsteroidState.Sliding;
         private float m_CenteringSpeed;
         private Action m_OnJumpComplete;
         private bool m_NotifiedJumpComplete;
+        private bool m_IsDestroyed;
 
         /// <summary>True once this asteroid has arrived at the shared local center.</summary>
         public bool HasReachedCenter { get; private set; }
@@ -47,6 +56,7 @@ namespace Oxtail.SpaceshipIncremental
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
+            m_Collider = GetComponent<Collider>();
         }
 
         public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)
@@ -81,6 +91,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void FixedUpdate()
         {
+            if (m_IsDestroyed)
+                return;
+
             if (m_State != AsteroidState.Homing)
                 return;
 
@@ -94,6 +107,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnTriggerEnter(Collider other)
         {
+            if (m_IsDestroyed)
+                return;
+
             if ((m_PlanetLayerMask.value & (1 << other.gameObject.layer)) == 0)
                 return;
 
@@ -108,8 +124,54 @@ namespace Oxtail.SpaceshipIncremental
 
             EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(new AsteroidDestroyedByPlanetEvent { Asteroid = this });
 
-            // TODO: hook in destruction VFX here.
-            Destroy(gameObject);
+            DestroyWithEffect();
+        }
+
+        /// <summary>
+        /// Immediately makes this asteroid stop moving and colliding (logically destroyed), then plays
+        /// the debris scatter/shrink effect before destroying the GameObject after Debris Duration.
+        /// Safe to call more than once.
+        /// </summary>
+        public void DestroyWithEffect()
+        {
+            if (m_IsDestroyed)
+                return;
+
+            m_IsDestroyed = true;
+
+            transform.DOKill();
+
+            if (m_Collider != null)
+                m_Collider.enabled = false;
+
+            // Not deferred to OnDestroy: the spawner's wave gate must not wait through the debris
+            // animation of an asteroid that died mid-slide.
+            NotifyJumpComplete();
+
+            if (m_ActiveVisual != null)
+                m_ActiveVisual.SetActive(false);
+
+            PlayDebrisEffect();
+
+            Destroy(gameObject, m_DebrisDuration);
+        }
+
+        private void PlayDebrisEffect()
+        {
+            if (m_DebrisParent == null)
+                return;
+
+            m_DebrisParent.gameObject.SetActive(true);
+
+            foreach (Transform debris in m_DebrisParent)
+            {
+                Vector3 direction = debris.localPosition.sqrMagnitude > 0.0001f
+                    ? debris.localPosition.normalized
+                    : UnityEngine.Random.onUnitSphere;
+
+                debris.DOLocalMove(direction * m_DebrisMaxDistance, m_DebrisDuration).SetEase(Ease.OutQuad);
+                debris.DOScale(0f, m_DebrisDuration).SetEase(Ease.InQuad);
+            }
         }
 
         private void NotifyJumpComplete()

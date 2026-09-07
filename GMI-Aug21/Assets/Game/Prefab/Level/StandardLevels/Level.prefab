@@ -15347,6 +15347,7 @@ MonoBehaviour:
   m_CoinSound: {fileID: 8300000, guid: 3d173346f7c373c4d974dc1668be721e, type: 3}
   m_EngineSound: {fileID: 8300000, guid: 4109124cd8ae8a14bbc72f5fa0b038c1, type: 3}
   m_SpeedSound: {fileID: 8300000, guid: 8e1c330e458a07a4998befccea048936, type: 3}
+  RewardLinesActive: 1
 --- !u!1 &1012249507309728268
 GameObject:
   m_ObjectHideFlags: 0

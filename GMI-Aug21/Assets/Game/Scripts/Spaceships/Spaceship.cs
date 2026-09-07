@@ -310,6 +310,9 @@ namespace Oxtail.SpaceshipIncremental
             if (!collision.CompareTag(m_MoneyLineTag))
                 return;
 
+            if (!LevelManager.Instance.RewardLinesActive)
+                return;
+
             RewardLine line = collision.GetComponent<RewardLine>();
             line.DoAction();
 

@@ -170,6 +170,8 @@ namespace Oxtail.SpaceshipIncremental
         public ReactiveProperty<bool> CanSpawnSpaceship = new();
         public ReactiveProperty<bool> CanChangeCircuit = new(true);
 
+        public bool RewardLinesActive = true;
+
         public int LevelIndex => m_LevelIndex;
         public int RewardLinesCount { get; protected set; }
         public int LevelProgressionStepIndex { get; protected set; }

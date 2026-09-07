@@ -17,6 +17,11 @@ namespace Oxtail.SpaceshipIncremental
     [DefaultExecutionOrder(-100)]
     public class CPIManager : LevelManager
     {
+        public struct CPIWaveStateChangedEvent
+        {
+            public bool IsWaveActive;
+        }
+
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
 
@@ -65,8 +70,10 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private GameObject m_UpgradeButtonsRoot;
         [SerializeField] private GameObject[] m_ActivateOnStart;
         [SerializeField] private GameObject[] m_DeactivateOnStart;
+        [SerializeField] private GameObject m_HandPointer;
 
         private int m_FloorTier = 1;
+        private bool m_IsWaveActive;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -96,6 +103,10 @@ namespace Oxtail.SpaceshipIncremental
             m_MaxSpaceShipTierCreated = m_StartArrowTier;
 
             Money.Value = m_StartMoney;
+            RewardLinesActive = false;
+
+            if (m_HandPointer != null)
+                m_HandPointer.SetActive(true);
 
             if (m_PlanetHealthRenderer != null)
                 m_PlanetHealthRenderer.material = new Material(m_PlanetHealthRenderer.material);
@@ -109,6 +120,8 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<AsteroidDestroyedByBulletEvent>.AddListener(OnAsteroidDestroyedByBullet);
             EventManager<AsteroidDestroyedByPlanetEvent>.AddListener(OnAsteroidDestroyedByPlanet);
             EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
+
+            m_AsteroidSpawnManager.OnWaveCleared += OnWaveCleared;
         }
 
         private void OnDisable()
@@ -117,12 +130,36 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<AsteroidDestroyedByBulletEvent>.RemoveListener(OnAsteroidDestroyedByBullet);
             EventManager<AsteroidDestroyedByPlanetEvent>.RemoveListener(OnAsteroidDestroyedByPlanet);
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
+
+            m_AsteroidSpawnManager.OnWaveCleared -= OnWaveCleared;
         }
 
         private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
         {
-            if (shortcutEvent.Key == KeyCode.S)
+            // S only ever starts a wave from inter-wave state; while a wave is active it's
+            // ignored, so a wave can never be triggered on top of another. Returning to inter-wave
+            // state happens automatically once the wave's asteroids are all destroyed (OnWaveCleared).
+            if (shortcutEvent.Key == KeyCode.S && !m_IsWaveActive)
+                SetWaveState(true);
+        }
+
+        private void OnWaveCleared()
+        {
+            SetWaveState(false);
+        }
+
+        private void SetWaveState(bool active)
+        {
+            m_IsWaveActive = active;
+            RewardLinesActive = active;
+
+            if (m_HandPointer != null)
+                m_HandPointer.SetActive(!active);
+
+            if (active)
                 m_AsteroidSpawnManager.TriggerWave();
+
+            EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
         }
 
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
