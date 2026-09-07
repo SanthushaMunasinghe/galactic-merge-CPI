@@ -54,6 +54,7 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Color m_FloatingTextGlowColor = new Color32(0x15, 0xDB, 0x00, 0x80);
 
         [Header("CPI Background Music")]
+        [SerializeField] private bool m_EnableBackgroundMusic = true;
         [SerializeField] private bool m_OverrideMusicSpeed;
         [SerializeField, Min(0.01f)] private float m_MusicSpeedMultiplier = 1f;
 
@@ -212,10 +213,19 @@ namespace Oxtail.SpaceshipIncremental
 
             CreateInitialRewardLines();
 
-            AudioManager.Instance.PlayMusic(m_BackgroundMusic);
+            if (m_EnableBackgroundMusic)
+            {
+                AudioManager.Instance.PlayMusic(m_BackgroundMusic);
 
-            if (m_OverrideMusicSpeed)
-                AudioManager.Instance.SetMusicPitch(m_MusicSpeedMultiplier);
+                if (m_OverrideMusicSpeed)
+                    AudioManager.Instance.SetMusicPitch(m_MusicSpeedMultiplier);
+            }
+            else
+            {
+                // Explicit stop, not just skipping PlayMusic: AudioManager is a DontDestroyOnLoad
+                // singleton, so a track left over from a previous scene would otherwise keep playing.
+                AudioManager.Instance.StopMusic();
+            }
 
             CanSpawnSpaceship.Value = m_CurrentCircuit.FreeSpaceShipParents;
             CanChangeCircuit.Value = true;
