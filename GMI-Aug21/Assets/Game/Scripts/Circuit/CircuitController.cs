@@ -221,6 +221,29 @@ namespace Oxtail.SpaceshipIncremental
             return parents[Random.Range(0, parents.Count)];
         }
 
+        /// <summary>
+        /// First free slot in authored order (matching the sibling order GetComponentsInChildren
+        /// returned in OnEnable, i.e. each SpaceshipParent's position around the track), rather than
+        /// a random one. Used by CPIManager to queue the initial batch of ships one behind another.
+        /// </summary>
+        public SpaceshipParent GetNextFreeSpaceshipParentInOrder()
+        {
+            return m_SpaceshipParents.FirstOrDefault(parent => parent.IsFree);
+        }
+
+        /// <summary>
+        /// Overrides the resting speed multiplier of every SpaceshipParent on this circuit, occupied
+        /// or not, so a ship added later inherits it too. Used by CPIManager for local testing;
+        /// normal gameplay never calls this.
+        /// </summary>
+        public void SetSpeedMultiplier(float multiplier)
+        {
+            foreach (var parent in m_SpaceshipParents)
+            {
+                parent.SetSpeedMultiplier(multiplier);
+            }
+        }
+
         public void UpdateCoinsPerSecond()
         {
             float coinsPerSecond = 0;

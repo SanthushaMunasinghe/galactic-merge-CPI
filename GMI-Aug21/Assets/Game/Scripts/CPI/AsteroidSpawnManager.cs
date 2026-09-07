@@ -15,6 +15,13 @@ namespace Oxtail.SpaceshipIncremental
     /// externally via TriggerWave (or the "Trigger Wave" context menu item while testing); a call
     /// while a wave is already in progress (including asteroids still mid-jump) is ignored. The
     /// spawn/jump oval gizmo only draws outside Play Mode.
+    ///
+    /// If Use Manual Wave Spawn Points is on, TriggerWave instead spawns one asteroid per not-yet-used
+    /// child of the corresponding entry in Manual Wave Spawn Point Parents (same one-at-a-time timing/
+    /// gating as the random path) rather than picking random positions; each point spawns at most once
+    /// ever, even across repeated/overflowing wave triggers. Use the "Generate Manual Wave Spawn
+    /// Points" button (or context menu item) to create a new hand-editable wave (its points start
+    /// arranged on the spawn oval, then can be freely moved/added/deleted in the Scene view).
     /// </summary>
     public class AsteroidSpawnManager : MonoBehaviour
     {
@@ -37,10 +44,17 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private CollectPoint m_CollectPointPrefab;
         [SerializeField] private float m_CollectPointSpeed = 5f;
 
+        [Header("Manual Wave Spawn Points")]
+        [SerializeField] private bool m_UseManualWaveSpawnPoints;
+        [SerializeField] private GameObject m_SpawnPointPrefab;
+        [SerializeField, Min(1)] private int m_SpawnPointCount = 5;
+        [SerializeField] private List<Transform> m_ManualWaveSpawnPointParents = new List<Transform>();
+
         private int m_CurrentWaveIndex;
         private bool m_IsWaveInProgress;
         private int m_AsteroidsPendingJump;
         private bool m_WaveSpawningComplete;
+        private readonly HashSet<Transform> m_UsedManualSpawnPoints = new HashSet<Transform>();
 
         /// <summary>Fired once every asteroid from the current wave has spawned and been destroyed.</summary>
         public event Action OnWaveCleared;
@@ -66,6 +80,12 @@ namespace Oxtail.SpaceshipIncremental
                 return;
             }
 
+            if (m_UseManualWaveSpawnPoints)
+            {
+                TriggerManualWave();
+                return;
+            }
+
             if (m_WaveAsteroidCounts == null || m_WaveAsteroidCounts.Count == 0)
             {
                 Debug.LogError($"{nameof(AsteroidSpawnManager)}: no waves configured in Wave Asteroid Counts.", this);
@@ -76,6 +96,38 @@ namespace Oxtail.SpaceshipIncremental
             m_CurrentWaveIndex++;
 
             StartCoroutine(SpawnWaveCO(waveCount));
+        }
+
+        private void TriggerManualWave()
+        {
+            if (m_ManualWaveSpawnPointParents == null || m_ManualWaveSpawnPointParents.Count == 0)
+            {
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: no manual wave spawn points configured.", this);
+                return;
+            }
+
+            Transform waveParent = m_ManualWaveSpawnPointParents[Mathf.Min(m_CurrentWaveIndex, m_ManualWaveSpawnPointParents.Count - 1)];
+            m_CurrentWaveIndex++;
+
+            if (waveParent == null)
+            {
+                // A parent entry can go null if it was deleted in the Hierarchy after being added to
+                // the list. Logging and returning here (rather than letting the foreach below throw)
+                // is what matters: an uncaught exception here would unwind back through
+                // CPIManager.SetWaveState mid-way, leaving m_IsWaveActive stuck true and skipping the
+                // CPIWaveStateChangedEvent that closes UI for the new wave.
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: the selected manual wave spawn point parent is missing.", this);
+                return;
+            }
+
+            List<Transform> spawnPoints = new List<Transform>();
+            foreach (Transform point in waveParent)
+            {
+                if (point != null && !m_UsedManualSpawnPoints.Contains(point))
+                    spawnPoints.Add(point);
+            }
+
+            StartCoroutine(SpawnManualWaveCO(spawnPoints));
         }
 
         private IEnumerator SpawnWaveCO(int count)
@@ -101,6 +153,34 @@ namespace Oxtail.SpaceshipIncremental
             m_IsWaveInProgress = false;
         }
 
+        private IEnumerator SpawnManualWaveCO(List<Transform> spawnPoints)
+        {
+            m_IsWaveInProgress = true;
+            m_WaveSpawningComplete = false;
+
+            for (int i = 0; i < spawnPoints.Count; i++)
+            {
+                Transform point = spawnPoints[i];
+                if (point != null)
+                {
+                    // Marked used at the moment it actually spawns (not when queued), so it never
+                    // spawns again on a later wave trigger, while still leaving the interval below.
+                    m_UsedManualSpawnPoints.Add(point);
+                    SpawnAsteroidAt(point.position);
+                }
+
+                float interval = UnityEngine.Random.Range(m_SpawnIntervalRange.x, m_SpawnIntervalRange.y);
+                yield return new WaitForSeconds(interval);
+            }
+
+            m_WaveSpawningComplete = true;
+            CheckWaveCleared();
+
+            yield return new WaitUntil(() => m_AsteroidsPendingJump <= 0);
+
+            m_IsWaveInProgress = false;
+        }
+
         private void SpawnAsteroid()
         {
             if (m_AsteroidPrefab == null)
@@ -111,6 +191,26 @@ namespace Oxtail.SpaceshipIncremental
 
             float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnLocalPos = new Vector3(Mathf.Cos(angle) * m_SpawnRadius, Mathf.Sin(angle) * m_SpawnRadius * m_OvalHeightMultiplier, 0f);
+
+            SpawnAsteroidAtLocal(spawnLocalPos, angle);
+        }
+
+        private void SpawnAsteroidAt(Vector3 worldPosition)
+        {
+            if (m_AsteroidPrefab == null)
+            {
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: Asteroid Prefab must be assigned.", this);
+                return;
+            }
+
+            Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+            float angle = Mathf.Atan2(localPos.y / m_OvalHeightMultiplier, localPos.x);
+
+            SpawnAsteroidAtLocal(localPos, angle);
+        }
+
+        private void SpawnAsteroidAtLocal(Vector3 spawnLocalPos, float angle)
+        {
             Vector3 jumpLocalPos = new Vector3(Mathf.Cos(angle) * m_JumpRadius, Mathf.Sin(angle) * m_JumpRadius * m_OvalHeightMultiplier, m_JumpHeightOffset);
 
             AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
@@ -119,6 +219,43 @@ namespace Oxtail.SpaceshipIncremental
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
             float centeringSpeed = UnityEngine.Random.Range(m_CenteringSpeedRange.x, m_CenteringSpeedRange.y);
             asteroid.Initialize(jumpLocalPos, jumpSpeed, centeringSpeed, OnAsteroidJumpComplete);
+        }
+
+        [ContextMenu("Generate Manual Wave Spawn Points")]
+        public void GenerateManualWaveSpawnPoints()
+        {
+            if (m_SpawnPointPrefab == null)
+            {
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: Spawn Point Prefab must be assigned.", this);
+                return;
+            }
+
+            GameObject waveParentObject = new GameObject($"ManualWave{m_ManualWaveSpawnPointParents.Count}");
+            waveParentObject.transform.SetParent(transform, false);
+
+#if UNITY_EDITOR
+            UnityEditor.Undo.RegisterCreatedObjectUndo(waveParentObject, "Generate Manual Wave Spawn Points");
+#endif
+
+            for (int i = 0; i < m_SpawnPointCount; i++)
+            {
+                float angle = i * (Mathf.PI * 2f / m_SpawnPointCount);
+                Vector3 localPos = new Vector3(Mathf.Cos(angle) * m_SpawnRadius, Mathf.Sin(angle) * m_SpawnRadius * m_OvalHeightMultiplier, 0f);
+
+#if UNITY_EDITOR
+                GameObject point = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(m_SpawnPointPrefab, waveParentObject.transform);
+                UnityEditor.Undo.RegisterCreatedObjectUndo(point, "Generate Manual Wave Spawn Points");
+#else
+                GameObject point = Instantiate(m_SpawnPointPrefab, waveParentObject.transform);
+#endif
+                point.transform.localPosition = localPos;
+            }
+
+            m_ManualWaveSpawnPointParents.Add(waveParentObject.transform);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
 
         private void OnAsteroidJumpComplete()

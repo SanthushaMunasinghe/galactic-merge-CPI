@@ -62,6 +62,10 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private float m_SpaceshipRotationOffsetDegrees;
         [SerializeField] private bool m_NegateSpaceshipPathDirection;
 
+        [Header("CPI Spaceship Speed")]
+        [SerializeField] private bool m_OverrideSpaceshipSpeed;
+        [SerializeField, Min(0.01f)] private float m_SpaceshipSpeedMultiplier = 1f;
+
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
         [SerializeField] private bool m_ScaleSpawnTier = true;
@@ -74,6 +78,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private int m_FloorTier = 1;
         private bool m_IsWaveActive;
+        private bool m_SpawningInitialShips;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -273,6 +278,9 @@ namespace Oxtail.SpaceshipIncremental
             m_CurrentCircuit = m_Circuit;
             m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection);
 
+            if (m_OverrideSpaceshipSpeed)
+                m_CurrentCircuit.SetSpeedMultiplier(m_SpaceshipSpeedMultiplier);
+
             if (m_OverrideRewardLineAppearance)
                 m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);
 
@@ -334,12 +342,31 @@ namespace Oxtail.SpaceshipIncremental
         {
             yield return new WaitForSeconds(m_StartArrowsDelay);
 
+            m_SpawningInitialShips = true;
             for (int i = 0; i < m_StartArrowCount; i++)
             {
                 AddDefaultSpaceship();
             }
+            m_SpawningInitialShips = false;
 
             CheckCanMerge();
+        }
+
+        /// <summary>
+        /// While the initial batch is spawning, fill slots in authored order ("one behind another")
+        /// instead of at random, so the starting ships queue up cleanly for recording. Anything added
+        /// afterward (e.g. via the Add Spaceship button) falls back to the normal random placement.
+        /// </summary>
+        protected override SpaceshipParent SelectSpaceshipParentForSpawn()
+        {
+            if (m_SpawningInitialShips)
+            {
+                var parent = m_CurrentCircuit.GetNextFreeSpaceshipParentInOrder();
+                if (parent != null)
+                    return parent;
+            }
+
+            return base.SelectSpaceshipParentForSpawn();
         }
 
         #region Circuit

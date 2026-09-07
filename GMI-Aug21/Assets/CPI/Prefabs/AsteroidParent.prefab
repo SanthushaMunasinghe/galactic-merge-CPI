@@ -51,6 +51,7 @@ MonoBehaviour:
   m_PlanetLayerMask:
     serializedVersion: 2
     m_Bits: 2048
+  m_RotationSpeed: 90
   m_ActiveVisual: {fileID: 1553732652362670218}
   m_DebrisParent: {fileID: 1378379652980187882}
   m_DebrisMaxDistance: 1
@@ -298,7 +299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1378379652980187882
 Transform:
   m_ObjectHideFlags: 0

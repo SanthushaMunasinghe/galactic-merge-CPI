@@ -14,11 +14,14 @@ namespace Oxtail.SpaceshipIncremental
     /// <summary>
     /// Slides from its spawn point to a jump-radius point in a straight line (same local X/Y plane)
     /// using DOTween at jumpSpeed, then homes toward the shared local center (local origin of its
-    /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Destroyable throughout
-    /// by a trigger hit on the planet layer. Requires a trigger Collider and a kinematic Rigidbody on
-    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object. On destruction (via
-    /// DestroyWithEffect), it immediately stops moving/colliding, hides Active Visual, and scatters
-    /// Debris Parent's children outward while shrinking them before the GameObject is destroyed.
+    /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Active Visual spins
+    /// continuously around a random per-instance axis at Rotation Speed — this is applied to Active
+    /// Visual rather than this transform so it never interferes with the Sliding/Homing movement.
+    /// Destroyable throughout by a trigger hit on the planet layer. Requires a trigger Collider and a
+    /// kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for a script-moved object.
+    /// On destruction (via DestroyWithEffect), it immediately stops moving/rotating/colliding, hides
+    /// Active Visual, and scatters Debris Parent's children outward while shrinking them before the
+    /// GameObject is destroyed.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class AsteroidProjectile : MonoBehaviour
@@ -33,6 +36,9 @@ namespace Oxtail.SpaceshipIncremental
 
         [SerializeField] private LayerMask m_PlanetLayerMask;
 
+        [Header("Rotation")]
+        [SerializeField] private float m_RotationSpeed = 90f;
+
         [Header("Destruction Debris")]
         [SerializeField] private GameObject m_ActiveVisual;
         [SerializeField] private Transform m_DebrisParent;
@@ -41,6 +47,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private Rigidbody m_Rigidbody;
         private Collider m_Collider;
+        private Vector3 m_RotationAxis;
         private AsteroidState m_State = AsteroidState.Sliding;
         private float m_CenteringSpeed;
         private Action m_OnJumpComplete;
@@ -71,6 +78,18 @@ namespace Oxtail.SpaceshipIncremental
         {
             m_Rigidbody = GetComponent<Rigidbody>();
             m_Collider = GetComponent<Collider>();
+            m_RotationAxis = UnityEngine.Random.onUnitSphere;
+        }
+
+        private void Update()
+        {
+            // Rotates the visible mesh only, never this transform: this GameObject's own transform is
+            // driven by the Sliding tween / Homing Rigidbody.MovePosition, so spinning it directly here
+            // would fight that movement. Active Visual is purely cosmetic and free to spin on its own.
+            if (m_IsDestroyed || m_ActiveVisual == null)
+                return;
+
+            m_ActiveVisual.transform.Rotate(m_RotationAxis, m_RotationSpeed * Time.deltaTime, Space.World);
         }
 
         public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)

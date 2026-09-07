@@ -165,6 +165,19 @@ namespace Oxtail.SpaceshipIncremental
             m_IsInSpeedBoost = false;
         }
 
+        /// <summary>
+        /// Overrides the resting (non-boosted) speed multiplier directly, bypassing the power-up
+        /// derived value CalculateSpeedMultiplier() would otherwise compute. Used by CPIManager for
+        /// local testing. A temporary speed boost in progress still takes priority, matching how
+        /// CalculateSpeedMultiplier already defers to m_IsInSpeedBoost.
+        /// </summary>
+        public void SetSpeedMultiplier(float multiplier)
+        {
+            m_SpeedMultiplier = multiplier;
+            if (!m_IsInSpeedBoost && m_PathTween != null)
+                m_PathTween.timeScale = multiplier;
+        }
+
         private void OnPowerUpUpdated(string powerUpID)
         {
             CalculateSpeedMultiplier();

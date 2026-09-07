@@ -435,12 +435,21 @@ namespace Oxtail.SpaceshipIncremental
         private void AddSpaceshipToCircuit(int tierNumber)
         {
             SpaceshipTier tier = SpaceshipTiers.Instance.GetTier(tierNumber);
-            SpaceshipParent parent = m_CurrentCircuit.GetRandomFreeSpaceshipParent();
+            SpaceshipParent parent = SelectSpaceshipParentForSpawn();
             if (parent == null)
                 return;
 
             Spaceship spaceship = CreateSpaceship(tier, parent);
             DoSpaceshipCreationTransition(spaceship);
+        }
+
+        /// <summary>
+        /// Which free SpaceshipParent a newly created ship is placed into. Defaults to today's
+        /// random placement; CPIManager overrides this to queue its initial batch of ships in order.
+        /// </summary>
+        protected virtual SpaceshipParent SelectSpaceshipParentForSpawn()
+        {
+            return m_CurrentCircuit.GetRandomFreeSpaceshipParent();
         }
 
         protected abstract void SetNewFloorTier();
