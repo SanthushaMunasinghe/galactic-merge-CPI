@@ -9,17 +9,18 @@ namespace Oxtail.SpaceshipIncremental
     }
 
     /// <summary>
-    /// Flies a curved path toward its target's current position at a constant speed via
-    /// Rigidbody.MovePosition every FixedUpdate, so it still converges onto the target even if the
-    /// target keeps moving. The curve bulges along the spawner's local -Z axis by Curve Height,
-    /// following a sine curve over distance traveled that fades to zero by the time it has covered
-    /// its initial spawn-to-target distance, so it still converges exactly onto the target. If the
-    /// target is destroyed before being hit, the bullet keeps flying straight along its last heading
-    /// instead of vanishing, self-destructing after Drift Lifetime seconds if it hits nothing else
-    /// first. On a trigger hit matching the asteroid layer, destroys both itself and whatever asteroid
-    /// it actually hit; if that wasn't its assigned target, the assigned target's IsTargeted flag is
-    /// released so it can be targeted again. Requires a trigger Collider and a kinematic Rigidbody on
-    /// this GameObject so Unity fires OnTriggerEnter for a script-moved object.
+    /// At spawn, predicts where the target will be by the time the bullet arrives (from the target's
+    /// current heading/speed) and builds a single fixed, symmetrical quadratic-Bezier curve from the
+    /// spawn point to that predicted point, bulging along the spawner's local -Z axis by Curve Height.
+    /// It then flies that fixed curve at a constant Speed via Rigidbody.MovePosition every FixedUpdate
+    /// — it never re-aims at the live target, so the curve stays smooth and symmetric even though the
+    /// target keeps moving. If it reaches the end of the curve without hitting anything (a miss, or
+    /// the target was destroyed first), it continues straight along the curve's exit direction and
+    /// self-destructs after Drift Lifetime seconds. On a trigger hit matching the asteroid layer,
+    /// destroys both itself and whatever asteroid it actually hit; if that wasn't its assigned target,
+    /// the assigned target's IsTargeted flag is released so it can be targeted again. Requires a
+    /// trigger Collider and a kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for
+    /// a script-moved object.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class BulletProjectile : MonoBehaviour
@@ -30,14 +31,16 @@ namespace Oxtail.SpaceshipIncremental
         private AsteroidProjectile m_Target;
         private float m_Speed;
         private float m_DriftLifetime;
-        private Vector3 m_LastTargetPosition;
+
+        private Vector3 m_CurveStart;
+        private Vector3 m_CurveControl;
+        private Vector3 m_CurveEnd;
+        private float m_CurveLength;
+        private float m_DistanceTraveled;
+
         private bool m_IsDrifting;
         private Vector3 m_DriftDirection;
         private float m_DriftElapsed;
-        private float m_CurveHeight;
-        private Vector3 m_CurveAxisWorld;
-        private float m_InitialDistance;
-        private float m_DistanceTraveled;
 
         private void Awake()
         {
@@ -49,43 +52,61 @@ namespace Oxtail.SpaceshipIncremental
             m_Target = target;
             m_Speed = speed;
             m_DriftLifetime = driftLifetime;
-            m_LastTargetPosition = target.transform.position;
 
-            m_CurveHeight = curveHeight;
-            m_CurveAxisWorld = transform.parent != null ? -transform.parent.forward : Vector3.back;
-            m_InitialDistance = Vector3.Distance(transform.position, target.transform.position);
+            Vector3 startPos = transform.position;
+            Vector3 predictedPoint = PredictMeetingPoint(startPos, target.transform.position, target.PredictedVelocity, speed);
+            Vector3 curveAxisWorld = transform.parent != null ? -transform.parent.forward : Vector3.back;
+
+            m_CurveStart = startPos;
+            m_CurveEnd = predictedPoint;
+            m_CurveControl = Vector3.Lerp(startPos, predictedPoint, 0.5f) + (curveAxisWorld * curveHeight);
+            m_CurveLength = Vector3.Distance(startPos, predictedPoint);
             m_DistanceTraveled = 0f;
+        }
+
+        /// <summary>Iteratively refines where a constant-velocity target will be when a constant-speed shot fired now would reach it.</summary>
+        private static Vector3 PredictMeetingPoint(Vector3 shooterPos, Vector3 targetPos, Vector3 targetVelocity, float bulletSpeed)
+        {
+            Vector3 predicted = targetPos;
+
+            for (int i = 0; i < 3; i++)
+            {
+                float timeToReach = bulletSpeed > 0f ? Vector3.Distance(shooterPos, predicted) / bulletSpeed : 0f;
+                predicted = targetPos + (targetVelocity * timeToReach);
+            }
+
+            return predicted;
         }
 
         private void FixedUpdate()
         {
-            if (m_Target == null)
+            if (m_IsDrifting)
             {
                 Drift();
                 return;
             }
 
-            m_LastTargetPosition = m_Target.transform.position;
-
             m_DistanceTraveled += m_Speed * Time.fixedDeltaTime;
-            float t = m_InitialDistance > 0f ? Mathf.Clamp01(m_DistanceTraveled / m_InitialDistance) : 1f;
-            float curveOffset = m_CurveHeight * Mathf.Sin(t * Mathf.PI);
+            float t = m_CurveLength > 0f ? Mathf.Clamp01(m_DistanceTraveled / m_CurveLength) : 1f;
 
-            Vector3 aimPoint = m_Target.transform.position + (m_CurveAxisWorld * curveOffset);
-            Vector3 newPos = Vector3.MoveTowards(m_Rigidbody.position, aimPoint, m_Speed * Time.fixedDeltaTime);
-            m_Rigidbody.MovePosition(newPos);
+            Vector3 curvePos = QuadraticBezier(m_CurveStart, m_CurveControl, m_CurveEnd, t);
+            m_Rigidbody.MovePosition(curvePos);
+
+            if (t >= 1f)
+                BeginDrift();
+        }
+
+        private void BeginDrift()
+        {
+            m_IsDrifting = true;
+            m_DriftElapsed = 0f;
+
+            Vector3 tangent = m_CurveEnd - m_CurveControl;
+            m_DriftDirection = tangent.sqrMagnitude > 0.0001f ? tangent.normalized : transform.forward;
         }
 
         private void Drift()
         {
-            if (!m_IsDrifting)
-            {
-                m_IsDrifting = true;
-
-                Vector3 toLastKnown = m_LastTargetPosition - m_Rigidbody.position;
-                m_DriftDirection = toLastKnown.sqrMagnitude > 0.0001f ? toLastKnown.normalized : transform.forward;
-            }
-
             m_DriftElapsed += Time.fixedDeltaTime;
             if (m_DriftElapsed >= m_DriftLifetime)
             {
@@ -94,6 +115,12 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             m_Rigidbody.MovePosition(m_Rigidbody.position + (m_DriftDirection * m_Speed * Time.fixedDeltaTime));
+        }
+
+        private static Vector3 QuadraticBezier(Vector3 a, Vector3 b, Vector3 c, float t)
+        {
+            float u = 1f - t;
+            return (u * u * a) + (2f * u * t * b) + (t * t * c);
         }
 
         private void OnTriggerEnter(Collider other)

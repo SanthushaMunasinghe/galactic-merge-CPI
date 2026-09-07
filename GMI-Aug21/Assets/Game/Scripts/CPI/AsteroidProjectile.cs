@@ -53,6 +53,20 @@ namespace Oxtail.SpaceshipIncremental
         /// <summary>True while a bullet is currently assigned to hit this asteroid.</summary>
         public bool IsTargeted { get; set; }
 
+        /// <summary>
+        /// Approximate current heading and speed (toward the shared local center, at centering
+        /// speed), used by bullets to predict where this asteroid will be when they arrive.
+        /// </summary>
+        public Vector3 PredictedVelocity
+        {
+            get
+            {
+                Vector3 centerWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+                Vector3 toCenter = centerWorldPos - transform.position;
+                return toCenter.sqrMagnitude > 0.0001f ? toCenter.normalized * m_CenteringSpeed : Vector3.zero;
+            }
+        }
+
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();

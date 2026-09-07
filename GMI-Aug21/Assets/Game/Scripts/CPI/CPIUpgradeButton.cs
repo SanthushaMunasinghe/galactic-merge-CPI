@@ -118,10 +118,15 @@ namespace Oxtail.SpaceshipIncremental
                 .OnComplete(() => onComplete?.Invoke());
         }
 
-        public void ResetVisualState()
+        public void PlayEnableAnimation()
         {
             m_ResolvedScaleTarget.DOKill();
-            m_ResolvedScaleTarget.localScale = m_InitialScale;
+            m_ResolvedScaleTarget.localScale = Vector3.zero;
+
+            DOTween.Sequence()
+                .Append(m_ResolvedScaleTarget.DOScale(m_InitialScale * m_ScaleUpMultiplier, m_ScaleDuration))
+                .Append(m_ResolvedScaleTarget.DOScale(m_InitialScale, m_DisableScaleDownDuration));
+
             RefreshState();
         }
 
