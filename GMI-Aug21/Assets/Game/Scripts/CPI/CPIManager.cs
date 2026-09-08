@@ -38,6 +38,11 @@ namespace Oxtail.SpaceshipIncremental
         /// performed, so a PlanetEffect can react without a direct reference.</summary>
         public event Action OnUpgradePerformed;
 
+        /// <summary>Fired every time a Collect Point actually restores planet health (not while the
+        /// post-hit refill cooldown is dropping the gain), so a PlanetEffect can react without a
+        /// direct reference.</summary>
+        public event Action OnPlanetHealthGained;
+
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
 
@@ -233,6 +238,7 @@ namespace Oxtail.SpaceshipIncremental
                 return;
 
             ChangePlanetHealth(m_HealthGainPercent);
+            OnPlanetHealthGained?.Invoke();
         }
 
         private void TriggerFailSequence()
