@@ -181,6 +181,8 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HasFailed)
                 return;
 
+            m_BulletSpawnManager.ClearPendingShots();
+
             StartCoroutine(InterWaveDelayCO());
         }
 
@@ -248,6 +250,8 @@ namespace Oxtail.SpaceshipIncremental
                 if (asteroid != null)
                     asteroid.DestroyWithEffect();
             }
+
+            m_BulletSpawnManager.ClearPendingShots();
 
             OnFailShake?.Invoke();
 
