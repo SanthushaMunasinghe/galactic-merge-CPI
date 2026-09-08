@@ -4,10 +4,10 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
-    /// Plays a scale pulse on the assigned target whenever CPIManager reports a planet hit or an
-    /// upgrade: target scale eases to Initial Scale * First Scale Multiplier, then to Initial Scale *
-    /// Second Scale Multiplier, then back to Initial Scale. A multiplier below 1 shrinks, above 1
-    /// grows. A trigger received while the pulse is already playing is ignored.
+    /// Plays a scale pulse on the assigned target whenever CPIManager reports a planet hit, an
+    /// upgrade, or a planet health gain: target scale eases to Initial Scale * First Scale Multiplier,
+    /// then to Initial Scale * Second Scale Multiplier, then back to Initial Scale. A multiplier below
+    /// 1 shrinks, above 1 grows. A trigger received while the pulse is already playing is ignored.
     /// </summary>
     public class PlanetEffect : MonoBehaviour
     {
@@ -39,6 +39,7 @@ namespace Oxtail.SpaceshipIncremental
             {
                 CPIManager.Instance.OnPlanetHit += PlayEffect;
                 CPIManager.Instance.OnUpgradePerformed += PlayEffect;
+                CPIManager.Instance.OnPlanetHealthGained += PlayEffect;
             }
         }
 
@@ -48,6 +49,7 @@ namespace Oxtail.SpaceshipIncremental
             {
                 CPIManager.Instance.OnPlanetHit -= PlayEffect;
                 CPIManager.Instance.OnUpgradePerformed -= PlayEffect;
+                CPIManager.Instance.OnPlanetHealthGained -= PlayEffect;
             }
         }
 
