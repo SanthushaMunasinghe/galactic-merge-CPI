@@ -15,6 +15,9 @@ namespace Oxtail.SpaceshipIncremental
             EditorGUILayout.Space();
             if (GUILayout.Button("Generate Manual Wave Spawn Points"))
                 spawnManager.GenerateManualWaveSpawnPoints();
+
+            if (GUILayout.Button("Generate Manual Wave Spawn Points (3D)"))
+                spawnManager.GenerateManualWaveSpawnPoints3D();
         }
     }
 }

@@ -1,9 +1,12 @@
 using Oxtail.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Oxtail.SpaceshipIncremental
 {
@@ -22,6 +25,19 @@ namespace Oxtail.SpaceshipIncremental
             public bool IsWaveActive;
         }
 
+        /// <summary>Fired once, right after the fail sequence clears the remaining asteroids and
+        /// before its delay, so a CameraShake on the camera can react without CPIManager needing a
+        /// direct reference to it.</summary>
+        public event Action OnFailShake;
+
+        /// <summary>Fired every time the planet is hit by an asteroid (including a hit that also
+        /// triggers the fail sequence), so a PlanetEffect can react without a direct reference.</summary>
+        public event Action OnPlanetHit;
+
+        /// <summary>Fired every time an upgrade (add spaceship, merge, reward line, circuit) is
+        /// performed, so a PlanetEffect can react without a direct reference.</summary>
+        public event Action OnUpgradePerformed;
+
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
 
@@ -35,6 +51,15 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Renderer m_PlanetHealthRenderer;
         [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
         [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
+        [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
+
+        [Header("CPI Wave Timing")]
+        [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
+
+        [Header("CPI Fail State")]
+        [SerializeField, Min(0f)] private float m_FailDelay = 1f;
+        [SerializeField] private Volume m_GlobalVolume;
+        [SerializeField] private GameObject m_FailObject;
 
         [Header("CPI Start Values")]
         [SerializeField, Min(0)] private int m_StartArrowCount = 1;
@@ -80,6 +105,8 @@ namespace Oxtail.SpaceshipIncremental
         private int m_FloorTier = 1;
         private bool m_IsWaveActive;
         private bool m_SpawningInitialShips;
+        private float m_HealthRefillUnlockTime;
+        private bool m_HasFailed;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -145,12 +172,22 @@ namespace Oxtail.SpaceshipIncremental
             // S only ever starts a wave from inter-wave state; while a wave is active it's
             // ignored, so a wave can never be triggered on top of another. Returning to inter-wave
             // state happens automatically once the wave's asteroids are all destroyed (OnWaveCleared).
-            if (shortcutEvent.Key == KeyCode.S && !m_IsWaveActive)
+            if (shortcutEvent.Key == KeyCode.S && !m_IsWaveActive && !m_HasFailed)
                 SetWaveState(true);
         }
 
         private void OnWaveCleared()
         {
+            if (m_HasFailed)
+                return;
+
+            StartCoroutine(InterWaveDelayCO());
+        }
+
+        private IEnumerator InterWaveDelayCO()
+        {
+            yield return new WaitForSeconds(m_InterWaveDelay);
+
             SetWaveState(false);
         }
 
@@ -175,12 +212,65 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
         {
+            if (m_HasFailed)
+                return;
+
+            bool wasAtZeroHealth = PlanetHealth <= 0f;
+
             ChangePlanetHealth(-m_HealthLossPercent);
+            m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
+            OnPlanetHit?.Invoke();
+
+            if (wasAtZeroHealth)
+                TriggerFailSequence();
         }
 
         private void OnCollectPointCollected(CollectPointCollectedEvent evt)
         {
+            if (m_HasFailed || Time.time < m_HealthRefillUnlockTime)
+                return;
+
             ChangePlanetHealth(m_HealthGainPercent);
+        }
+
+        private void TriggerFailSequence()
+        {
+            if (m_HasFailed)
+                return;
+
+            m_HasFailed = true;
+
+            if (m_Circuit != null)
+                m_Circuit.StopPath();
+
+            foreach (var asteroid in AsteroidProjectile.ActiveAsteroids.ToList())
+            {
+                if (asteroid != null)
+                    asteroid.DestroyWithEffect();
+            }
+
+            OnFailShake?.Invoke();
+
+            StartCoroutine(FailDelayCO());
+        }
+
+        private IEnumerator FailDelayCO()
+        {
+            yield return new WaitForSeconds(m_FailDelay);
+
+            EnableDepthOfField();
+
+            if (m_FailObject != null)
+                m_FailObject.SetActive(true);
+        }
+
+        private void EnableDepthOfField()
+        {
+            if (m_GlobalVolume == null || m_GlobalVolume.profile == null)
+                return;
+
+            if (m_GlobalVolume.profile.TryGet(out DepthOfField depthOfField))
+                depthOfField.active = true;
         }
 
         private void ChangePlanetHealth(float delta)
@@ -441,22 +531,26 @@ namespace Oxtail.SpaceshipIncremental
         public override void IncreaseAddSpaceshipLevel()
         {
             AddSpaceshipLevel++;
+            OnUpgradePerformed?.Invoke();
         }
 
         public override void SaveIncreaseMergeSpaceshipLevel()
         {
             MergeLevel++;
+            OnUpgradePerformed?.Invoke();
         }
 
         protected override void SaveIncreaseRewardLineLevel()
         {
             RewardLineLevel++;
+            OnUpgradePerformed?.Invoke();
         }
 
         public override void IncreaseCircuitLevel()
         {
             // No money is spent and no circuit is unlocked: the upgrade button reads MAX in CPI mode.
             CircuitLevel++;
+            OnUpgradePerformed?.Invoke();
         }
 
         #endregion

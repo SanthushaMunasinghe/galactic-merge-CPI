@@ -21,7 +21,11 @@ namespace Oxtail.SpaceshipIncremental
     /// gating as the random path) rather than picking random positions; each point spawns at most once
     /// ever, even across repeated/overflowing wave triggers. Use the "Generate Manual Wave Spawn
     /// Points" button (or context menu item) to create a new hand-editable wave (its points start
-    /// arranged on the spawn oval, then can be freely moved/added/deleted in the Scene view).
+    /// arranged on the spawn oval, then can be freely moved/added/deleted in the Scene view); use
+    /// "Generate Manual Wave Spawn Points (3D)" instead to arrange them over a half-ellipsoid dome
+    /// (local -Z hemisphere) with the same X/Y bounds. If Use 3D Jump is on, every asteroid's jump
+    /// target (regardless of spawn mode) becomes a point on a true jump sphere along its own spawn
+    /// direction instead of the oval formula — see ComputeJumpLocalPosition.
     /// </summary>
     public class AsteroidSpawnManager : MonoBehaviour
     {
@@ -49,6 +53,7 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private GameObject m_SpawnPointPrefab;
         [SerializeField, Min(1)] private int m_SpawnPointCount = 5;
         [SerializeField] private List<Transform> m_ManualWaveSpawnPointParents = new List<Transform>();
+        [SerializeField] private bool m_Use3DJump;
 
         private int m_CurrentWaveIndex;
         private bool m_IsWaveInProgress;
@@ -206,7 +211,7 @@ namespace Oxtail.SpaceshipIncremental
             float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnLocalPos = new Vector3(Mathf.Cos(angle) * m_SpawnRadius, Mathf.Sin(angle) * m_SpawnRadius * m_OvalHeightMultiplier, 0f);
 
-            SpawnAsteroidAtLocal(spawnLocalPos, angle);
+            SpawnAsteroidAtLocal(spawnLocalPos);
         }
 
         private void SpawnAsteroidAt(Vector3 worldPosition)
@@ -218,14 +223,13 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             Vector3 localPos = transform.InverseTransformPoint(worldPosition);
-            float angle = Mathf.Atan2(localPos.y / m_OvalHeightMultiplier, localPos.x);
 
-            SpawnAsteroidAtLocal(localPos, angle);
+            SpawnAsteroidAtLocal(localPos);
         }
 
-        private void SpawnAsteroidAtLocal(Vector3 spawnLocalPos, float angle)
+        private void SpawnAsteroidAtLocal(Vector3 spawnLocalPos)
         {
-            Vector3 jumpLocalPos = new Vector3(Mathf.Cos(angle) * m_JumpRadius, Mathf.Sin(angle) * m_JumpRadius * m_OvalHeightMultiplier, m_JumpHeightOffset);
+            Vector3 jumpLocalPos = ComputeJumpLocalPosition(spawnLocalPos);
 
             AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
             m_AsteroidsPendingJump++;
@@ -233,6 +237,29 @@ namespace Oxtail.SpaceshipIncremental
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
             float centeringSpeed = UnityEngine.Random.Range(m_CenteringSpeedRange.x, m_CenteringSpeedRange.y);
             asteroid.Initialize(jumpLocalPos, jumpSpeed, centeringSpeed, OnAsteroidJumpComplete);
+        }
+
+        /// <summary>
+        /// Off: today's oval formula (same angle, smaller oval, offset along Z by Jump Height Offset).
+        /// On (Use 3D Jump): un-scales the spawn position by the spawn ellipsoid's own radii to recover
+        /// a unit direction, then re-scales it uniformly by Jump Radius — a true sphere ("not oval"),
+        /// naturally landing in the same hemisphere as the spawn point since it's the same direction.
+        /// </summary>
+        private Vector3 ComputeJumpLocalPosition(Vector3 spawnLocalPos)
+        {
+            if (m_Use3DJump)
+            {
+                Vector3 unitDir = new Vector3(
+                    spawnLocalPos.x / m_SpawnRadius,
+                    spawnLocalPos.y / (m_SpawnRadius * m_OvalHeightMultiplier),
+                    spawnLocalPos.z / m_SpawnRadius);
+
+                unitDir = unitDir.sqrMagnitude > 0.0001f ? unitDir.normalized : Vector3.back;
+                return unitDir * m_JumpRadius;
+            }
+
+            float angle = Mathf.Atan2(spawnLocalPos.y / m_OvalHeightMultiplier, spawnLocalPos.x);
+            return new Vector3(Mathf.Cos(angle) * m_JumpRadius, Mathf.Sin(angle) * m_JumpRadius * m_OvalHeightMultiplier, m_JumpHeightOffset);
         }
 
         [ContextMenu("Generate Manual Wave Spawn Points")]
@@ -259,6 +286,58 @@ namespace Oxtail.SpaceshipIncremental
 #if UNITY_EDITOR
                 GameObject point = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(m_SpawnPointPrefab, waveParentObject.transform);
                 UnityEditor.Undo.RegisterCreatedObjectUndo(point, "Generate Manual Wave Spawn Points");
+#else
+                GameObject point = Instantiate(m_SpawnPointPrefab, waveParentObject.transform);
+#endif
+                point.transform.localPosition = localPos;
+            }
+
+            m_ManualWaveSpawnPointParents.Add(waveParentObject.transform);
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
+        /// <summary>
+        /// Same idea as GenerateManualWaveSpawnPoints, but distributes points over the surface of a
+        /// half-ellipsoid (same X/Y bounds as the flat oval, extruded into local Z using the same
+        /// radius as X) instead of the flat oval, restricted to the local -Z hemisphere only. Uses a
+        /// golden-angle (Fibonacci sphere) distribution for even spacing across the dome.
+        /// </summary>
+        [ContextMenu("Generate Manual Wave Spawn Points (3D)")]
+        public void GenerateManualWaveSpawnPoints3D()
+        {
+            if (m_SpawnPointPrefab == null)
+            {
+                Debug.LogError($"{nameof(AsteroidSpawnManager)}: Spawn Point Prefab must be assigned.", this);
+                return;
+            }
+
+            GameObject waveParentObject = new GameObject($"ManualWave{m_ManualWaveSpawnPointParents.Count}_3D");
+            waveParentObject.transform.SetParent(transform, false);
+
+#if UNITY_EDITOR
+            UnityEditor.Undo.RegisterCreatedObjectUndo(waveParentObject, "Generate Manual Wave Spawn Points (3D)");
+#endif
+
+            float goldenAngle = Mathf.PI * (3f - Mathf.Sqrt(5f));
+
+            for (int i = 0; i < m_SpawnPointCount; i++)
+            {
+                float t = (i + 0.5f) / m_SpawnPointCount;
+                float zUnit = -t;
+                float ringRadius = Mathf.Sqrt(Mathf.Max(0f, 1f - (zUnit * zUnit)));
+                float theta = goldenAngle * i;
+
+                float xUnit = Mathf.Cos(theta) * ringRadius;
+                float yUnit = Mathf.Sin(theta) * ringRadius;
+
+                Vector3 localPos = new Vector3(xUnit * m_SpawnRadius, yUnit * m_SpawnRadius * m_OvalHeightMultiplier, zUnit * m_SpawnRadius);
+
+#if UNITY_EDITOR
+                GameObject point = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(m_SpawnPointPrefab, waveParentObject.transform);
+                UnityEditor.Undo.RegisterCreatedObjectUndo(point, "Generate Manual Wave Spawn Points (3D)");
 #else
                 GameObject point = Instantiate(m_SpawnPointPrefab, waveParentObject.transform);
 #endif
