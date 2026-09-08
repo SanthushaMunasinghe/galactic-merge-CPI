@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENABLEHOLOGRAM_ON
   - _ENABLESTRONGTINT_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
@@ -199,7 +200,7 @@ Material:
     - _EnableGaussianBlur: 0
     - _EnableGlitch: 0
     - _EnableHalftone: 0
-    - _EnableHologram: 0
+    - _EnableHologram: 1
     - _EnableHue: 0
     - _EnableInkSpread: 0
     - _EnableInnerOutline: 0
@@ -286,8 +287,8 @@ Material:
     - _HologramDistortionScale: 10
     - _HologramDistortionSpeed: 2
     - _HologramFade: 1
-    - _HologramLineFrequency: 500
-    - _HologramLineGap: 3
+    - _HologramLineFrequency: 200
+    - _HologramLineGap: 0
     - _HologramLineSpeed: 0.01
     - _HologramMinAlpha: 0.2
     - _Hue: 0

@@ -466,8 +466,18 @@ namespace Oxtail.SpaceshipIncremental
                 m_MaxSpaceShipTierCreated = tier.TierNumber;
 
             SetNewFloorTier();
+            OnSpaceshipCreated(spaceship);
 
             return spaceship;
+        }
+
+        /// <summary>
+        /// Called once for every newly created spaceship (initial batch, added, or merged), right
+        /// after its tier/shape/trail are set up. No-op by default; CPIManager overrides this to hide
+        /// the trail when its "no trail" override is on.
+        /// </summary>
+        protected virtual void OnSpaceshipCreated(Spaceship spaceship)
+        {
         }
 
         private void DoSpaceshipCreationTransition(Spaceship spaceship)

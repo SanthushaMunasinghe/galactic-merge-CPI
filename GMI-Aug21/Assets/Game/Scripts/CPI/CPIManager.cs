@@ -97,6 +97,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_OverrideSpaceshipSpeed;
         [SerializeField, Min(0.01f)] private float m_SpaceshipSpeedMultiplier = 1f;
 
+        [Header("CPI Spaceship Trail")]
+        [SerializeField] private bool m_HideSpaceshipTrail;
+
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
         [SerializeField] private bool m_ScaleSpawnTier = true;
@@ -477,6 +480,13 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             return base.SelectSpaceshipParentForSpawn();
+        }
+
+        /// <summary>Hides the trail on every newly created spaceship when the override is on.</summary>
+        protected override void OnSpaceshipCreated(Spaceship spaceship)
+        {
+            if (m_HideSpaceshipTrail)
+                spaceship.SetTrailVisible(false);
         }
 
         #region Circuit

@@ -212,6 +212,18 @@ namespace Oxtail.SpaceshipIncremental
             m_SpaceshipTrail.ResetTrail();
         }
 
+        /// <summary>
+        /// Shows or hides the trail's own GameObject without touching m_SpaceshipTrail itself, so
+        /// everything that assumes the reference is non-null once created (DoShowFadeCO, ResetTrail,
+        /// SetSortingLayer/Order, the TrailChanged event) keeps working unchanged. Used by CPIManager
+        /// to hide the trail entirely for local testing.
+        /// </summary>
+        public void SetTrailVisible(bool visible)
+        {
+            if (m_SpaceshipTrail != null)
+                m_SpaceshipTrail.gameObject.SetActive(visible);
+        }
+
         public void DoShowFade(float startAlpha, float endAlpha, float fadeTime)
         {
             StartCoroutine(DoShowFadeCO(startAlpha, endAlpha, fadeTime));
