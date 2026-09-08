@@ -110,6 +110,12 @@ namespace Oxtail.SpaceshipIncremental
             m_DriftElapsed += Time.fixedDeltaTime;
             if (m_DriftElapsed >= m_DriftLifetime)
             {
+                // A genuine miss: this bullet is giving up without ever hitting its target, so the
+                // lock must be released here too, not just on a hit — otherwise the target stays
+                // IsTargeted forever and no future bullet can ever be aimed at it again.
+                if (m_Target != null)
+                    m_Target.IsTargeted = false;
+
                 Destroy(gameObject);
                 return;
             }

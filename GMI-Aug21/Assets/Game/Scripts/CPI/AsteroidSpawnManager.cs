@@ -127,7 +127,21 @@ namespace Oxtail.SpaceshipIncremental
                     spawnPoints.Add(point);
             }
 
+            ShuffleInPlace(spawnPoints);
+
             StartCoroutine(SpawnManualWaveCO(spawnPoints));
+        }
+
+        /// <summary>Fisher-Yates shuffle: randomizes spawn order while still spawning each point exactly once.</summary>
+        private static void ShuffleInPlace(List<Transform> points)
+        {
+            for (int i = points.Count - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                Transform temp = points[i];
+                points[i] = points[j];
+                points[j] = temp;
+            }
         }
 
         private IEnumerator SpawnWaveCO(int count)
