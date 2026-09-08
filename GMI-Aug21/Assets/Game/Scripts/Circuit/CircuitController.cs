@@ -56,12 +56,12 @@ namespace Oxtail.SpaceshipIncremental
                 m_CircuitVibration.Kill();
         }
 
-        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, bool negateDirection = false)
+        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, bool negateDirection = false, float rotationSmoothTimeOverride = -1f)
         {
             foreach (var spaceshipParent in m_SpaceshipParents)
             {
                 Vector3[] path = GetPathPoints(spaceshipParent, negateDirection);
-                spaceshipParent.SetPath(path, m_PathType, alignWithPathLocal, rotationOffsetDegrees);
+                spaceshipParent.SetPath(path, m_PathType, alignWithPathLocal, rotationOffsetDegrees, rotationSmoothTimeOverride);
             }
         }
 

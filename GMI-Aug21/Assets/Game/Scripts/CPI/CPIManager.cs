@@ -92,6 +92,8 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_AlignSpaceshipRotationWithPath;
         [SerializeField] private float m_SpaceshipRotationOffsetDegrees;
         [SerializeField] private bool m_NegateSpaceshipPathDirection;
+        [SerializeField] private bool m_OverrideSpaceshipRotationSmoothing;
+        [SerializeField, Min(0.01f)] private float m_SpaceshipRotationSmoothTime = 0.15f;
 
         [Header("CPI Spaceship Speed")]
         [SerializeField] private bool m_OverrideSpaceshipSpeed;
@@ -389,7 +391,7 @@ namespace Oxtail.SpaceshipIncremental
             m_CircuitIndex = 0;
             m_Circuit.gameObject.SetActive(true);
             m_CurrentCircuit = m_Circuit;
-            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection);
+            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection, m_OverrideSpaceshipRotationSmoothing ? m_SpaceshipRotationSmoothTime : -1f);
 
             if (m_OverrideSpaceshipSpeed)
                 m_CurrentCircuit.SetSpeedMultiplier(m_SpaceshipSpeedMultiplier);
