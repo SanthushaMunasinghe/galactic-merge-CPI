@@ -4,8 +4,9 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
-    /// Attach to the camera. Shakes this transform once CPIManager's fail sequence has cleared the
-    /// remaining asteroids, right before its fail delay starts.
+    /// Attach to the camera. Shakes this transform once per planet CPIManager reports as destroyed —
+    /// including the last one, which also ends the game, so there is no separate "game over" shake
+    /// beyond the per-planet one.
     /// </summary>
     public class CameraShake : MonoBehaviour
     {
@@ -18,13 +19,13 @@ namespace Oxtail.SpaceshipIncremental
         private void OnEnable()
         {
             if (CPIManager.Instance != null)
-                CPIManager.Instance.OnFailShake += Shake;
+                CPIManager.Instance.OnPlanetDestroyed += Shake;
         }
 
         private void OnDisable()
         {
             if (CPIManager.Instance != null)
-                CPIManager.Instance.OnFailShake -= Shake;
+                CPIManager.Instance.OnPlanetDestroyed -= Shake;
         }
 
         private void Shake()

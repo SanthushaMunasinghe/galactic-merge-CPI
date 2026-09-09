@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
@@ -7,9 +9,9 @@ namespace Oxtail.SpaceshipIncremental
     /// </summary>
     public static class UIParticleActions
     {
-        public static void PlayHpGained(float amount) => Spawn(UIParticleType.HPGain, amount);
+        public static void PlayHpGained(float amount, RectTransform spawnPoint) => Spawn(UIParticleType.HPGain, spawnPoint, amount);
 
-        public static void PlayHpLost(float amount) => Spawn(UIParticleType.HPLoss, amount);
+        public static void PlayHpLost(float amount, RectTransform spawnPoint) => Spawn(UIParticleType.HPLoss, spawnPoint, amount);
 
         public static void PlayShipAdded() => Spawn(UIParticleType.ShipAdded);
 
@@ -17,12 +19,14 @@ namespace Oxtail.SpaceshipIncremental
 
         public static void PlayLineAdded() => Spawn(UIParticleType.LineAdded);
 
-        private static void Spawn(UIParticleType type, float? value = null)
+        private static void Spawn(UIParticleType type, float? value = null) => Spawn(type, null, value);
+
+        private static void Spawn(UIParticleType type, RectTransform spawnPointOverride, float? value = null)
         {
             if (CPIManager.Instance == null || UIParticleSpawner.Instance == null)
                 return;
 
-            UIParticleSpawner.Instance.SpawnText(type, value);
+            UIParticleSpawner.Instance.SpawnText(type, value, spawnPointOverride);
         }
     }
 }

@@ -49,13 +49,15 @@ namespace Oxtail.SpaceshipIncremental
             m_TextPool.Enqueue(particle);
         }
 
-        public void SpawnText(UIParticleType type, float? value = null)
+        public void SpawnText(UIParticleType type, float? value = null, RectTransform spawnPointOverride = null)
         {
-            if (!m_ConfigLookup.TryGetValue(type, out UIParticleTypeConfig config) || config.SpawnPoint == null)
+            if (!m_ConfigLookup.TryGetValue(type, out UIParticleTypeConfig config) || (config.SpawnPoint == null && spawnPointOverride == null))
             {
                 Debug.LogWarning($"{nameof(UIParticleSpawner)}: no config/spawn point assigned for {type}.", this);
                 return;
             }
+
+            RectTransform spawnPoint = spawnPointOverride != null ? spawnPointOverride : config.SpawnPoint;
 
             string text = value.HasValue
                 ? $"{config.Prefix}{value.Value:0}{config.Suffix}"
@@ -65,7 +67,7 @@ namespace Oxtail.SpaceshipIncremental
                 CreateTextParticle();
 
             TextUIParticle particle = m_TextPool.Dequeue();
-            particle.transform.position = config.SpawnPoint.position;
+            particle.transform.position = spawnPoint.position;
             particle.SetText(text);
             particle.SetColor(config.Color);
             particle.gameObject.SetActive(true);

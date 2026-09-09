@@ -26,6 +26,13 @@ namespace Oxtail.SpaceshipIncremental
     /// (local -Z hemisphere) with the same X/Y bounds. If Use 3D Jump is on, every asteroid's jump
     /// target (regardless of spawn mode) becomes a point on a true jump sphere along its own spawn
     /// direction instead of the oval formula — see ComputeJumpLocalPosition.
+    ///
+    /// Every spawned asteroid and collect point resolves its homing target once, at spawn, as the
+    /// closest entry in Centers to its spawn world position (falling back to this transform's parent
+    /// position, exactly as before, if Centers is empty or every entry in it is null); the resolved
+    /// Transform is then fixed for that object's entire lifetime and never re-evaluated per frame.
+    /// This resolution never touches Spawn Radius/Jump Radius, which stay entirely local to this
+    /// transform as before.
     /// </summary>
     public class AsteroidSpawnManager : MonoBehaviour
     {
@@ -37,6 +44,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0f)] private float m_JumpRadius = 4f;
         [SerializeField] private float m_JumpHeightOffset = -0.5f;
         [SerializeField, Min(0.01f)] private float m_OvalHeightMultiplier = 1.5f;
+
+        [Header("Homing Centers")]
+        [SerializeField] private List<Transform> m_Centers = new List<Transform>();
 
         [Header("Wave Settings")]
         [SerializeField] private List<int> m_WaveAsteroidCounts = new List<int> { 5 };
@@ -231,12 +241,43 @@ namespace Oxtail.SpaceshipIncremental
         {
             Vector3 jumpLocalPos = ComputeJumpLocalPosition(spawnLocalPos);
 
-            AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
+            Vector3 spawnWorldPos = transform.TransformPoint(spawnLocalPos);
+            AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, spawnWorldPos, Quaternion.identity, transform);
             m_AsteroidsPendingJump++;
+
+            Transform center = FindClosestCenter(spawnWorldPos);
 
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
             float centeringSpeed = UnityEngine.Random.Range(m_CenteringSpeedRange.x, m_CenteringSpeedRange.y);
-            asteroid.Initialize(jumpLocalPos, jumpSpeed, centeringSpeed, OnAsteroidJumpComplete);
+            asteroid.Initialize(jumpLocalPos, jumpSpeed, centeringSpeed, OnAsteroidJumpComplete, center);
+        }
+
+        /// <summary>
+        /// Returns the entry in Centers closest to worldPosition, or null if Centers is empty or
+        /// every entry in it is null — the null return is the caller's cue to fall back to
+        /// transform.parent.position, preserving the single-center behavior from before Centers
+        /// existed.
+        /// </summary>
+        private Transform FindClosestCenter(Vector3 worldPosition)
+        {
+            float minDistance = float.MaxValue;
+            Transform closest = null;
+
+            for (int i = 0; i < m_Centers.Count; i++)
+            {
+                Transform center = m_Centers[i];
+                if (center == null)
+                    continue;
+
+                float distance = Vector3.Distance(worldPosition, center.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closest = center;
+                }
+            }
+
+            return closest;
         }
 
         /// <summary>
@@ -380,8 +421,10 @@ namespace Oxtail.SpaceshipIncremental
                 return;
             }
 
+            Transform center = FindClosestCenter(worldPosition);
+
             CollectPoint collectPoint = Instantiate(m_CollectPointPrefab, worldPosition, Quaternion.identity, transform);
-            collectPoint.Initialize(m_CollectPointSpeed);
+            collectPoint.Initialize(m_CollectPointSpeed, center);
         }
 
         private void OnValidate()

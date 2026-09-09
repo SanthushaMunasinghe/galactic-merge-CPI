@@ -25,23 +25,15 @@ namespace Oxtail.SpaceshipIncremental
             public bool IsWaveActive;
         }
 
-        /// <summary>Fired once, right after the fail sequence clears the remaining asteroids and
-        /// before its delay, so a CameraShake on the camera can react without CPIManager needing a
-        /// direct reference to it.</summary>
-        public event Action OnFailShake;
-
-        /// <summary>Fired every time the planet is hit by an asteroid (including a hit that also
-        /// triggers the fail sequence), so a PlanetEffect can react without a direct reference.</summary>
-        public event Action OnPlanetHit;
+        /// <summary>Fired once per planet destroyed (including the last one, which also ends the
+        /// game), so a CameraShake on the camera can react without CPIManager needing a direct
+        /// reference to it. Unlike a single fail-time shake, this can fire once per planet as they die
+        /// one at a time.</summary>
+        public event Action OnPlanetDestroyed;
 
         /// <summary>Fired every time an upgrade (add spaceship, merge, reward line, circuit) is
         /// performed, so a PlanetEffect can react without a direct reference.</summary>
         public event Action OnUpgradePerformed;
-
-        /// <summary>Fired every time a Collect Point actually restores planet health (not while the
-        /// post-hit refill cooldown is dropping the gain), so a PlanetEffect can react without a
-        /// direct reference.</summary>
-        public event Action OnPlanetHealthGained;
 
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
@@ -52,11 +44,10 @@ namespace Oxtail.SpaceshipIncremental
         [Header("CPI Bullets")]
         [SerializeField] private BulletSpawnManager m_BulletSpawnManager;
 
-        [Header("CPI Planet Health")]
-        [SerializeField] private Renderer m_PlanetHealthRenderer;
-        [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
-        [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
-        [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
+        [Header("CPI Planets")]
+        [SerializeField] private List<PlanetEffect> m_Planets = new List<PlanetEffect>();
+        [SerializeField] private bool m_HealAllPlanetsSimultaneously;
+        [SerializeField] private bool m_DamageAllPlanetsSimultaneously;
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
@@ -115,15 +106,12 @@ namespace Oxtail.SpaceshipIncremental
         private int m_FloorTier = 1;
         private bool m_IsWaveActive;
         private bool m_SpawningInitialShips;
-        private float m_HealthRefillUnlockTime;
         private bool m_HasFailed;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
         public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
         public BulletSpawnManager BulletSpawner => m_BulletSpawnManager;
-
-        public float PlanetHealth { get; private set; }
 
         public int MergeLevel { get; private set; }
         public int AddSpaceshipLevel { get; private set; }
@@ -150,11 +138,6 @@ namespace Oxtail.SpaceshipIncremental
 
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(true);
-
-            if (m_PlanetHealthRenderer != null)
-                m_PlanetHealthRenderer.material = new Material(m_PlanetHealthRenderer.material);
-
-            ApplyPlanetHealthFill();
         }
 
         private void OnEnable()
@@ -165,6 +148,12 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
 
             m_AsteroidSpawnManager.OnWaveCleared += OnWaveCleared;
+
+            for (int i = 0; i < m_Planets.Count; i++)
+            {
+                if (m_Planets[i] != null)
+                    m_Planets[i].OnDestroyed += OnAnyPlanetDestroyed;
+            }
         }
 
         private void OnDisable()
@@ -175,6 +164,12 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
 
             m_AsteroidSpawnManager.OnWaveCleared -= OnWaveCleared;
+
+            for (int i = 0; i < m_Planets.Count; i++)
+            {
+                if (m_Planets[i] != null)
+                    m_Planets[i].OnDestroyed -= OnAnyPlanetDestroyed;
+            }
         }
 
         private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
@@ -227,23 +222,76 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HasFailed)
                 return;
 
-            bool wasAtZeroHealth = PlanetHealth <= 0f;
+            if (m_DamageAllPlanetsSimultaneously)
+            {
+                for (int i = 0; i < m_Planets.Count; i++)
+                {
+                    if (m_Planets[i] != null)
+                        m_Planets[i].ApplyDamage();
+                }
+                return;
+            }
 
-            ChangePlanetHealth(-m_HealthLossPercent);
-            m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
-            OnPlanetHit?.Invoke();
+            if (evt.Planet == null)
+            {
+                Debug.LogWarning($"{nameof(CPIManager)}: an asteroid hit a planet-layer collider with no PlanetEffect component; no health was applied.", this);
+                return;
+            }
 
-            if (wasAtZeroHealth)
-                TriggerFailSequence();
+            evt.Planet.ApplyDamage();
         }
 
         private void OnCollectPointCollected(CollectPointCollectedEvent evt)
         {
-            if (m_HasFailed || Time.time < m_HealthRefillUnlockTime)
+            if (m_HasFailed)
                 return;
 
-            ChangePlanetHealth(m_HealthGainPercent);
-            OnPlanetHealthGained?.Invoke();
+            if (m_HealAllPlanetsSimultaneously)
+            {
+                for (int i = 0; i < m_Planets.Count; i++)
+                {
+                    if (m_Planets[i] != null)
+                        m_Planets[i].ApplyHeal();
+                }
+                return;
+            }
+
+            if (evt.Planet == null)
+            {
+                Debug.LogWarning($"{nameof(CPIManager)}: a collect point reached a planet-layer collider with no PlanetEffect component; no health was applied.", this);
+                return;
+            }
+
+            evt.Planet.ApplyHeal();
+        }
+
+        /// <summary>Fires once per planet death (any planet in Planets). Broadcasts
+        /// OnPlanetDestroyed for CameraShake, then checks whether every planet in the list is now
+        /// destroyed — an empty list never passes this check, since a scene with no planets configured
+        /// has nothing whose destruction should end the game.</summary>
+        private void OnAnyPlanetDestroyed()
+        {
+            if (m_HasFailed)
+                return;
+
+            OnPlanetDestroyed?.Invoke();
+
+            if (AllPlanetsDestroyed())
+                TriggerFailSequence();
+        }
+
+        private bool AllPlanetsDestroyed()
+        {
+            if (m_Planets.Count == 0)
+                return false;
+
+            for (int i = 0; i < m_Planets.Count; i++)
+            {
+                if (m_Planets[i] != null && !m_Planets[i].IsDestroyed)
+                    return false;
+            }
+
+            return true;
         }
 
         private void TriggerFailSequence()
@@ -263,8 +311,6 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             m_BulletSpawnManager.ClearPendingShots();
-
-            OnFailShake?.Invoke();
 
             StartCoroutine(FailDelayCO());
         }
@@ -286,25 +332,6 @@ namespace Oxtail.SpaceshipIncremental
 
             if (m_GlobalVolume.profile.TryGet(out DepthOfField depthOfField))
                 depthOfField.active = true;
-        }
-
-        private void ChangePlanetHealth(float delta)
-        {
-            PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
-            ApplyPlanetHealthFill();
-
-            if (delta > 0f)
-                UIParticleActions.PlayHpGained(delta);
-            else if (delta < 0f)
-                UIParticleActions.PlayHpLost(-delta);
-        }
-
-        private void ApplyPlanetHealthFill()
-        {
-            if (m_PlanetHealthRenderer == null)
-                return;
-
-            m_PlanetHealthRenderer.material.SetFloat("_Fill", PlanetHealth / 100f);
         }
 
         // The circuit is built in Start, not Awake: CircuitController fills its SpaceshipParent and

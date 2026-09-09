@@ -9,12 +9,15 @@ namespace Oxtail.SpaceshipIncremental
     public struct AsteroidDestroyedByPlanetEvent
     {
         public AsteroidProjectile Asteroid;
+        public PlanetEffect Planet;
     }
 
     /// <summary>
     /// Slides from its spawn point to a jump-radius point in a straight line (same local X/Y plane)
-    /// using DOTween at jumpSpeed, then homes toward the shared local center (local origin of its
-    /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Active Visual spins
+    /// using DOTween at jumpSpeed, then homes every FixedUpdate via Rigidbody.MovePosition at
+    /// centeringSpeed toward a fixed target assigned once at spawn — either an explicit center
+    /// override Transform passed into Initialize, or, if none was given, the local origin of its
+    /// parent (transform.parent.position), exactly as before. Active Visual spins
     /// continuously around a random per-instance axis at Rotation Speed — this is applied to Active
     /// Visual rather than this transform so it never interferes with the Sliding/Homing movement.
     /// Destroyable throughout by a trigger hit on the planet layer. Requires a trigger Collider and a
@@ -50,6 +53,7 @@ namespace Oxtail.SpaceshipIncremental
         private Vector3 m_RotationAxis;
         private AsteroidState m_State = AsteroidState.Sliding;
         private float m_CenteringSpeed;
+        private Transform m_CenterOverride;
         private Action m_OnJumpComplete;
         private bool m_NotifiedJumpComplete;
         private bool m_IsDestroyed;
@@ -68,10 +72,21 @@ namespace Oxtail.SpaceshipIncremental
         {
             get
             {
-                Vector3 centerWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+                Vector3 centerWorldPos = ResolveCenterWorldPos();
                 Vector3 toCenter = centerWorldPos - transform.position;
                 return toCenter.sqrMagnitude > 0.0001f ? toCenter.normalized * m_CenteringSpeed : Vector3.zero;
             }
+        }
+
+        /// <summary>Where this asteroid is currently homing toward: the center override assigned at
+        /// spawn if one was given, otherwise the local origin of its parent, as before Centers
+        /// existed.</summary>
+        private Vector3 ResolveCenterWorldPos()
+        {
+            if (m_CenterOverride != null)
+                return m_CenterOverride.position;
+
+            return transform.parent != null ? transform.parent.position : Vector3.zero;
         }
 
         private void Awake()
@@ -92,10 +107,11 @@ namespace Oxtail.SpaceshipIncremental
             m_ActiveVisual.transform.Rotate(m_RotationAxis, m_RotationSpeed * Time.deltaTime, Space.World);
         }
 
-        public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)
+        public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null, Transform centerOverride = null)
         {
             m_CenteringSpeed = centeringSpeed;
             m_OnJumpComplete = onJumpComplete;
+            m_CenterOverride = centerOverride;
             m_State = AsteroidState.Sliding;
 
             float distance = Vector3.Distance(transform.localPosition, localJumpPosition);
@@ -130,7 +146,7 @@ namespace Oxtail.SpaceshipIncremental
             if (m_State != AsteroidState.Homing)
                 return;
 
-            Vector3 centerWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+            Vector3 centerWorldPos = ResolveCenterWorldPos();
             Vector3 newPos = Vector3.MoveTowards(m_Rigidbody.position, centerWorldPos, m_CenteringSpeed * Time.fixedDeltaTime);
             m_Rigidbody.MovePosition(newPos);
 
@@ -146,16 +162,16 @@ namespace Oxtail.SpaceshipIncremental
             if ((m_PlanetLayerMask.value & (1 << other.gameObject.layer)) == 0)
                 return;
 
-            HandlePlanetHit();
+            HandlePlanetHit(other.GetComponent<PlanetEffect>());
         }
 
-        private void HandlePlanetHit()
+        private void HandlePlanetHit(PlanetEffect planet)
         {
             // Removed immediately (rather than waiting for the deferred OnDisable) so a bullet
             // resolving its target later this same frame never targets an asteroid already destroyed.
             ActiveAsteroids.Remove(this);
 
-            EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(new AsteroidDestroyedByPlanetEvent { Asteroid = this });
+            EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(new AsteroidDestroyedByPlanetEvent { Asteroid = this, Planet = planet });
 
             DestroyWithEffect();
         }
