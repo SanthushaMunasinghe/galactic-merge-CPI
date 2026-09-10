@@ -59,6 +59,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private int m_Coins;
         private bool m_CanMerge = true;
+        private Color m_TierColor;
 
         private Tween m_MergePunchTween;
 
@@ -239,6 +240,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             TierNumber = tier.TierNumber;
             m_Coins = tier.Coins;
+            m_TierColor = tier.SpaceShipColor;
 
             if (m_SpaceshipShape == null)
                 CreateShape(tier.SpaceShipColor, fromMerge);
@@ -340,8 +342,27 @@ namespace Oxtail.SpaceshipIncremental
             text.transform.position = transform.position;
             string coinsText = $"+${NumberFormatter.FormatValue(coins)}";
             text.SetText(coinsText);
-            text.SetColor(m_SpaceshipShape.ShapeColor);
+            text.SetColor(m_TierColor);
             text.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Overwrites the shape/trail color that SetSpaceshipTier already applied from the tier's
+        /// default. Used by CPIManager to force a per-slot color pattern independent of tier.
+        /// </summary>
+        public void SetColorOverride(Color color, Gradient trailGradient)
+        {
+            if (m_SpaceshipShape != null)
+                m_SpaceshipShape.ShapeColor = color;
+
+            SetupEffectColor(color);
+
+            if (m_SpaceshipTrail != null)
+            {
+                m_SpaceshipTrail.SetColor(color);
+                if (trailGradient != null)
+                    m_SpaceshipTrail.SetGradient(trailGradient);
+            }
         }
 
         public void SetSortingLayer(int id)

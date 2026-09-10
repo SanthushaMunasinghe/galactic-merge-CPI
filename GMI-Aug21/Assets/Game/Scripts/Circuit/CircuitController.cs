@@ -56,12 +56,12 @@ namespace Oxtail.SpaceshipIncremental
                 m_CircuitVibration.Kill();
         }
 
-        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, bool negateDirection = false)
+        public void SetSpaceshipParentsPath(bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, bool negateDirection = false, float rotationSmoothTimeOverride = -1f)
         {
             foreach (var spaceshipParent in m_SpaceshipParents)
             {
                 Vector3[] path = GetPathPoints(spaceshipParent, negateDirection);
-                spaceshipParent.SetPath(path, m_PathType, alignWithPathLocal, rotationOffsetDegrees);
+                spaceshipParent.SetPath(path, m_PathType, alignWithPathLocal, rotationOffsetDegrees, rotationSmoothTimeOverride);
             }
         }
 
@@ -207,6 +207,16 @@ namespace Oxtail.SpaceshipIncremental
             return parent;
         }
 
+        /// <summary>
+        /// Index of this parent in authored order (matching the sibling order GetComponentsInChildren
+        /// returned in OnEnable, i.e. each SpaceshipParent's position around the track). Used by
+        /// CPIManager to map a ship's fixed slot to a positional color pattern.
+        /// </summary>
+        public int GetSpaceshipParentIndex(SpaceshipParent parent)
+        {
+            return m_SpaceshipParents.ToList().IndexOf(parent);
+        }
+
         //public SpaceshipParent GetSpaceshipParentByIndex(int index)
         //{
         //    return m_SpaceshipParents.Single(parent => parent.transform.parent.GetSiblingIndex() == index);
@@ -219,6 +229,15 @@ namespace Oxtail.SpaceshipIncremental
                 return null;
 
             return parents[Random.Range(0, parents.Count)];
+        }
+
+        /// <summary>
+        /// All currently free parents. Used by CPIManager to pick a random free slot while excluding
+        /// ones that would repeat a just-used color pattern entry.
+        /// </summary>
+        public IEnumerable<SpaceshipParent> GetFreeSpaceshipParents()
+        {
+            return m_SpaceshipParents.Where(parent => parent.IsFree);
         }
 
         /// <summary>

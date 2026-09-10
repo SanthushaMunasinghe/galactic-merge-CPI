@@ -683,6 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2548493931502450522}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &80936527544160194
 GameObject:
   m_ObjectHideFlags: 0
@@ -6654,6 +6655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1089216748393056094}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &203062591399704631
 GameObject:
   m_ObjectHideFlags: 0
@@ -7292,6 +7294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &259962274739805758
 GameObject:
   m_ObjectHideFlags: 0
@@ -8451,6 +8454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5528719683543951008}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &363085089798183997
 GameObject:
   m_ObjectHideFlags: 0
@@ -9443,6 +9447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &469527613515245537
 GameObject:
   m_ObjectHideFlags: 0
@@ -9989,6 +9994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7463029447265171227}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &488599743510686418
 GameObject:
   m_ObjectHideFlags: 0
@@ -10097,6 +10103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4432319391269263569}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &502819787154061553
 GameObject:
   m_ObjectHideFlags: 0
@@ -10616,6 +10623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &557375563045223891
 GameObject:
   m_ObjectHideFlags: 0
@@ -10756,6 +10764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4342716109139192685}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &588216210474099084
 GameObject:
   m_ObjectHideFlags: 0
@@ -11294,6 +11303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7378783451822770205}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &651548062756699017
 GameObject:
   m_ObjectHideFlags: 0
@@ -12365,6 +12375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7308947006589209998}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &744283059379650339
 GameObject:
   m_ObjectHideFlags: 0
@@ -12410,6 +12421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4828540211554560406}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &744790252619659951
 GameObject:
   m_ObjectHideFlags: 0
@@ -12661,6 +12673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 422522155321036742}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &788280070847993167
 GameObject:
   m_ObjectHideFlags: 0
@@ -12706,6 +12719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7916487141763817377}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &791164253052360884
 GameObject:
   m_ObjectHideFlags: 0
@@ -12751,6 +12765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6087345195003581188}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &796447668600990664
 GameObject:
   m_ObjectHideFlags: 0
@@ -12828,6 +12843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6112333412261608018}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &803921174359565218
 GameObject:
   m_ObjectHideFlags: 0
@@ -12985,6 +13001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2599079562713351009}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &819390949075484040
 GameObject:
   m_ObjectHideFlags: 0
@@ -13433,6 +13450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 746921802928693201}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &844190929849931037
 GameObject:
   m_ObjectHideFlags: 0
@@ -13509,6 +13527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1773810610525899310}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &876747132383393426
 GameObject:
   m_ObjectHideFlags: 0
@@ -14671,6 +14690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2076529192998609578}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &970484381947602329
 GameObject:
   m_ObjectHideFlags: 0
@@ -16153,6 +16173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4888373047304257384}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1092571866846282524
 GameObject:
   m_ObjectHideFlags: 0
@@ -16533,6 +16554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7487936655513153749}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1138693915697173220
 GameObject:
   m_ObjectHideFlags: 0
@@ -16951,6 +16973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6813540567121754768}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1177175521054333946
 GameObject:
   m_ObjectHideFlags: 0
@@ -17141,6 +17164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7078876065739429823}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1219006204644911769
 GameObject:
   m_ObjectHideFlags: 0
@@ -17186,6 +17210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6764568364550330192}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1220139623197714164
 GameObject:
   m_ObjectHideFlags: 0
@@ -17857,6 +17882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4811397478030384923}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1298569744451344055
 GameObject:
   m_ObjectHideFlags: 0
@@ -23580,6 +23606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6539063690809460481}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1391978902921578765
 GameObject:
   m_ObjectHideFlags: 0
@@ -35409,6 +35436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8031843957474856039}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1594627837509449737
 GameObject:
   m_ObjectHideFlags: 0
@@ -35454,6 +35482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6863994187063982959}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1601567724301547104
 GameObject:
   m_ObjectHideFlags: 0
@@ -35566,6 +35595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5111101839672474848}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1610131238808406541
 GameObject:
   m_ObjectHideFlags: 0
@@ -36496,6 +36526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4598361808303350359}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1690461463791747655
 GameObject:
   m_ObjectHideFlags: 0
@@ -41828,6 +41859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6048718128407237175}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1751692343776898881
 GameObject:
   m_ObjectHideFlags: 0
@@ -57824,6 +57856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1910762545469516053
 GameObject:
   m_ObjectHideFlags: 0
@@ -62807,6 +62840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2935031825783113154}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1943712767666786958
 GameObject:
   m_ObjectHideFlags: 0
@@ -63069,6 +63103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8322200502593863000}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &1970561189852504482
 GameObject:
   m_ObjectHideFlags: 0
@@ -63897,6 +63932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8757579035588674890}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2053733594747541744
 GameObject:
   m_ObjectHideFlags: 0
@@ -64150,6 +64186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2072665337650851230
 GameObject:
   m_ObjectHideFlags: 0
@@ -65304,6 +65341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4003821668844215196}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2197885034880158024
 GameObject:
   m_ObjectHideFlags: 0
@@ -65793,6 +65831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1520738463708314373}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2262900546510310199
 GameObject:
   m_ObjectHideFlags: 0
@@ -65838,6 +65877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5113908092408031385}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2263659064412458151
 GameObject:
   m_ObjectHideFlags: 0
@@ -66045,6 +66085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2807063940913460918}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2291389753711880984
 GameObject:
   m_ObjectHideFlags: 0
@@ -66296,6 +66337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2233289962455992208}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2309393768379771279
 GameObject:
   m_ObjectHideFlags: 0
@@ -66686,6 +66728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3552956471085063634}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2352277029525825089
 GameObject:
   m_ObjectHideFlags: 0
@@ -67156,6 +67199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6983466842532086699}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2391438827144719962
 GameObject:
   m_ObjectHideFlags: 0
@@ -67276,6 +67320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 300019776885239280}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2398857583649891114
 GameObject:
   m_ObjectHideFlags: 0
@@ -67421,6 +67466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6387346960722054795}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2422833447933979928
 GameObject:
   m_ObjectHideFlags: 0
@@ -68099,6 +68145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2495880660260486533
 GameObject:
   m_ObjectHideFlags: 0
@@ -68144,6 +68191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7886477755226600475}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2497301073294036324
 GameObject:
   m_ObjectHideFlags: 0
@@ -68256,6 +68304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8091007449194462823}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2516378316916664097
 GameObject:
   m_ObjectHideFlags: 0
@@ -68529,6 +68578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7400835070088795006}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2547137091274310443
 GameObject:
   m_ObjectHideFlags: 0
@@ -68670,6 +68720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4191710951360309549}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2569979955928445283
 GameObject:
   m_ObjectHideFlags: 0
@@ -69053,6 +69104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 704577550122962344}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2602748957361560901
 GameObject:
   m_ObjectHideFlags: 0
@@ -69173,6 +69225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4640584201298263948}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2623997005187443379
 GameObject:
   m_ObjectHideFlags: 0
@@ -74634,6 +74687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 453246366733998165}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2748782165462975964
 GameObject:
   m_ObjectHideFlags: 0
@@ -76218,6 +76272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6442032730510097784}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &2933404159256785492
 GameObject:
   m_ObjectHideFlags: 0
@@ -77266,6 +77321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8044674538852377308}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3060244926082981592
 GameObject:
   m_ObjectHideFlags: 0
@@ -77386,6 +77442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2039688366233159644}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3085146970594020434
 GameObject:
   m_ObjectHideFlags: 0
@@ -77647,6 +77704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7301568234107445168}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3097239154029168233
 GameObject:
   m_ObjectHideFlags: 0
@@ -77723,6 +77781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2692610721380962745}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3105779021094775405
 GameObject:
   m_ObjectHideFlags: 0
@@ -77942,6 +78001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1949522370612972303}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3163218838047655642
 GameObject:
   m_ObjectHideFlags: 0
@@ -79705,6 +79765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 431350559309864032}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3397904201515060204
 GameObject:
   m_ObjectHideFlags: 0
@@ -86311,6 +86372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5296735727752110081}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &3562178404411614506
 GameObject:
   m_ObjectHideFlags: 0
@@ -95020,6 +95082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6646719217301239282}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4005759465183997647
 GameObject:
   m_ObjectHideFlags: 0
@@ -95533,6 +95596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3302463551384006948}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4064821592245065251
 GameObject:
   m_ObjectHideFlags: 0
@@ -96336,6 +96400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 320448849851633292}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4171165283936082130
 GameObject:
   m_ObjectHideFlags: 0
@@ -96486,6 +96551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4769912034762976764}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4191544396003332456
 GameObject:
   m_ObjectHideFlags: 0
@@ -97425,6 +97491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4259496774675674144
 GameObject:
   m_ObjectHideFlags: 0
@@ -102750,6 +102817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3017489632270372640}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4287159622263357399
 GameObject:
   m_ObjectHideFlags: 0
@@ -102796,6 +102864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4287843538513722346
 GameObject:
   m_ObjectHideFlags: 0
@@ -102973,6 +103042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9079708715975758828}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4320928911978647673
 GameObject:
   m_ObjectHideFlags: 0
@@ -103476,6 +103546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4175384126734304115}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4347524476672129261
 GameObject:
   m_ObjectHideFlags: 0
@@ -104030,6 +104101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6638237723453323186}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4421967286724068478
 GameObject:
   m_ObjectHideFlags: 0
@@ -104173,6 +104245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1260920280733050246}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4445384836183633496
 GameObject:
   m_ObjectHideFlags: 0
@@ -104283,6 +104356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5663706266831332690}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4452709551214096669
 GameObject:
   m_ObjectHideFlags: 0
@@ -104424,6 +104498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5988793117243032058}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4480871253028494378
 GameObject:
   m_ObjectHideFlags: 0
@@ -105197,6 +105272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4199272945742443088}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4537000125821302597
 GameObject:
   m_ObjectHideFlags: 0
@@ -105365,6 +105441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2426834527636042344}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4557407164371522178
 GameObject:
   m_ObjectHideFlags: 0
@@ -105815,6 +105892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1176253920239527543}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4607167189112067541
 GameObject:
   m_ObjectHideFlags: 0
@@ -110804,6 +110882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7103647950437241172}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4633796933321645198
 GameObject:
   m_ObjectHideFlags: 0
@@ -111132,6 +111211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 870861184080236225}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4673628441069978920
 GameObject:
   m_ObjectHideFlags: 0
@@ -111279,6 +111359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2503126732684805972}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4695446421707714954
 GameObject:
   m_ObjectHideFlags: 0
@@ -111513,6 +111594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7199343112764356251}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4724841655170712281
 GameObject:
   m_ObjectHideFlags: 0
@@ -111559,6 +111641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4725910608065959971
 GameObject:
   m_ObjectHideFlags: 0
@@ -117291,6 +117374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1340705865325853042}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4785031200425055636
 GameObject:
   m_ObjectHideFlags: 0
@@ -118006,6 +118090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5995213902191113393}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4871324752817529302
 GameObject:
   m_ObjectHideFlags: 0
@@ -118051,6 +118136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2408070501397281955}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4876834392919580501
 GameObject:
   m_ObjectHideFlags: 0
@@ -118862,6 +118948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9095836634428661680}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &4979745557939379469
 GameObject:
   m_ObjectHideFlags: 0
@@ -119814,6 +119901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6017054866287242413}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5055964691540774213
 GameObject:
   m_ObjectHideFlags: 0
@@ -120819,6 +120907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2363159686099132016}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5158560666973645033
 GameObject:
   m_ObjectHideFlags: 0
@@ -121225,6 +121314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3416737009121662938}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5181664498583395650
 GameObject:
   m_ObjectHideFlags: 0
@@ -122109,6 +122199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3367592923202467385}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5306959256055722896
 GameObject:
   m_ObjectHideFlags: 0
@@ -122310,6 +122401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8432534828228414991}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5327642914315165531
 GameObject:
   m_ObjectHideFlags: 0
@@ -122586,6 +122678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 226507311726747214}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5349763193689208606
 GameObject:
   m_ObjectHideFlags: 0
@@ -122631,6 +122724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3753341095058863226}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5355382621488324616
 GameObject:
   m_ObjectHideFlags: 0
@@ -122894,6 +122988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5922129826196865407}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5363135689199236784
 GameObject:
   m_ObjectHideFlags: 0
@@ -123014,6 +123109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5777855668704302931}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5376255815431195516
 GameObject:
   m_ObjectHideFlags: 0
@@ -123407,6 +123503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7728903362121338163}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5394783394818162119
 GameObject:
   m_ObjectHideFlags: 0
@@ -123452,6 +123549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8961214013605754371}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5397651234086176157
 GameObject:
   m_ObjectHideFlags: 0
@@ -123588,6 +123686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8442844293430003780}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5419931773242885523
 GameObject:
   m_ObjectHideFlags: 0
@@ -123669,6 +123768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7680037421387045074}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5432467309181246704
 GameObject:
   m_ObjectHideFlags: 0
@@ -123863,6 +123963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5448545440244073432
 GameObject:
   m_ObjectHideFlags: 0
@@ -123944,6 +124045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8890888223972421110}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5455048523592916682
 GameObject:
   m_ObjectHideFlags: 0
@@ -124235,6 +124337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7746958637930792754}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5476622839824951776
 GameObject:
   m_ObjectHideFlags: 0
@@ -129682,6 +129785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3202660020877219177}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5546518679320767232
 GameObject:
   m_ObjectHideFlags: 0
@@ -130180,6 +130284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3908312806804776354}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5634882096348334648
 GameObject:
   m_ObjectHideFlags: 0
@@ -130262,6 +130367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8827850731775905460}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5649261072212501688
 GameObject:
   m_ObjectHideFlags: 0
@@ -130610,6 +130716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8403851095667544108}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5689787658554671507
 GameObject:
   m_ObjectHideFlags: 0
@@ -131485,6 +131592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2341063516800193623}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5803084330905371824
 GameObject:
   m_ObjectHideFlags: 0
@@ -131530,6 +131638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2391616420202069953}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5804554497717568292
 GameObject:
   m_ObjectHideFlags: 0
@@ -131932,6 +132041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4737378565679009598}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5840702323741242260
 GameObject:
   m_ObjectHideFlags: 0
@@ -132009,6 +132119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7658678626125887165}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5846594942035293844
 GameObject:
   m_ObjectHideFlags: 0
@@ -132138,6 +132249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4259446080988801855}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5872061290279076794
 GameObject:
   m_ObjectHideFlags: 0
@@ -132493,6 +132605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3596367445271599390}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5922147121057505771
 GameObject:
   m_ObjectHideFlags: 0
@@ -137639,6 +137752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2494660967627153070}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &5972732299089317866
 GameObject:
   m_ObjectHideFlags: 0
@@ -138073,6 +138187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9216547395040604772}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6022858370321641189
 GameObject:
   m_ObjectHideFlags: 0
@@ -138286,6 +138401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6656070672125556939}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6050432641399135620
 GameObject:
   m_ObjectHideFlags: 0
@@ -139000,6 +139116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8438303718733599595}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6099742830046466441
 GameObject:
   m_ObjectHideFlags: 0
@@ -139108,6 +139225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 890866301783132145}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6117037089051637775
 GameObject:
   m_ObjectHideFlags: 0
@@ -139153,6 +139271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6017006887348946163}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6131617966538073118
 GameObject:
   m_ObjectHideFlags: 0
@@ -139716,6 +139835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1804272521127966122}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6204929465959841686
 GameObject:
   m_ObjectHideFlags: 0
@@ -139793,6 +139913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4594851153147396893}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6218638638860034397
 GameObject:
   m_ObjectHideFlags: 0
@@ -140322,6 +140443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5727251130278176714}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6276000156405235514
 GameObject:
   m_ObjectHideFlags: 0
@@ -140368,6 +140490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6277900851993929120
 GameObject:
   m_ObjectHideFlags: 0
@@ -140413,6 +140536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7214062532137255159}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6293904483876593779
 GameObject:
   m_ObjectHideFlags: 0
@@ -140537,6 +140661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4215973645816383927}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6300109100126641935
 GameObject:
   m_ObjectHideFlags: 0
@@ -140614,6 +140739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1410580343251857329}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6306005305984657318
 GameObject:
   m_ObjectHideFlags: 0
@@ -140691,6 +140817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1257813213429524270}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6320298314052876071
 GameObject:
   m_ObjectHideFlags: 0
@@ -140873,6 +141000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6950735898445661527}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6346580542581709473
 GameObject:
   m_ObjectHideFlags: 0
@@ -141162,6 +141290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3876836972635536315}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6388767866256942304
 GameObject:
   m_ObjectHideFlags: 0
@@ -141207,6 +141336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4485797434029347037}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6426702326680328056
 GameObject:
   m_ObjectHideFlags: 0
@@ -141659,6 +141789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 294646531356616539}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6480925177670367865
 GameObject:
   m_ObjectHideFlags: 0
@@ -142739,6 +142870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1948534071075204946}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6597946424922238008
 GameObject:
   m_ObjectHideFlags: 0
@@ -143407,6 +143539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6295700194471038799}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6669815700429407539
 GameObject:
   m_ObjectHideFlags: 0
@@ -143591,6 +143724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1029850759879041044}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6682993364109101326
 GameObject:
   m_ObjectHideFlags: 0
@@ -144135,6 +144269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9030506944829642459}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6727002816982173117
 GameObject:
   m_ObjectHideFlags: 0
@@ -144624,6 +144759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3484030832349676393}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6779322627169710451
 GameObject:
   m_ObjectHideFlags: 0
@@ -145057,6 +145193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3456907720352794722}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6827230413421693048
 GameObject:
   m_ObjectHideFlags: 0
@@ -145102,6 +145239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6981928145026912332}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6827943940119731023
 GameObject:
   m_ObjectHideFlags: 0
@@ -145222,6 +145360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7162799346807728019}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6836731636766892304
 GameObject:
   m_ObjectHideFlags: 0
@@ -145701,6 +145840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6868956785846837726}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6884660980661341886
 GameObject:
   m_ObjectHideFlags: 0
@@ -145778,6 +145918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &6900241753139461455
 GameObject:
   m_ObjectHideFlags: 0
@@ -157464,6 +157605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7962726210878642082}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7114445303552990859
 GameObject:
   m_ObjectHideFlags: 0
@@ -157718,6 +157860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6021004335164887960}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7168543474247280587
 GameObject:
   m_ObjectHideFlags: 0
@@ -158719,6 +158862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4513533886666897457}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7288882288334246186
 GameObject:
   m_ObjectHideFlags: 0
@@ -159378,6 +159522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 565427915873170548}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7349540639182291486
 GameObject:
   m_ObjectHideFlags: 0
@@ -159640,6 +159785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3963195049146496034}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7370898613089558131
 GameObject:
   m_ObjectHideFlags: 0
@@ -159748,6 +159894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8914656264140140412}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7385016630829242646
 GameObject:
   m_ObjectHideFlags: 0
@@ -160644,6 +160791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4606360926461541071}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7544825229663168314
 GameObject:
   m_ObjectHideFlags: 0
@@ -160689,6 +160837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8353167415974197746}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7548688383284130079
 GameObject:
   m_ObjectHideFlags: 0
@@ -161710,6 +161859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7642096021213369633
 GameObject:
   m_ObjectHideFlags: 0
@@ -161787,6 +161937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1940646070865689560}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7645390159224381267
 GameObject:
   m_ObjectHideFlags: 0
@@ -161864,6 +162015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7655406873646867657}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7651598109476707689
 GameObject:
   m_ObjectHideFlags: 0
@@ -162176,6 +162328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9084017560939729440}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7681061692892568085
 GameObject:
   m_ObjectHideFlags: 0
@@ -167407,6 +167560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5265488078228072026}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7737038009913059634
 GameObject:
   m_ObjectHideFlags: 0
@@ -167452,6 +167606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3893959464484082091}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7751977212003212022
 GameObject:
   m_ObjectHideFlags: 0
@@ -168707,6 +168862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 38131383858863844}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7888844809447519287
 GameObject:
   m_ObjectHideFlags: 0
@@ -168752,6 +168908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2908826007693642792}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7889216557958466357
 GameObject:
   m_ObjectHideFlags: 0
@@ -168872,6 +169029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7088400619717310311}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7909550421523120885
 GameObject:
   m_ObjectHideFlags: 0
@@ -168998,6 +169156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 6616642888679485499}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7930081675058270535
 GameObject:
   m_ObjectHideFlags: 0
@@ -169299,6 +169458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1574721543716252557}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &7957782940383199157
 GameObject:
   m_ObjectHideFlags: 0
@@ -175345,6 +175505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2920858487450999109}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8073215393916110357
 GameObject:
   m_ObjectHideFlags: 0
@@ -182136,6 +182297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3018465003325518935}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8221101165927011373
 GameObject:
   m_ObjectHideFlags: 0
@@ -183823,6 +183985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1231475427930514774}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8413812288865899452
 GameObject:
   m_ObjectHideFlags: 0
@@ -184114,6 +184277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 4863829887513418234}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8454490685460220424
 GameObject:
   m_ObjectHideFlags: 0
@@ -185501,6 +185665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 3446404385093776938}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8667243381059599123
 GameObject:
   m_ObjectHideFlags: 0
@@ -185621,6 +185786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8390654109891627883}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8675116919613024384
 GameObject:
   m_ObjectHideFlags: 0
@@ -186485,6 +186651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5450261712560412623}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8756294586267161215
 GameObject:
   m_ObjectHideFlags: 0
@@ -186883,6 +187050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2233738984926366561}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8779511351488827561
 GameObject:
   m_ObjectHideFlags: 0
@@ -186964,6 +187132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 8253719272032300007}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8781813279613782051
 GameObject:
   m_ObjectHideFlags: 0
@@ -187237,6 +187406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8809195051114280890
 GameObject:
   m_ObjectHideFlags: 0
@@ -187802,6 +187972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1636162021348979560}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &8875319932553894380
 GameObject:
   m_ObjectHideFlags: 0
@@ -189073,6 +189244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 2681562170542828456}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9083237843040321918
 GameObject:
   m_ObjectHideFlags: 0
@@ -189118,6 +189290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 9193138791599736328}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9087075079072679261
 GameObject:
   m_ObjectHideFlags: 0
@@ -189163,6 +189336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 1567060266888857152}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9093614593007453264
 GameObject:
   m_ObjectHideFlags: 0
@@ -189209,6 +189383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 0}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9096127434441989019
 GameObject:
   m_ObjectHideFlags: 0
@@ -189391,6 +189566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 5293845049313194984}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9112415121750989711
 GameObject:
   m_ObjectHideFlags: 0
@@ -189809,6 +189985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialWaypoint: {fileID: 7941359821505959447}
+  m_RotationSmoothTime: 0.15
 --- !u!1 &9144061102485815347
 GameObject:
   m_ObjectHideFlags: 0

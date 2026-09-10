@@ -9,6 +9,7 @@ namespace Oxtail.SpaceshipIncremental
         public abstract void Init(bool overrideColor);
         public abstract void ResetTrail();
         public abstract void SetColor(Color color);
+        public abstract void SetGradient(Gradient gradient);
         public abstract void SetSortingLayer(int layer);
         public abstract void SetSortingOrder(int order);
     }

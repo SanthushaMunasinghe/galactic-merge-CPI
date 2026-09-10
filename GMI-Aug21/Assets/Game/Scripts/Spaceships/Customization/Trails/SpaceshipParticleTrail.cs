@@ -31,6 +31,16 @@ namespace Oxtail.SpaceshipIncremental
             m_Material.SetColor("_StrongTintTint", color);
         }
 
+        public override void SetGradient(Gradient gradient)
+        {
+            if (!m_OverrideColor)
+                return;
+
+            var colorOverLifetime = m_ParticleSystem.colorOverLifetime;
+            if (colorOverLifetime.enabled)
+                colorOverLifetime.color = new ParticleSystem.MinMaxGradient(gradient);
+        }
+
         public override void SetSortingLayer(int layer)
         {
             m_Renderer.sortingLayerID = layer;

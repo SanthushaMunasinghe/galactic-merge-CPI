@@ -467,7 +467,18 @@ namespace Oxtail.SpaceshipIncremental
 
             SetNewFloorTier();
 
+            OnSpaceshipCreated(spaceship, parent);
+
             return spaceship;
+        }
+
+        /// <summary>
+        /// Called right after a spaceship is instantiated, tiered and parented, so subclasses can
+        /// layer extra per-slot presentation on top of the tier's default color. CPIManager uses this
+        /// to apply a positional color pattern; normal gameplay leaves the tier's own color untouched.
+        /// </summary>
+        protected virtual void OnSpaceshipCreated(Spaceship spaceship, SpaceshipParent parent)
+        {
         }
 
         private void DoSpaceshipCreationTransition(Spaceship spaceship)

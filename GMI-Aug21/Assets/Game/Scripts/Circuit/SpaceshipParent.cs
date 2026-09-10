@@ -9,6 +9,7 @@ namespace Oxtail.SpaceshipIncremental
     public class SpaceshipParent : MonoBehaviour
     {
         [SerializeField] private Transform m_InitialWaypoint;
+        [SerializeField, Min(0.01f)] private float m_RotationSmoothTime = 0.15f;
 
         private float m_Velocity = 1.25f;
         private Vector3 m_NextWaypoint;
@@ -21,6 +22,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private bool m_AlignWithPathLocal;
         private float m_RotationOffsetDegrees;
+        private float m_RotationVelocity;
 
         public bool IsFree => Spaceship == null;
         public Spaceship Spaceship { get; private set; }
@@ -44,11 +46,16 @@ namespace Oxtail.SpaceshipIncremental
             SaveLoadManager.Instance.OnPowerUpUpdated -= OnPowerUpUpdated;
         }
 
-        public void SetPath(Vector3[] path, PathType pathType, bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f)
+        public void SetPath(Vector3[] path, PathType pathType, bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f, float rotationSmoothTimeOverride = -1f)
         {
             m_NextWaypoint = path[0];
             m_AlignWithPathLocal = alignWithPathLocal;
             m_RotationOffsetDegrees = rotationOffsetDegrees;
+
+            if (rotationSmoothTimeOverride >= 0f)
+                m_RotationSmoothTime = rotationSmoothTimeOverride;
+
+            m_RotationVelocity = 0f;
 
             SetInitialRotation();
 
@@ -109,7 +116,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             Vector3 dir = (m_NextWaypoint - transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            float finalAngle = Mathf.LerpAngle(transform.eulerAngles.z, angle - 90f, 5f * Time.deltaTime);
+            float finalAngle = Mathf.SmoothDampAngle(transform.eulerAngles.z, angle - 90f, ref m_RotationVelocity, m_RotationSmoothTime);
             return finalAngle;
         }
 
@@ -137,7 +144,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private float CheckNextWaypointRotationLocal()
         {
-            return Mathf.LerpAngle(transform.localEulerAngles.z, TargetLocalZAngle(), 5f * Time.deltaTime);
+            return Mathf.SmoothDampAngle(transform.localEulerAngles.z, TargetLocalZAngle(), ref m_RotationVelocity, m_RotationSmoothTime);
         }
 
         public void AddSpaceship(Spaceship spaceship)

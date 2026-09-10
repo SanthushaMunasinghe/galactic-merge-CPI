@@ -28,6 +28,14 @@ namespace Oxtail.SpaceshipIncremental
             m_Material.SetColor("_Color", color);
         }
 
+        public override void SetGradient(Gradient gradient)
+        {
+            if (!m_OverrideColor)
+                return;
+
+            m_TrailRenderer.colorGradient = gradient;
+        }
+
         public override void SetSortingLayer(int layer)
         {
             m_TrailRenderer.sortingLayerID = layer;

@@ -92,10 +92,21 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_AlignSpaceshipRotationWithPath;
         [SerializeField] private float m_SpaceshipRotationOffsetDegrees;
         [SerializeField] private bool m_NegateSpaceshipPathDirection;
+        [SerializeField] private bool m_OverrideSpaceshipRotationSmoothing;
+        [SerializeField, Min(0.01f)] private float m_SpaceshipRotationSmoothTime = 0.15f;
 
         [Header("CPI Spaceship Speed")]
         [SerializeField] private bool m_OverrideSpaceshipSpeed;
         [SerializeField, Min(0.01f)] private float m_SpaceshipSpeedMultiplier = 1f;
+
+        [Header("CPI Spaceship Color Pattern")]
+        [SerializeField] private bool m_OverrideSpaceshipColorPattern;
+        [SerializeField] private Color[] m_SpaceshipColorPattern;
+        [SerializeField] private Gradient[] m_TrailGradientPattern;
+
+        [Header("CPI Time Scale")]
+        [SerializeField] private bool m_OverrideTimeScale;
+        [SerializeField, Min(0f)] private float m_TimeScale = 1f;
 
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
@@ -112,6 +123,8 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_SpawningInitialShips;
         private float m_HealthRefillUnlockTime;
         private bool m_HasFailed;
+        private bool m_TimeScaleOverrideWasActive;
+        private int m_LastColorPatternIndex = -1;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -170,6 +183,31 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
 
             m_AsteroidSpawnManager.OnWaveCleared -= OnWaveCleared;
+        }
+
+        private void OnDestroy()
+        {
+            // Defensive: Time.timeScale is a global engine setting that outlives this component, so
+            // if the override was left on when this object goes away (stopping Play mode, scene
+            // unload) it should not leak into whatever runs next.
+            if (m_TimeScaleOverrideWasActive)
+                Time.timeScale = 1f;
+        }
+
+        private void Update()
+        {
+            // Applied continuously (not just once at Start) so the toggle and scale are both
+            // live-tunable in the Inspector while recording, without needing to restart Play mode.
+            if (m_OverrideTimeScale)
+            {
+                Time.timeScale = m_TimeScale;
+                m_TimeScaleOverrideWasActive = true;
+            }
+            else if (m_TimeScaleOverrideWasActive)
+            {
+                Time.timeScale = 1f;
+                m_TimeScaleOverrideWasActive = false;
+            }
         }
 
         private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
@@ -386,7 +424,7 @@ namespace Oxtail.SpaceshipIncremental
             m_CircuitIndex = 0;
             m_Circuit.gameObject.SetActive(true);
             m_CurrentCircuit = m_Circuit;
-            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection);
+            m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection, m_OverrideSpaceshipRotationSmoothing ? m_SpaceshipRotationSmoothTime : -1f);
 
             if (m_OverrideSpaceshipSpeed)
                 m_CurrentCircuit.SetSpeedMultiplier(m_SpaceshipSpeedMultiplier);
@@ -465,7 +503,10 @@ namespace Oxtail.SpaceshipIncremental
         /// <summary>
         /// While the initial batch is spawning, fill slots in authored order ("one behind another")
         /// instead of at random, so the starting ships queue up cleanly for recording. Anything added
-        /// afterward (e.g. via the Add Spaceship button) falls back to the normal random placement.
+        /// afterward (e.g. via the Add Spaceship button) still lands in a random free slot, but when
+        /// the color pattern override is on, a slot whose pattern color matches the most recently
+        /// spawned ship's color is avoided when another free slot is available, so ships added one
+        /// after another don't repeat the same pattern color back to back.
         /// </summary>
         protected override SpaceshipParent SelectSpaceshipParentForSpawn()
         {
@@ -475,8 +516,33 @@ namespace Oxtail.SpaceshipIncremental
                 if (parent != null)
                     return parent;
             }
+            else if (m_OverrideSpaceshipColorPattern && m_SpaceshipColorPattern != null && m_SpaceshipColorPattern.Length > 1)
+            {
+                var parent = GetRandomFreeSpaceshipParentAvoidingLastColor();
+                if (parent != null)
+                    return parent;
+            }
 
             return base.SelectSpaceshipParentForSpawn();
+        }
+
+        /// <summary>
+        /// Random free slot whose pattern color differs from the last ship's, when such a slot
+        /// exists; otherwise null so the caller falls back to a plain random pick.
+        /// </summary>
+        private SpaceshipParent GetRandomFreeSpaceshipParentAvoidingLastColor()
+        {
+            if (m_LastColorPatternIndex < 0)
+                return null;
+
+            var candidates = m_CurrentCircuit.GetFreeSpaceshipParents()
+                .Where(parent => m_CurrentCircuit.GetSpaceshipParentIndex(parent) % m_SpaceshipColorPattern.Length != m_LastColorPatternIndex)
+                .ToList();
+
+            if (candidates.Count == 0)
+                return null;
+
+            return candidates[UnityEngine.Random.Range(0, candidates.Count)];
         }
 
         #region Circuit
@@ -524,6 +590,31 @@ namespace Oxtail.SpaceshipIncremental
             int newFloorTier = Mathf.FloorToInt((m_MaxSpaceShipTierCreated / 4f) + 1);
             if (m_FloorTier < newFloorTier)
                 m_FloorTier = newFloorTier;
+        }
+
+        /// <summary>
+        /// Assigns ship/trail color by the parent's fixed slot position around the track (not by
+        /// spawn order or tier), so the authored pattern repeats consistently regardless of which
+        /// ship currently occupies a slot.
+        /// </summary>
+        protected override void OnSpaceshipCreated(Spaceship spaceship, SpaceshipParent parent)
+        {
+            if (!m_OverrideSpaceshipColorPattern || m_SpaceshipColorPattern == null || m_SpaceshipColorPattern.Length == 0)
+                return;
+
+            int slotIndex = m_CurrentCircuit.GetSpaceshipParentIndex(parent);
+            if (slotIndex < 0)
+                return;
+
+            int colorIndex = slotIndex % m_SpaceshipColorPattern.Length;
+            Color color = m_SpaceshipColorPattern[colorIndex];
+            Gradient gradient = (m_TrailGradientPattern != null && m_TrailGradientPattern.Length > 0)
+                ? m_TrailGradientPattern[slotIndex % m_TrailGradientPattern.Length]
+                : null;
+
+            spaceship.SetColorOverride(color, gradient);
+
+            m_LastColorPatternIndex = colorIndex;
         }
 
         #endregion

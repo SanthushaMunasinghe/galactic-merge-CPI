@@ -13,7 +13,13 @@ namespace Oxtail.SpaceshipIncremental
 
         public Color ShapeColor
         {
-            set => m_Material.SetColor("_Color", value);
+            set
+            {
+                m_Material.SetColor("_Color", value);
+
+                if (m_Material.HasProperty("_OutlineColor"))
+                    m_Material.SetColor("_OutlineColor", value);
+            }
             get => m_Material.GetColor("_Color");
         }
 
@@ -50,6 +56,9 @@ namespace Oxtail.SpaceshipIncremental
 
             //Time.timeScale = 0.25f;
             m_Material.DOColor(color, "_Color", 0.25f);
+
+            if (m_Material.HasProperty("_OutlineColor"))
+                m_Material.DOColor(color, "_OutlineColor", 0.25f);
         }
 
         public void SetSortingLayer(string layer)

@@ -151,5 +151,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.TextUIParticle
   m_Text: {fileID: 7148280690184280274}
-  m_MoveDistance: 10
+  m_MoveDistance: 1
   m_Duration: 1
