@@ -17,6 +17,8 @@ namespace Oxtail.SpaceshipIncremental
     /// parent) every FixedUpdate via Rigidbody.MovePosition at centeringSpeed. Active Visual spins
     /// continuously around a random per-instance axis at Rotation Speed — this is applied to Active
     /// Visual rather than this transform so it never interferes with the Sliding/Homing movement.
+    /// If Face Center is on, the random spin is skipped and this transform's local +Z instead always
+    /// points at the shared local center — from spawn, through Sliding, and all the way while Homing.
     /// Destroyable throughout by a trigger hit on the planet layer. Requires a trigger Collider and a
     /// kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for a script-moved object.
     /// On destruction (via DestroyWithEffect), it immediately stops moving/rotating/colliding, hides
@@ -37,6 +39,8 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private LayerMask m_PlanetLayerMask;
 
         [Header("Rotation")]
+        [Tooltip("On: no random spin; this transform's +Z always faces the shared local center (parent's origin).")]
+        [SerializeField] private bool m_FaceCenter;
         [SerializeField] private float m_RotationSpeed = 90f;
 
         [Header("Destruction Debris")]
@@ -59,6 +63,9 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>True while a bullet is currently assigned to hit this asteroid.</summary>
         public bool IsTargeted { get; set; }
+
+        /// <summary>True if this asteroid always faces the shared local center instead of spinning randomly.</summary>
+        public bool FaceCenter => m_FaceCenter;
 
         /// <summary>
         /// Approximate current heading and speed (toward the shared local center, at centering
@@ -83,13 +90,58 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Update()
         {
+            if (m_IsDestroyed)
+                return;
+
+            // Facing only ever touches rotation, while the Sliding tween / Homing MovePosition only
+            // ever touch position, so turning this transform here never fights the movement.
+            if (m_FaceCenter)
+            {
+                LookAtCenter();
+                return;
+            }
+
             // Rotates the visible mesh only, never this transform: this GameObject's own transform is
             // driven by the Sliding tween / Homing Rigidbody.MovePosition, so spinning it directly here
             // would fight that movement. Active Visual is purely cosmetic and free to spin on its own.
-            if (m_IsDestroyed || m_ActiveVisual == null)
+            if (m_ActiveVisual == null)
                 return;
 
             m_ActiveVisual.transform.Rotate(m_RotationAxis, m_RotationSpeed * Time.deltaTime, Space.World);
+        }
+
+        /// <summary>
+        /// Points this transform's +Z straight at the shared local center (parent's origin),
+        /// regardless of state. Keeps the last rotation once it is on top of the center.
+        /// </summary>
+        private void LookAtCenter()
+        {
+            Transform parent = transform.parent;
+            Vector3 centerWorldPos = parent != null ? parent.position : Vector3.zero;
+
+            if (TryGetFacingRotation(centerWorldPos - transform.position, parent, out Quaternion rotation))
+                transform.rotation = rotation;
+        }
+
+        /// <summary>
+        /// World rotation whose +Z points along worldDirection. parent's -Z normal (the spawn plane's)
+        /// is used as "up" so the ship keeps a consistent roll instead of flipping when heading
+        /// straight up/down the oval. Returns false (rotation = identity) for a near-zero direction.
+        /// Shared with AsteroidSpawnManager so asteroids are instantiated already facing the right way.
+        /// </summary>
+        public static bool TryGetFacingRotation(Vector3 worldDirection, Transform parent, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+
+            if (worldDirection.sqrMagnitude < 0.0001f)
+                return false;
+
+            Vector3 up = parent != null ? -parent.forward : Vector3.back;
+            if (Mathf.Abs(Vector3.Dot(worldDirection.normalized, up)) > 0.99f)
+                up = parent != null ? parent.up : Vector3.up;
+
+            rotation = Quaternion.LookRotation(worldDirection, up);
+            return true;
         }
 
         public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)
@@ -97,6 +149,10 @@ namespace Oxtail.SpaceshipIncremental
             m_CenteringSpeed = centeringSpeed;
             m_OnJumpComplete = onJumpComplete;
             m_State = AsteroidState.Sliding;
+
+            // Covers callers that instantiate without AsteroidSpawnManager's pre-computed rotation.
+            if (m_FaceCenter)
+                LookAtCenter();
 
             float distance = Vector3.Distance(transform.localPosition, localJumpPosition);
             float duration = jumpSpeed > 0f ? distance / jumpSpeed : 0f;

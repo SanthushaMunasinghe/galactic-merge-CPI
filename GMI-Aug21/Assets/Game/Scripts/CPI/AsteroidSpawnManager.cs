@@ -231,7 +231,16 @@ namespace Oxtail.SpaceshipIncremental
         {
             Vector3 jumpLocalPos = ComputeJumpLocalPosition(spawnLocalPos);
 
-            AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
+            Vector3 spawnWorldPos = transform.TransformPoint(spawnLocalPos);
+
+            // Instantiated already facing the shared local center (rather than relying only on
+            // Initialize's snap) so nothing on the prefab ever sees a Quaternion.identity first frame,
+            // e.g. trails or particles that capture their start pose on enable.
+            Quaternion spawnRotation = Quaternion.identity;
+            if (m_AsteroidPrefab.FaceCenter)
+                AsteroidProjectile.TryGetFacingRotation(transform.position - spawnWorldPos, transform, out spawnRotation);
+
+            AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, spawnWorldPos, spawnRotation, transform);
             m_AsteroidsPendingJump++;
 
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
