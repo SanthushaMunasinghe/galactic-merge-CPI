@@ -53,19 +53,21 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private BulletSpawnManager m_BulletSpawnManager;
 
         [Header("CPI Planet Health")]
-        [SerializeField] private Renderer m_PlanetHealthRenderer;
+        [SerializeField, Range(0f, 100f)] private float m_StartHealthPercent = 100f;
         [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
         [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
         [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
+        [Tooltip("The dissolve effect on the greyscale planet sprite (the one layered over the colored " +
+            "planet). Health drives it: zero health leaves the grey layer intact, full health dissolves " +
+            "it away to reveal the colored planet underneath.")]
+        [SerializeField] private SandDissolveEffect m_PlanetDissolve;
 
-        [Header("CPI Planet Visual (Optional)")]
-        [Tooltip("Optional: the production Planet component (sand-dissolve + heal particles). Driven " +
-            "in lockstep with Health Gain/Loss Percent above, alongside the existing renderer fill. " +
-            "Leave empty to keep today's CPI-only visual.")]
-        [SerializeField] private Planet m_ProductionPlanet;
-        [Tooltip("Life total handed to the Planet component's SetPlanetLife so its heal/drain amounts " +
-            "(driven by Health Gain/Loss Percent) line up with the same 0-100 scale as Planet Health.")]
-        [SerializeField, Min(1f)] private float m_ProductionPlanetLifeTotal = 100f;
+        [Header("CPI Planet Sprite")]
+        [SerializeField] private bool m_OverridePlanetSprite;
+        [SerializeField] private Sprite m_PlanetSprite;
+        [Tooltip("Which renderers the sprite override is applied to. Assign both the greyscale and the " +
+            "normal planet sprite so the two stay the same shape.")]
+        [SerializeField] private SpriteRenderer[] m_PlanetSpriteRenderers;
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
@@ -155,13 +157,11 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(true);
 
-            if (m_PlanetHealthRenderer != null)
-                m_PlanetHealthRenderer.material = new Material(m_PlanetHealthRenderer.material);
+            // Swapped here rather than in Start because SandDissolveEffect builds its grain table from the
+            // sprite in its own Awake, which this component's execution order puts after this one.
+            ApplyPlanetSpriteOverride();
 
-            ApplyPlanetHealthFill();
-
-            if (m_ProductionPlanet != null)
-                m_ProductionPlanet.SetPlanetLife(new BigNumber(m_ProductionPlanetLifeTotal));
+            PlanetHealth = m_StartHealthPercent;
         }
 
         private void OnEnable()
@@ -237,7 +237,6 @@ namespace Oxtail.SpaceshipIncremental
             bool wasAtZeroHealth = PlanetHealth <= 0f;
 
             ChangePlanetHealth(-m_HealthLossPercent);
-            m_ProductionPlanet?.DrainPlanet(Mathf.RoundToInt(m_HealthLossPercent));
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
             OnPlanetHit?.Invoke();
 
@@ -251,7 +250,6 @@ namespace Oxtail.SpaceshipIncremental
                 return;
 
             ChangePlanetHealth(m_HealthGainPercent);
-            m_ProductionPlanet?.HealPlanet(Mathf.RoundToInt(m_HealthGainPercent));
             OnPlanetHealthGained?.Invoke();
         }
 
@@ -265,7 +263,7 @@ namespace Oxtail.SpaceshipIncremental
             if (m_Circuit != null)
                 m_Circuit.StopPath();
 
-            foreach (var asteroid in AsteroidProjectile.ActiveAsteroids.ToList())
+            foreach (var asteroid in Asteroid.ActiveAsteroids.ToList())
             {
                 if (asteroid != null)
                     asteroid.DestroyWithEffect();
@@ -300,7 +298,7 @@ namespace Oxtail.SpaceshipIncremental
         private void ChangePlanetHealth(float delta)
         {
             PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
-            ApplyPlanetHealthFill();
+            ApplyPlanetHealthVisual(false);
 
             if (delta > 0f)
                 UIParticleActions.PlayHpGained(delta);
@@ -308,12 +306,36 @@ namespace Oxtail.SpaceshipIncremental
                 UIParticleActions.PlayHpLost(-delta);
         }
 
-        private void ApplyPlanetHealthFill()
+        /// <summary>
+        /// Maps planet health onto the dissolve. The effect sits on the greyscale planet sprite, which is
+        /// layered on top of an identical colored one, so progress tracks health directly: 0 health leaves
+        /// the grey layer fully intact (the planet reads as empty) and 100 dissolves it away completely,
+        /// revealing the colored planet. Set immediately at startup so the planet opens on the right state
+        /// instead of animating there, and animated on every change after that so grains fly.
+        /// </summary>
+        private void ApplyPlanetHealthVisual(bool immediate)
         {
-            if (m_PlanetHealthRenderer == null)
+            if (m_PlanetDissolve == null)
                 return;
 
-            m_PlanetHealthRenderer.material.SetFloat("_Fill", PlanetHealth / 100f);
+            float dissolveProgress = PlanetHealth / 100f;
+
+            if (immediate)
+                m_PlanetDissolve.SetProgressImmediate(dissolveProgress);
+            else
+                m_PlanetDissolve.SetProgress(dissolveProgress);
+        }
+
+        private void ApplyPlanetSpriteOverride()
+        {
+            if (!m_OverridePlanetSprite || m_PlanetSprite == null || m_PlanetSpriteRenderers == null)
+                return;
+
+            foreach (var spriteRenderer in m_PlanetSpriteRenderers)
+            {
+                if (spriteRenderer != null)
+                    spriteRenderer.sprite = m_PlanetSprite;
+            }
         }
 
         // The circuit is built in Start, not Awake: CircuitController fills its SpaceshipParent and
@@ -322,6 +344,11 @@ namespace Oxtail.SpaceshipIncremental
         // the execution order attribute.
         private void Start()
         {
+            // Deliberately not in Awake: SandDissolveEffect.Awake finishes by resetting its own dissolve to
+            // 0, and this component's execution order runs its Awake first, so a value pushed there would be
+            // wiped straight back to a fully intact planet.
+            ApplyPlanetHealthVisual(true);
+
             if (!SetupCircuit())
                 return;
 

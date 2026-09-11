@@ -7,14 +7,15 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
-    /// Spawns waves of AsteroidProjectile instances around a vertical oval in this transform's local
+    /// Spawns waves of Asteroid comets around a vertical oval in this transform's local
     /// X/Y plane (Spawn Radius for the X extent, scaled by Oval Height Multiplier for the Y extent),
     /// each sliding inward at the same angle to a point on a smaller, same-ratio oval (Jump Radius),
-    /// offset along local Z by Jump Height Offset, before homing the rest of the way toward the shared
-    /// local center. Asteroids within a wave always spawn one at a time. A wave is only ever started
-    /// externally via TriggerWave (or the "Trigger Wave" context menu item while testing); a call
-    /// while a wave is already in progress (including asteroids still mid-jump) is ignored. The
-    /// spawn/jump oval gizmo only draws outside Play Mode.
+    /// offset along local Z by Jump Height Offset, before homing the rest of the way toward the planet.
+    /// A comet is destroyed once it arrives within Planet Bounds Radius of Planet Center, which is also
+    /// how collect points are collected. Asteroids within a wave always spawn one at a time. A wave is
+    /// only ever started externally via TriggerWave (or the "Trigger Wave" context menu item while
+    /// testing); a call while a wave is already in progress (including asteroids still mid-jump) is
+    /// ignored. The spawn/jump and planet bounds gizmos only draw outside Play Mode.
     ///
     /// If Use Manual Wave Spawn Points is on, TriggerWave instead spawns one asteroid per not-yet-used
     /// child of the corresponding entry in Manual Wave Spawn Point Parents (same one-at-a-time timing/
@@ -30,13 +31,21 @@ namespace Oxtail.SpaceshipIncremental
     public class AsteroidSpawnManager : MonoBehaviour
     {
         [Header("Prefab")]
-        [SerializeField] private AsteroidProjectile m_AsteroidPrefab;
+        [SerializeField] private Asteroid m_AsteroidPrefab;
 
         [Header("Spawn Area")]
         [SerializeField, Min(0f)] private float m_SpawnRadius = 10f;
         [SerializeField, Min(0f)] private float m_JumpRadius = 4f;
         [SerializeField] private float m_JumpHeightOffset = -0.5f;
         [SerializeField, Min(0.01f)] private float m_OvalHeightMultiplier = 1.5f;
+
+        [Header("Planet")]
+        [Tooltip("What comets home toward and what counts as the planet for arrival. Leave empty to use " +
+            "this transform.")]
+        [SerializeField] private Transform m_PlanetCenter;
+        [Tooltip("How close a comet or collect point has to get to Planet Center to count as having hit " +
+            "the planet. Tune it against the magenta gizmo.")]
+        [SerializeField, Min(0f)] private float m_PlanetBoundsRadius = 1.5f;
 
         [Header("Wave Settings")]
         [SerializeField] private List<int> m_WaveAsteroidCounts = new List<int> { 5 };
@@ -63,6 +72,8 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>Fired once every asteroid from the current wave has spawned and been destroyed.</summary>
         public event Action OnWaveCleared;
+
+        private Transform PlanetCenter => m_PlanetCenter != null ? m_PlanetCenter : transform;
 
         private void OnEnable()
         {
@@ -231,12 +242,12 @@ namespace Oxtail.SpaceshipIncremental
         {
             Vector3 jumpLocalPos = ComputeJumpLocalPosition(spawnLocalPos);
 
-            AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
+            Asteroid asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
             m_AsteroidsPendingJump++;
 
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
             float centeringSpeed = UnityEngine.Random.Range(m_CenteringSpeedRange.x, m_CenteringSpeedRange.y);
-            asteroid.Initialize(jumpLocalPos, jumpSpeed, centeringSpeed, OnAsteroidJumpComplete);
+            asteroid.InitializeAsProjectile(jumpLocalPos, jumpSpeed, centeringSpeed, PlanetCenter, m_PlanetBoundsRadius, OnAsteroidJumpComplete);
         }
 
         /// <summary>
@@ -368,7 +379,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private void CheckWaveCleared()
         {
-            if (m_WaveSpawningComplete && AsteroidProjectile.ActiveAsteroids.Count == 0)
+            if (m_WaveSpawningComplete && Asteroid.ActiveAsteroids.Count == 0)
                 OnWaveCleared?.Invoke();
         }
 
@@ -381,7 +392,7 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             CollectPoint collectPoint = Instantiate(m_CollectPointPrefab, worldPosition, Quaternion.identity, transform);
-            collectPoint.Initialize(m_CollectPointSpeed);
+            collectPoint.Initialize(m_CollectPointSpeed, PlanetCenter, m_PlanetBoundsRadius);
         }
 
         private void OnValidate()
@@ -404,6 +415,11 @@ namespace Oxtail.SpaceshipIncremental
 
             Gizmos.color = Color.yellow;
             DrawOvalGizmo(m_JumpRadius, m_JumpRadius * m_OvalHeightMultiplier);
+
+            // World space rather than this transform's, because Planet Center can be any transform.
+            Gizmos.matrix = Matrix4x4.identity;
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(PlanetCenter.position, m_PlanetBoundsRadius);
         }
 
         private static void DrawOvalGizmo(float radiusX, float radiusY)

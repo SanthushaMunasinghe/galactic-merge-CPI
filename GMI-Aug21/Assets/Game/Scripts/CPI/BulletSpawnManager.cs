@@ -69,7 +69,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private bool TryFireBullet(Vector3 fromPosition)
         {
-            AsteroidProjectile target = FindClosestAsteroid(fromPosition);
+            Asteroid target = FindClosestAsteroid(fromPosition);
             if (target == null)
                 return false;
 
@@ -91,14 +91,14 @@ namespace Oxtail.SpaceshipIncremental
             m_PendingShotOrigins.Clear();
         }
 
-        private AsteroidProjectile FindClosestAsteroid(Vector3 fromPosition)
+        private Asteroid FindClosestAsteroid(Vector3 fromPosition)
         {
             float minDistance = float.MaxValue;
-            AsteroidProjectile closest = null;
+            Asteroid closest = null;
 
-            for (int i = 0; i < AsteroidProjectile.ActiveAsteroids.Count; i++)
+            for (int i = 0; i < Asteroid.ActiveAsteroids.Count; i++)
             {
-                AsteroidProjectile asteroid = AsteroidProjectile.ActiveAsteroids[i];
+                Asteroid asteroid = Asteroid.ActiveAsteroids[i];
                 if (asteroid.HasReachedCenter || asteroid.IsTargeted)
                     continue;
 

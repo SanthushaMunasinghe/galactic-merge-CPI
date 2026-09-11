@@ -5,7 +5,7 @@ namespace Oxtail.SpaceshipIncremental
 {
     public struct AsteroidDestroyedByBulletEvent
     {
-        public AsteroidProjectile Asteroid;
+        public Asteroid Asteroid;
     }
 
     /// <summary>
@@ -14,21 +14,21 @@ namespace Oxtail.SpaceshipIncremental
     /// spawn point to that predicted point, bulging along the spawner's local -Z axis by Curve Height.
     /// It then flies that fixed curve at a constant Speed via Rigidbody.MovePosition every FixedUpdate
     /// — it never re-aims at the live target, so the curve stays smooth and symmetric even though the
-    /// target keeps moving. If it reaches the end of the curve without hitting anything (a miss, or
-    /// the target was destroyed first), it continues straight along the curve's exit direction and
-    /// self-destructs after Drift Lifetime seconds. On a trigger hit matching the asteroid layer,
-    /// destroys both itself and whatever asteroid it actually hit; if that wasn't its assigned target,
-    /// the assigned target's IsTargeted flag is released so it can be targeted again. Requires a
-    /// trigger Collider and a kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for
-    /// a script-moved object.
+    /// target keeps moving. The hit is applied on arrival rather than through a collider (the comet
+    /// prefab has none, and production's CombatTrailDamageVFX resolves its damage the same way): either
+    /// the moment the bullet comes within Hit Radius of its target, or when it reaches the end of the
+    /// curve. Only its own assigned target is ever destroyed. If that target is already gone by then, the
+    /// bullet continues straight along the curve's exit direction and self-destructs after Drift Lifetime
+    /// seconds. Requires a kinematic Rigidbody on this GameObject.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class BulletProjectile : MonoBehaviour
     {
-        [SerializeField] private LayerMask m_AsteroidLayerMask;
+        [Header("Hit")]
+        [SerializeField, Min(0f)] private float m_HitRadius = 0.35f;
 
         private Rigidbody m_Rigidbody;
-        private AsteroidProjectile m_Target;
+        private Asteroid m_Target;
         private float m_Speed;
         private float m_DriftLifetime;
 
@@ -38,6 +38,7 @@ namespace Oxtail.SpaceshipIncremental
         private float m_CurveLength;
         private float m_DistanceTraveled;
 
+        private bool m_HasHit;
         private bool m_IsDrifting;
         private Vector3 m_DriftDirection;
         private float m_DriftElapsed;
@@ -47,7 +48,7 @@ namespace Oxtail.SpaceshipIncremental
             m_Rigidbody = GetComponent<Rigidbody>();
         }
 
-        public void Initialize(AsteroidProjectile target, float speed, float driftLifetime, float curveHeight)
+        public void Initialize(Asteroid target, float speed, float driftLifetime, float curveHeight)
         {
             m_Target = target;
             m_Speed = speed;
@@ -80,6 +81,11 @@ namespace Oxtail.SpaceshipIncremental
 
         private void FixedUpdate()
         {
+            // Destroy is deferred to the end of the frame, so without this guard a bullet that already
+            // connected could step again and destroy a second comet.
+            if (m_HasHit)
+                return;
+
             if (m_IsDrifting)
             {
                 Drift();
@@ -92,8 +98,40 @@ namespace Oxtail.SpaceshipIncremental
             Vector3 curvePos = QuadraticBezier(m_CurveStart, m_CurveControl, m_CurveEnd, t);
             m_Rigidbody.MovePosition(curvePos);
 
-            if (t >= 1f)
+            if (CanHitTarget() && Vector3.Distance(curvePos, m_Target.transform.position) <= m_HitRadius)
+            {
+                HitTarget();
+                return;
+            }
+
+            if (t < 1f)
+                return;
+
+            // Reached the end of the curve: the hit still lands, even if the comet has drifted a little past
+            // the predicted meeting point, so prediction error never turns into a phantom miss.
+            if (CanHitTarget())
+                HitTarget();
+            else
                 BeginDrift();
+        }
+
+        private bool CanHitTarget()
+        {
+            return m_Target != null && !m_Target.IsDead;
+        }
+
+        private void HitTarget()
+        {
+            m_HasHit = true;
+
+            m_Target.IsTargeted = false;
+            Asteroid.ActiveAsteroids.Remove(m_Target);
+
+            EventManager<AsteroidDestroyedByBulletEvent>.TriggerEvent(new AsteroidDestroyedByBulletEvent { Asteroid = m_Target });
+
+            m_Target.DestroyWithEffect();
+
+            Destroy(gameObject);
         }
 
         private void BeginDrift()
@@ -127,28 +165,6 @@ namespace Oxtail.SpaceshipIncremental
         {
             float u = 1f - t;
             return (u * u * a) + (2f * u * t * b) + (t * t * c);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if ((m_AsteroidLayerMask.value & (1 << other.gameObject.layer)) == 0)
-                return;
-
-            AsteroidProjectile hitAsteroid = other.GetComponent<AsteroidProjectile>();
-            if (hitAsteroid != null)
-            {
-                if (m_Target != null && hitAsteroid != m_Target)
-                    m_Target.IsTargeted = false;
-
-                hitAsteroid.IsTargeted = false;
-                AsteroidProjectile.ActiveAsteroids.Remove(hitAsteroid);
-
-                EventManager<AsteroidDestroyedByBulletEvent>.TriggerEvent(new AsteroidDestroyedByBulletEvent { Asteroid = hitAsteroid });
-
-                hitAsteroid.DestroyWithEffect();
-            }
-
-            Destroy(gameObject);
         }
     }
 }
