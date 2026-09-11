@@ -58,6 +58,15 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
         [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
 
+        [Header("CPI Planet Visual (Optional)")]
+        [Tooltip("Optional: the production Planet component (sand-dissolve + heal particles). Driven " +
+            "in lockstep with Health Gain/Loss Percent above, alongside the existing renderer fill. " +
+            "Leave empty to keep today's CPI-only visual.")]
+        [SerializeField] private Planet m_ProductionPlanet;
+        [Tooltip("Life total handed to the Planet component's SetPlanetLife so its heal/drain amounts " +
+            "(driven by Health Gain/Loss Percent) line up with the same 0-100 scale as Planet Health.")]
+        [SerializeField, Min(1f)] private float m_ProductionPlanetLifeTotal = 100f;
+
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
 
@@ -150,6 +159,9 @@ namespace Oxtail.SpaceshipIncremental
                 m_PlanetHealthRenderer.material = new Material(m_PlanetHealthRenderer.material);
 
             ApplyPlanetHealthFill();
+
+            if (m_ProductionPlanet != null)
+                m_ProductionPlanet.SetPlanetLife(new BigNumber(m_ProductionPlanetLifeTotal));
         }
 
         private void OnEnable()
@@ -225,6 +237,7 @@ namespace Oxtail.SpaceshipIncremental
             bool wasAtZeroHealth = PlanetHealth <= 0f;
 
             ChangePlanetHealth(-m_HealthLossPercent);
+            m_ProductionPlanet?.DrainPlanet(Mathf.RoundToInt(m_HealthLossPercent));
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
             OnPlanetHit?.Invoke();
 
@@ -238,6 +251,7 @@ namespace Oxtail.SpaceshipIncremental
                 return;
 
             ChangePlanetHealth(m_HealthGainPercent);
+            m_ProductionPlanet?.HealPlanet(Mathf.RoundToInt(m_HealthGainPercent));
             OnPlanetHealthGained?.Invoke();
         }
 
