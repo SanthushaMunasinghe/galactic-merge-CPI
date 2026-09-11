@@ -56,7 +56,14 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Range(0f, 100f)] private float m_StartHealthPercent = 100f;
         [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
         [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
+        [Tooltip("After an asteroid hits the planet, how long collect points stop granting health. If " +
+            "Stop Shooting During Cooldown is also on, reward lines stop firing new bullets for the " +
+            "same duration.")]
         [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
+        [Tooltip("When on, an asteroid hitting the planet also pauses reward line shooting for Health " +
+            "Refill Cooldown, resetting together with the health refill block on every hit. When off, " +
+            "shooting is never paused by a planet hit.")]
+        [SerializeField] private bool m_StopShootingDuringCooldown = true;
         [Tooltip("The dissolve effect on the greyscale planet sprite (the one layered over the colored " +
             "planet). Health drives it: zero health leaves the grey layer intact, full health dissolves " +
             "it away to reveal the colored planet underneath.")]
@@ -108,6 +115,14 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_OverrideSpaceshipSpeed;
         [SerializeField, Min(0.01f)] private float m_SpaceshipSpeedMultiplier = 1f;
 
+        [Header("CPI Time Scale")]
+        [Tooltip("Overrides Time.timeScale for the whole game while this scene plays — slows or speeds " +
+            "up everything (movement, tweens, physics), not just CPI-specific systems. Restored to " +
+            "whatever it was before as soon as this manager is destroyed, so leaving the scene never " +
+            "leaves the rest of the app running at the wrong speed.")]
+        [SerializeField] private bool m_OverrideTimeScale;
+        [SerializeField, Min(0.01f)] private float m_TimeScaleMultiplier = 1f;
+
         [Header("CPI Cheats")]
         [SerializeField] private bool m_InfiniteMoney;
         [SerializeField] private bool m_ScaleSpawnTier = true;
@@ -123,6 +138,7 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_SpawningInitialShips;
         private float m_HealthRefillUnlockTime;
         private bool m_HasFailed;
+        private float m_PreOverrideTimeScale = 1f;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -147,6 +163,7 @@ namespace Oxtail.SpaceshipIncremental
 
             NeutralizeProgression();
             ApplyFloatingTextOverride();
+            ApplyTimeScaleOverride();
 
             m_FloorTier = m_StartArrowTier;
             m_MaxSpaceShipTierCreated = m_StartArrowTier;
@@ -238,6 +255,10 @@ namespace Oxtail.SpaceshipIncremental
 
             ChangePlanetHealth(-m_HealthLossPercent);
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
+
+            if (m_StopShootingDuringCooldown)
+                m_BulletSpawnManager.PauseFiring(m_HealthRefillCooldown);
+
             OnPlanetHit?.Invoke();
 
             if (wasAtZeroHealth)
@@ -466,6 +487,24 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             FloatingTextPooler.Instance.SetGlowColorOverride(m_FloatingTextGlowColor);
+        }
+
+        /// <summary>Time.timeScale is global engine state, not scoped to this scene, so the value from
+        /// before the override is remembered here and put back in OnDestroy rather than hardcoding 1 —
+        /// whatever the app had it set to keeps working once this manager is gone.</summary>
+        private void ApplyTimeScaleOverride()
+        {
+            if (!m_OverrideTimeScale)
+                return;
+
+            m_PreOverrideTimeScale = Time.timeScale;
+            Time.timeScale = m_TimeScaleMultiplier;
+        }
+
+        private void OnDestroy()
+        {
+            if (m_OverrideTimeScale)
+                Time.timeScale = m_PreOverrideTimeScale;
         }
 
         private void ApplyUIOverrides()

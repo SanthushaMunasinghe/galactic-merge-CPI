@@ -5,16 +5,24 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
-    /// Listens for SpaceshipHitRewardLineEvent and, if any untargeted asteroid is currently active,
-    /// hasn't already reached the center, and is outside the Dead Zone Radius, spawns a bullet at the
-    /// reward line's position that flies a curved path (bulging along this transform's local -Z axis)
-    /// toward the closest one at a constant Speed and locks it (IsTargeted) so no other bullet aims at
-    /// it too. The curve's height scales with spawn-to-target distance (Curve Height Per Distance),
+    /// Listens for SpaceshipHitRewardLineEvent and fires one bullet per point of the crossing
+    /// spaceship's TierNumber (an unmerged tier-1 ship fires 1, a ship merged once to tier 2 fires 2, and
+    /// so on) — each, if any untargeted asteroid is currently active, hasn't already reached the center,
+    /// and is outside the Dead Zone Radius, spawns at the reward line's position and flies a curved path
+    /// (bulging along this transform's local -Z axis) toward the closest one at a constant Speed and
+    /// locks it (IsTargeted) so no other bullet aims at it too — so a multi-bullet volley naturally
+    /// spreads across that many different asteroids rather than piling onto one. The curve's height
+    /// scales with spawn-to-target distance (Curve Height Per Distance),
     /// capped at Max Curve Height — there is no minimum, so a close enough target gets a straight line
     /// (curve height 0). If no valid target exists at the moment a reward line is hit (every active
     /// asteroid already targeted, already centered, or inside the dead zone), the shot is queued and
     /// retried every frame until a target frees up, rather than being dropped — a shot is only ever
     /// abandoned via ClearPendingShots (called by CPIManager once a wave has fully cleared).
+    ///
+    /// PauseFiring blocks every shot — new and already queued — until the given duration elapses, so a
+    /// reward line hit during the pause still queues up and fires once it lifts rather than being lost.
+    /// CPIManager calls this with the same duration as its post-hit health refill cooldown whenever an
+    /// asteroid reaches the planet, so shooting and healing resume together.
     /// </summary>
     public class BulletSpawnManager : MonoBehaviour
     {
@@ -31,6 +39,7 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0f)] private float m_DeadZoneRadius = 2f;
 
         private readonly List<Vector3> m_PendingShotOrigins = new List<Vector3>();
+        private float m_FireUnlockTime;
 
         private void OnEnable()
         {
@@ -63,12 +72,20 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             Vector3 origin = evt.Line.transform.position;
-            if (!TryFireBullet(origin))
-                m_PendingShotOrigins.Add(origin);
+            int bulletCount = evt.Spaceship != null ? Mathf.Max(1, evt.Spaceship.TierNumber) : 1;
+
+            for (int i = 0; i < bulletCount; i++)
+            {
+                if (!TryFireBullet(origin))
+                    m_PendingShotOrigins.Add(origin);
+            }
         }
 
         private bool TryFireBullet(Vector3 fromPosition)
         {
+            if (Time.time < m_FireUnlockTime)
+                return false;
+
             Asteroid target = FindClosestAsteroid(fromPosition);
             if (target == null)
                 return false;
@@ -89,6 +106,14 @@ namespace Oxtail.SpaceshipIncremental
         public void ClearPendingShots()
         {
             m_PendingShotOrigins.Clear();
+        }
+
+        /// <summary>Blocks every shot — a reward line hit during the pause still queues, it just won't
+        /// resolve until this elapses — for the given duration from now. A pause already in progress is
+        /// only ever extended, never cut short by a shorter one.</summary>
+        public void PauseFiring(float duration)
+        {
+            m_FireUnlockTime = Mathf.Max(m_FireUnlockTime, Time.time + duration);
         }
 
         private Asteroid FindClosestAsteroid(Vector3 fromPosition)
