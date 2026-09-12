@@ -224,7 +224,13 @@ namespace Oxtail.SpaceshipIncremental
         {
             yield return new WaitForSeconds(m_InterWaveDelay);
 
-            SetWaveState(false);
+            // Auto-advance keeps m_IsWaveActive/RewardLinesActive on for the whole run instead of
+            // dropping back to inter-wave state, so money generation and shooting never pause between
+            // waves and a wave never needs another S press to start.
+            if (m_AsteroidSpawnManager.AutoAdvanceWaves)
+                m_AsteroidSpawnManager.TriggerWave();
+            else
+                SetWaveState(false);
         }
 
         private void SetWaveState(bool active)
@@ -232,13 +238,21 @@ namespace Oxtail.SpaceshipIncremental
             m_IsWaveActive = active;
             RewardLinesActive = active;
 
-            if (m_HandPointer != null)
+            // Auto-advance never returns to inter-wave state, so leave the hand pointer as
+            // ApplyUIOverrides/Awake set it up rather than hiding it for a run it will never show
+            // again for.
+            if (m_HandPointer != null && !m_AsteroidSpawnManager.AutoAdvanceWaves)
                 m_HandPointer.SetActive(!active);
 
             if (active)
                 m_AsteroidSpawnManager.TriggerWave();
 
-            EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
+            // CPIUpgradeButtonsPanel hides itself for the duration of this event's "active" state and
+            // only reappears once it sees "inactive" — which never happens again once auto-advance
+            // keeps looping waves without returning to inter-wave state. Suppressing the event entirely
+            // in that mode leaves the panel exactly as ApplyUIOverrides left it (active) for the whole run.
+            if (!m_AsteroidSpawnManager.AutoAdvanceWaves)
+                EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
         }
 
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)

@@ -2462,7 +2462,7 @@ MonoBehaviour:
   m_PlanetSprite: {fileID: 21300000, guid: 464eea557254b0c409a58e445d5aaa29, type: 3}
   m_PlanetSpriteRenderers:
   - {fileID: 1367779879}
-  m_InterWaveDelay: 1
+  m_InterWaveDelay: 5
   m_FailDelay: 1
   m_GlobalVolume: {fileID: 1717012710}
   m_FailObject: {fileID: 1841117579}
@@ -12743,7 +12743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1051941563
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22716,6 +22716,7 @@ MonoBehaviour:
   - {fileID: 1931024523}
   - {fileID: 646991056}
   m_Use3DJump: 0
+  m_AutoAdvanceWaves: 1
 --- !u!1001 &1996602777
 PrefabInstance:
   m_ObjectHideFlags: 0

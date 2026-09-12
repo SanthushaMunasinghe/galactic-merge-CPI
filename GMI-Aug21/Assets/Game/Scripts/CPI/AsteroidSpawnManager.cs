@@ -64,6 +64,12 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private List<Transform> m_ManualWaveSpawnPointParents = new List<Transform>();
         [SerializeField] private bool m_Use3DJump;
 
+        [Header("Auto Wave Progression")]
+        [Tooltip("When on, CPIManager keeps triggering the next wave automatically (after its inter-wave " +
+            "delay) once this one clears, instead of waiting for another S press. Has no effect on how " +
+            "the first wave is started.")]
+        [SerializeField] private bool m_AutoAdvanceWaves;
+
         private int m_CurrentWaveIndex;
         private bool m_IsWaveInProgress;
         private int m_AsteroidsPendingJump;
@@ -72,6 +78,8 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>Fired once every asteroid from the current wave has spawned and been destroyed.</summary>
         public event Action OnWaveCleared;
+
+        public bool AutoAdvanceWaves => m_AutoAdvanceWaves;
 
         private Transform PlanetCenter => m_PlanetCenter != null ? m_PlanetCenter : transform;
 
