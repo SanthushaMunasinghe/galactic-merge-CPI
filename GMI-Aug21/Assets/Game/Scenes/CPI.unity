@@ -2452,7 +2452,7 @@ MonoBehaviour:
   m_Circuit: {fileID: 1591009718}
   m_AsteroidSpawnManager: {fileID: 1960713117}
   m_BulletSpawnManager: {fileID: 1941943882}
-  m_StartHealthPercent: 100
+  m_StartHealthPercent: 0
   m_HealthGainPercent: 10
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
@@ -18905,7 +18905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 581872043722278980, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 634811009250632484, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_AnchorMax.y
@@ -18953,7 +18953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912134764078029811, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 979799774435054297, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19065,7 +19065,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1463241571662329218, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1464367375562524679, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Name
@@ -19081,7 +19081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1559522845348987405, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1579183467859513348, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_SizeDelta.x
@@ -19181,7 +19181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2632182840661669498, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2772452781039145518, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_IsActive
@@ -19601,7 +19601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370048204054541446, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6531560233109578570, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
@@ -19609,7 +19609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6691532764469032156, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6736605089687613895, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_AnchorMax.y
@@ -19697,7 +19697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7178951218319041574, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7257644845125781048, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
       propertyPath: m_AnchorMax.y
@@ -20864,7 +20864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17821d445a7a48d429f455435908533d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.RecordingShortcutController
-  m_MaxDurationSeconds: 70
+  m_MaxDurationSeconds: 52
 --- !u!1001 &1758451102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22711,9 +22711,9 @@ MonoBehaviour:
   m_SpawnPointPrefab: {fileID: 5317993308727254344, guid: eba5d31c996207b4e973cc8353e076ec, type: 3}
   m_SpawnPointCount: 25
   m_ManualWaveSpawnPointParents:
-  - {fileID: 197938807}
+  - {fileID: 1792885957}
+  - {fileID: 166916797}
   - {fileID: 1931024523}
-  - {fileID: 1811283986}
   - {fileID: 646991056}
   m_Use3DJump: 0
 --- !u!1001 &1996602777
