@@ -9,6 +9,9 @@ namespace Oxtail.SpaceshipIncremental
     public struct AsteroidDestroyedByPlanetEvent
     {
         public Asteroid Asteroid;
+
+        /// <summary>The planet that absorbed the comet.</summary>
+        public PlanetEffect Planet;
     }
 
     /// <summary>
@@ -16,8 +19,9 @@ namespace Oxtail.SpaceshipIncremental
     /// still taking damage through CombatTarget until SetDead scatters its parts.
     ///
     /// AsteroidSpawnManager can instead drive it as a projectile through InitializeAsProjectile: the drop in
-    /// is skipped, the comet slides to a jump point and then homes toward the planet, and arriving inside
-    /// Planet Bounds Radius raises AsteroidDestroyedByPlanetEvent and shatters it. Projectile mode never
+    /// is skipped, the comet slides to a jump point and then homes toward the planet it was given. The
+    /// planet itself detects the arrival and calls AbsorbInto, which raises AsteroidDestroyedByPlanetEvent
+    /// and shatters the comet. Projectile mode never
     /// touches CombatTarget's health or SaveLoadManager, so a spawned comet can never overwrite the saved
     /// health of the level asteroid that shares its Target Index.
     /// </summary>
@@ -53,8 +57,7 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_IsProjectile;
         private ProjectileState m_State;
         private float m_CenteringSpeed;
-        private Transform m_PlanetCenter;
-        private float m_PlanetBoundsRadius;
+        private PlanetEffect m_TargetPlanet;
         private System.Action m_OnJumpComplete;
         private bool m_NotifiedJumpComplete;
         private bool m_IsShattered;
@@ -82,8 +85,8 @@ namespace Oxtail.SpaceshipIncremental
         {
             get
             {
-                if (m_PlanetCenter != null)
-                    return m_PlanetCenter.position;
+                if (m_TargetPlanet != null)
+                    return m_TargetPlanet.Center;
 
                 return transform.parent != null ? transform.parent.position : Vector3.zero;
             }
@@ -127,9 +130,6 @@ namespace Oxtail.SpaceshipIncremental
                 transform.position = Vector3.MoveTowards(transform.position, PlanetPosition, m_CenteringSpeed * Time.deltaTime);
 
             FaceTravelDirection();
-
-            if (Vector3.Distance(transform.position, PlanetPosition) <= m_PlanetBoundsRadius)
-                HandlePlanetHit();
         }
 
         private void OnDisable()
@@ -156,18 +156,16 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>
         /// Hands this comet over to a spawner: it slides from its current position to localJumpPosition at
-        /// jumpSpeed, then homes toward planetCenter at centeringSpeed until it arrives within
-        /// planetBoundsRadius of it. onJumpComplete fires once the slide finishes, or early if the comet is
-        /// destroyed before that.
+        /// jumpSpeed, then homes toward targetPlanet at centeringSpeed until that planet absorbs it.
+        /// onJumpComplete fires once the slide finishes, or early if the comet is destroyed before that.
         /// </summary>
         public void InitializeAsProjectile(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed,
-            Transform planetCenter, float planetBoundsRadius, System.Action onJumpComplete = null)
+            PlanetEffect targetPlanet, System.Action onJumpComplete = null)
         {
             m_IsProjectile = true;
             m_State = ProjectileState.Sliding;
             m_CenteringSpeed = centeringSpeed;
-            m_PlanetCenter = planetCenter;
-            m_PlanetBoundsRadius = planetBoundsRadius;
+            m_TargetPlanet = targetPlanet;
             m_OnJumpComplete = onJumpComplete;
 
             ActiveAsteroids.Add(this);
@@ -203,15 +201,23 @@ namespace Oxtail.SpaceshipIncremental
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
-        private void HandlePlanetHit()
+        /// <summary>
+        /// Called by the planet this comet has arrived inside. Safe to call more than once, and from a
+        /// planet other than the one it was homing at.
+        /// </summary>
+        public void AbsorbInto(PlanetEffect planet)
         {
+            if (m_IsShattered)
+                return;
+
             HasReachedCenter = true;
 
             // Removed immediately (rather than waiting for the deferred OnDisable) so a bullet resolving its
             // target later this same frame never aims at a comet that has already arrived.
             ActiveAsteroids.Remove(this);
 
-            EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(new AsteroidDestroyedByPlanetEvent { Asteroid = this });
+            EventManager<AsteroidDestroyedByPlanetEvent>.TriggerEvent(
+                new AsteroidDestroyedByPlanetEvent { Asteroid = this, Planet = planet });
 
             DestroyWithEffect();
         }

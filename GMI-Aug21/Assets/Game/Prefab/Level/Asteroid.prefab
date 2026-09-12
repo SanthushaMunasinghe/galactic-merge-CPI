@@ -77,8 +77,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: a76f1ba1275a9cd4196ea9a22971fe37, type: 3}
@@ -169,8 +169,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: f945edaddd2007a44afd10c7b2f3a44d, type: 3}
@@ -200,7 +200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7400982103190149020
 Transform:
   m_ObjectHideFlags: 0
@@ -261,8 +261,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 8
   m_MaskInteraction: 0
   m_Sprite: {fileID: 969836468, guid: 7a3b408098289d64385699ffe83a3810, type: 3}
@@ -374,8 +374,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 5354cd7e18d72f942bb109714744fcad, type: 3}
@@ -465,8 +465,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 928652c04c568b04f92d083415706472, type: 3}
@@ -594,8 +594,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: ac6ca2dee5df14a4cb250f8526815398, type: 3}
@@ -685,8 +685,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 821c4c1ac24978d49bdf4c8cadef063b, type: 3}
@@ -776,8 +776,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: bd2a1f47ed692c4428649be4cf9ef7ba, type: 3}
@@ -807,7 +807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1901047783522080977
 Transform:
   m_ObjectHideFlags: 0
@@ -5591,8 +5591,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 10
   m_MaskInteraction: 0
   m_RenderMode: 1
@@ -5703,8 +5703,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1698241821
-  m_SortingLayer: 2
+  m_SortingLayerID: -180239005
+  m_SortingLayer: 5
   m_SortingOrder: 9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: a80783e7b6a7e7745a52f3c8ed984245, type: 3}
@@ -5744,7 +5744,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.48, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7400982103190149020}

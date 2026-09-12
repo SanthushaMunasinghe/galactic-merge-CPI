@@ -28,7 +28,12 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Awake()
         {
-            m_GreyscalePlanet.material = new Material(m_GreyscalePlanet.material);
+            // Only the normal planet is instanced. The greyscale renderer's material belongs to
+            // SandDissolveEffect, which assigns it as sharedMaterial and keeps writing its settings
+            // (grayscale keyword and tint, edge, pattern) to that exact object. Replacing it here with a
+            // copy detached the renderer from the effect, so those writes landed on a material nothing
+            // was drawing with and the grayscale tint silently dropped — and because the two Awakes sit
+            // on different GameObjects, which planet lost it was down to Unity's undefined ordering.
             m_NormalPlanet.material = new Material(m_NormalPlanet.material);
         }
 

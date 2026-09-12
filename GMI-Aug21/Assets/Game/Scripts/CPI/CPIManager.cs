@@ -64,17 +64,10 @@ namespace Oxtail.SpaceshipIncremental
             "Refill Cooldown, resetting together with the health refill block on every hit. When off, " +
             "shooting is never paused by a planet hit.")]
         [SerializeField] private bool m_StopShootingDuringCooldown = true;
-        [Tooltip("The dissolve effect on the greyscale planet sprite (the one layered over the colored " +
-            "planet). Health drives it: zero health leaves the grey layer intact, full health dissolves " +
-            "it away to reveal the colored planet underneath.")]
-        [SerializeField] private SandDissolveEffect m_PlanetDissolve;
-
-        [Header("CPI Planet Sprite")]
-        [SerializeField] private bool m_OverridePlanetSprite;
-        [SerializeField] private Sprite m_PlanetSprite;
-        [Tooltip("Which renderers the sprite override is applied to. Assign both the greyscale and the " +
-            "normal planet sprite so the two stay the same shape.")]
-        [SerializeField] private SpriteRenderer[] m_PlanetSpriteRenderers;
+        [Tooltip("Every planet in the scene. Health is a single shared pool: the same value drives all of " +
+            "their sand fills, an asteroid reaching any of them costs the same, and one asteroid kill " +
+            "sends a collect point to each of them but only restores health once. Add as many as needed.")]
+        [SerializeField] private PlanetEffect[] m_Planets;
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
@@ -145,12 +138,41 @@ namespace Oxtail.SpaceshipIncremental
         public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
         public BulletSpawnManager BulletSpawner => m_BulletSpawnManager;
 
+        /// <summary>Every planet in the scene, so anything that needs one can pick from here rather than
+        /// holding its own reference.</summary>
+        public IReadOnlyList<PlanetEffect> Planets => m_Planets;
+
         public float PlanetHealth { get; private set; }
 
         public int MergeLevel { get; private set; }
         public int AddSpaceshipLevel { get; private set; }
         public int RewardLineLevel { get; private set; }
         public int CircuitLevel { get; private set; }
+
+        /// <summary>The planet nearest worldPosition, or null when none are assigned.</summary>
+        public PlanetEffect GetClosestPlanet(Vector3 worldPosition)
+        {
+            if (m_Planets == null)
+                return null;
+
+            PlanetEffect closest = null;
+            float minSqrDistance = float.MaxValue;
+
+            foreach (var planet in m_Planets)
+            {
+                if (planet == null)
+                    continue;
+
+                float sqrDistance = (planet.Center - worldPosition).sqrMagnitude;
+                if (sqrDistance < minSqrDistance)
+                {
+                    minSqrDistance = sqrDistance;
+                    closest = planet;
+                }
+            }
+
+            return closest;
+        }
 
         protected override void Awake()
         {
@@ -174,11 +196,13 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(true);
 
-            // Swapped here rather than in Start because SandDissolveEffect builds its grain table from the
-            // sprite in its own Awake, which this component's execution order puts after this one.
-            ApplyPlanetSpriteOverride();
-
             PlanetHealth = m_StartHealthPercent;
+
+            if (m_Planets == null || m_Planets.Length == 0)
+            {
+                Debug.LogError($"{nameof(CPIManager)}: no planets assigned. Nothing for comets to home at " +
+                    "and no health visual will move.", this);
+            }
         }
 
         private void OnEnable()
@@ -241,9 +265,16 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
         }
 
+        /// <summary>
+        /// Sends a single collect point to whichever planet is closest to the kill. Health is one shared
+        /// pool, so it does not matter which planet takes it in: the gain is the same and every planet's
+        /// sand fill moves with it.
+        /// </summary>
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
         {
-            m_AsteroidSpawnManager.SpawnCollectPoint(evt.Asteroid.transform.position);
+            Vector3 killPosition = evt.Asteroid.transform.position;
+
+            m_AsteroidSpawnManager.SpawnCollectPoint(killPosition, GetClosestPlanet(killPosition));
         }
 
         private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
@@ -328,34 +359,21 @@ namespace Oxtail.SpaceshipIncremental
         }
 
         /// <summary>
-        /// Maps planet health onto the dissolve. The effect sits on the greyscale planet sprite, which is
-        /// layered on top of an identical colored one, so progress tracks health directly: 0 health leaves
-        /// the grey layer fully intact (the planet reads as empty) and 100 dissolves it away completely,
-        /// revealing the colored planet. Set immediately at startup so the planet opens on the right state
-        /// instead of animating there, and animated on every change after that so grains fly.
+        /// Pushes the shared health onto every planet's dissolve, so all of them show the exact same fill
+        /// and move together on every gain and loss. Set immediately at startup so the planets open on the
+        /// right state instead of animating there, and animated on every change after that so grains fly.
         /// </summary>
         private void ApplyPlanetHealthVisual(bool immediate)
         {
-            if (m_PlanetDissolve == null)
+            if (m_Planets == null)
                 return;
 
             float dissolveProgress = PlanetHealth / 100f;
 
-            if (immediate)
-                m_PlanetDissolve.SetProgressImmediate(dissolveProgress);
-            else
-                m_PlanetDissolve.SetProgress(dissolveProgress);
-        }
-
-        private void ApplyPlanetSpriteOverride()
-        {
-            if (!m_OverridePlanetSprite || m_PlanetSprite == null || m_PlanetSpriteRenderers == null)
-                return;
-
-            foreach (var spriteRenderer in m_PlanetSpriteRenderers)
+            foreach (var planet in m_Planets)
             {
-                if (spriteRenderer != null)
-                    spriteRenderer.sprite = m_PlanetSprite;
+                if (planet != null)
+                    planet.ApplyHealthVisual(dissolveProgress, immediate);
             }
         }
 
@@ -365,9 +383,9 @@ namespace Oxtail.SpaceshipIncremental
         // the execution order attribute.
         private void Start()
         {
-            // Deliberately not in Awake: SandDissolveEffect.Awake finishes by resetting its own dissolve to
-            // 0, and this component's execution order runs its Awake first, so a value pushed there would be
-            // wiped straight back to a fully intact planet.
+            // Deliberately not in Awake: every SandDissolveEffect.Awake finishes by resetting its own
+            // dissolve to 0, and this component's execution order runs its Awake first, so a value pushed
+            // there would be wiped straight back to fully intact planets.
             ApplyPlanetHealthVisual(true);
 
             if (!SetupCircuit())
