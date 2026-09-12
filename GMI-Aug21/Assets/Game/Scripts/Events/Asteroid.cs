@@ -39,6 +39,7 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Comet")]
         [SerializeField] private SpriteRenderer m_Fire;
         [SerializeField] private SpriteRenderer m_Comet;
+        [SerializeField] private GameObject m_Comet_Parent;
 
         [Header("Parts")]
         [SerializeField] private SpriteRenderer[] m_CometParts;
@@ -281,6 +282,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             m_Fire.gameObject.SetActive(false);
             m_Comet.gameObject.SetActive(false);
+            m_Comet_Parent.SetActive(true);
 
             float angleStep = 360f / m_CometParts.Length;
 

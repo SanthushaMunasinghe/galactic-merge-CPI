@@ -494,7 +494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8715042122164718006
 Transform:
   m_ObjectHideFlags: 0
@@ -5767,6 +5767,7 @@ MonoBehaviour:
   m_TargetIndex: 0
   m_Fire: {fileID: 309795205032515433}
   m_Comet: {fileID: 4656762438995168423}
+  m_Comet_Parent: {fileID: 2723602902100502358}
   m_CometParts:
   - {fileID: 6048170646448681498}
   - {fileID: 7152451276876723320}

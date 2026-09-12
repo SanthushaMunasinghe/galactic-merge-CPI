@@ -2452,7 +2452,7 @@ MonoBehaviour:
   m_Circuit: {fileID: 1591009718}
   m_AsteroidSpawnManager: {fileID: 1960713117}
   m_BulletSpawnManager: {fileID: 1941943882}
-  m_StartHealthPercent: 0
+  m_StartHealthPercent: 100
   m_HealthGainPercent: 10
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
@@ -20864,7 +20864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17821d445a7a48d429f455435908533d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.RecordingShortcutController
-  m_MaxDurationSeconds: 52
+  m_MaxDurationSeconds: 60
 --- !u!1001 &1758451102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22711,10 +22711,11 @@ MonoBehaviour:
   m_SpawnPointPrefab: {fileID: 5317993308727254344, guid: eba5d31c996207b4e973cc8353e076ec, type: 3}
   m_SpawnPointCount: 25
   m_ManualWaveSpawnPointParents:
+  - {fileID: 197938807}
+  - {fileID: 1931024523}
+  - {fileID: 1811283986}
   - {fileID: 1792885957}
   - {fileID: 166916797}
-  - {fileID: 1931024523}
-  - {fileID: 646991056}
   m_Use3DJump: 0
 --- !u!1001 &1996602777
 PrefabInstance:
