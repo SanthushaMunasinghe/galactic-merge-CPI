@@ -74,6 +74,7 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_IsWaveInProgress;
         private int m_AsteroidsPendingJump;
         private bool m_WaveSpawningComplete;
+        private Coroutine m_ActiveWaveCoroutine;
         private readonly HashSet<Transform> m_UsedManualSpawnPoints = new HashSet<Transform>();
 
         /// <summary>Fired once every asteroid from the current wave has spawned and been destroyed.</summary>
@@ -119,7 +120,21 @@ namespace Oxtail.SpaceshipIncremental
             int waveCount = m_WaveAsteroidCounts[Mathf.Min(m_CurrentWaveIndex, m_WaveAsteroidCounts.Count - 1)];
             m_CurrentWaveIndex++;
 
-            StartCoroutine(SpawnWaveCO(waveCount));
+            m_ActiveWaveCoroutine = StartCoroutine(SpawnWaveCO(waveCount));
+        }
+
+        /// <summary>Immediately stops spawning any further asteroids from the wave currently in
+        /// progress (e.g. because the game just failed) — already-spawned asteroids are untouched, the
+        /// caller destroys those separately. Safe to call even when no wave is in progress.</summary>
+        public void CancelWave()
+        {
+            if (m_ActiveWaveCoroutine != null)
+            {
+                StopCoroutine(m_ActiveWaveCoroutine);
+                m_ActiveWaveCoroutine = null;
+            }
+
+            m_IsWaveInProgress = false;
         }
 
         private void TriggerManualWave()
@@ -153,7 +168,7 @@ namespace Oxtail.SpaceshipIncremental
 
             ShuffleInPlace(spawnPoints);
 
-            StartCoroutine(SpawnManualWaveCO(spawnPoints));
+            m_ActiveWaveCoroutine = StartCoroutine(SpawnManualWaveCO(spawnPoints));
         }
 
         /// <summary>Fisher-Yates shuffle: randomizes spawn order while still spawning each point exactly once.</summary>

@@ -224,6 +224,12 @@ namespace Oxtail.SpaceshipIncremental
         {
             yield return new WaitForSeconds(m_InterWaveDelay);
 
+            // A fail can land while this delay is running (e.g. one of the last wave's asteroids was
+            // still mid-jump when it hit the planet), and auto-advance would otherwise start a whole new
+            // wave here with nothing left to stop it.
+            if (m_HasFailed)
+                yield break;
+
             // Auto-advance keeps m_IsWaveActive/RewardLinesActive on for the whole run instead of
             // dropping back to inter-wave state, so money generation and shooting never pause between
             // waves and a wave never needs another S press to start.
@@ -295,8 +301,22 @@ namespace Oxtail.SpaceshipIncremental
 
             m_HasFailed = true;
 
+            // Hidden directly (not via SetWaveState/CPIWaveStateChangedEvent) so this is instant even in
+            // auto-advance mode, which otherwise leaves both visible for the whole run — they need to be
+            // gone well before m_FailObject appears at the end of FailDelayCO, not fade out with it.
+            if (m_HandPointer != null)
+                m_HandPointer.SetActive(false);
+
+            if (m_UpgradeButtonsRoot != null)
+                m_UpgradeButtonsRoot.SetActive(false);
+
             if (m_Circuit != null)
                 m_Circuit.StopPath();
+
+            // Stops the spawner mid-wave (it has no idea the game just failed and would otherwise keep
+            // spawning the rest of the current wave, or — in auto-advance mode — whole new waves) on top
+            // of destroying every asteroid already out there.
+            m_AsteroidSpawnManager.CancelWave();
 
             foreach (var asteroid in Asteroid.ActiveAsteroids.ToList())
             {
