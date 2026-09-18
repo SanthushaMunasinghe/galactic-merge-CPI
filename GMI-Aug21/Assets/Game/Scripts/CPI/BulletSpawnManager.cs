@@ -5,24 +5,22 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>
-    /// Listens for SpaceshipHitRewardLineEvent and fires one bullet per point of the crossing
-    /// spaceship's TierNumber (an unmerged tier-1 ship fires 1, a ship merged once to tier 2 fires 2, and
-    /// so on) — each, if any untargeted asteroid is currently active, hasn't already reached the center,
-    /// and is outside the Dead Zone Radius, spawns at the reward line's position and flies a curved path
-    /// (bulging along this transform's local -Z axis) toward the closest one at a constant Speed and
-    /// locks it (IsTargeted) so no other bullet aims at it too — so a multi-bullet volley naturally
-    /// spreads across that many different asteroids rather than piling onto one. The curve's height
-    /// scales with spawn-to-target distance (Curve Height Per Distance),
-    /// capped at Max Curve Height — there is no minimum, so a close enough target gets a straight line
-    /// (curve height 0). If no valid target exists at the moment a reward line is hit (every active
-    /// asteroid already targeted, already centered, or inside the dead zone), the shot is queued and
-    /// retried every frame until a target frees up, rather than being dropped — a shot is only ever
-    /// abandoned via ClearPendingShots (called by CPIManager once a wave has fully cleared).
+    /// Listens for SpaceshipHitRewardLineEvent and, for every currently unlocked Shot Point (a prefix of
+    /// Shot Points, starting at Initial Unlocked Shot Point Count and growable at runtime via
+    /// UnlockNextShotPoint), fires one bullet per point of the crossing spaceship's TierNumber (an
+    /// unmerged tier-1 ship fires 1 from each unlocked point, a ship merged once to tier 2 fires 2 from
+    /// each, and so on) — so a single hit produces UnlockedShotPointCount x bulletCount bullets in total,
+    /// each shot point contributing its own tier-based volley. Every bullet flies straight along the
+    /// firing shot point's own up direction (see BulletProjectile.Initialize), so an angled shot point
+    /// fires outward instead of straight up without this manager needing to know anything about angles.
     ///
-    /// PauseFiring blocks every shot — new and already queued — until the given duration elapses, so a
-    /// reward line hit during the pause still queues up and fires once it lifts rather than being lost.
-    /// CPIManager calls this with the same duration as its post-hit health refill cooldown whenever an
-    /// asteroid reaches the planet, so shooting and healing resume together.
+    /// A shot that can't fire yet (PauseFiring's window hasn't elapsed) is queued rather than dropped,
+    /// recorded by the shot point Transform it must refire from so its direction is still correct once
+    /// the pause lifts; Update retries every queued shot every frame. PauseFiring blocks every shot — new
+    /// and already queued — until the given duration elapses. CPIManager calls this with the same
+    /// duration as its post-hit health refill cooldown whenever an asteroid reaches the planet, so
+    /// shooting and healing resume together. A shot is only ever abandoned via ClearPendingShots (called
+    /// by CPIManager once a wave has fully cleared).
     /// </summary>
     public class BulletSpawnManager : MonoBehaviour
     {
@@ -31,15 +29,27 @@ namespace Oxtail.SpaceshipIncremental
 
         [Header("Flight Settings")]
         [SerializeField] private float m_Speed = 8f;
-        [SerializeField, Min(0f)] private float m_DriftLifetime = 10f;
-        [SerializeField, Min(0f)] private float m_MaxCurveHeight = 4f;
-        [SerializeField, Min(0f)] private float m_CurveHeightPerDistance = 0.2f;
 
-        [Header("Targeting")]
-        [SerializeField, Min(0f)] private float m_DeadZoneRadius = 2f;
+        [Header("Shot Points")]
+        [Tooltip("Every possible bullet-firing position, in unlock order. Only a prefix of this array is " +
+            "unlocked at a time (see Initial Unlocked Shot Point Count / UnlockNextShotPoint) — a reward " +
+            "line hit fires from every currently unlocked point, not just the first.")]
+        [SerializeField] private Transform[] m_ShotPoints;
+        [SerializeField, Min(0)] private int m_InitialUnlockedShotPointCount = 1;
 
-        private readonly List<Vector3> m_PendingShotOrigins = new List<Vector3>();
+        private readonly List<Transform> m_PendingShots = new List<Transform>();
         private float m_FireUnlockTime;
+        private int m_UnlockedShotPointCount;
+
+        public int UnlockedShotPointCount => m_UnlockedShotPointCount;
+        public bool AllShotPointsUnlocked => m_ShotPoints != null && m_UnlockedShotPointCount >= m_ShotPoints.Length;
+
+        private void Awake()
+        {
+            m_UnlockedShotPointCount = m_ShotPoints != null
+                ? Mathf.Clamp(m_InitialUnlockedShotPointCount, 0, m_ShotPoints.Length)
+                : 0;
+        }
 
         private void OnEnable()
         {
@@ -53,14 +63,24 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Update()
         {
-            // Retries every queued shot every frame so a reward-line hit that found no free target the
-            // instant it happened still fires as soon as one opens up (another bullet resolving, or a
-            // later asteroid in the same wave spawning in), instead of being lost for good.
-            for (int i = m_PendingShotOrigins.Count - 1; i >= 0; i--)
+            // Retries every queued shot every frame so a shot that couldn't fire the instant it was
+            // requested (still paused) still fires as soon as the pause lifts, instead of being lost.
+            for (int i = m_PendingShots.Count - 1; i >= 0; i--)
             {
-                if (TryFireBullet(m_PendingShotOrigins[i]))
-                    m_PendingShotOrigins.RemoveAt(i);
+                Transform shotPoint = m_PendingShots[i];
+                if (shotPoint == null || TryFireBullet(shotPoint))
+                    m_PendingShots.RemoveAt(i);
             }
+        }
+
+        /// <summary>Unlocks the next Shot Point in the array, if any remain locked. Exposed as a public
+        /// method for future upgrade/UI code to call — nothing in the scene wires this up yet.</summary>
+        public void UnlockNextShotPoint()
+        {
+            if (m_ShotPoints == null || m_UnlockedShotPointCount >= m_ShotPoints.Length)
+                return;
+
+            m_UnlockedShotPointCount++;
         }
 
         private void OnSpaceshipHitRewardLine(SpaceshipHitRewardLineEvent evt)
@@ -71,41 +91,43 @@ namespace Oxtail.SpaceshipIncremental
                 return;
             }
 
-            Vector3 origin = evt.Line.transform.position;
+            if (m_ShotPoints == null || m_UnlockedShotPointCount == 0)
+            {
+                Debug.LogError($"{nameof(BulletSpawnManager)}: no unlocked Shot Points to fire from.", this);
+                return;
+            }
+
             int bulletCount = evt.Spaceship != null ? Mathf.Max(1, evt.Spaceship.TierNumber) : 1;
 
-            for (int i = 0; i < bulletCount; i++)
+            for (int s = 0; s < m_UnlockedShotPointCount; s++)
             {
-                if (!TryFireBullet(origin))
-                    m_PendingShotOrigins.Add(origin);
+                Transform shotPoint = m_ShotPoints[s];
+                if (shotPoint == null)
+                    continue;
+
+                for (int i = 0; i < bulletCount; i++)
+                {
+                    if (!TryFireBullet(shotPoint))
+                        m_PendingShots.Add(shotPoint);
+                }
             }
         }
 
-        private bool TryFireBullet(Vector3 fromPosition)
+        private bool TryFireBullet(Transform shotPoint)
         {
             if (Time.time < m_FireUnlockTime)
                 return false;
 
-            Asteroid target = FindClosestAsteroid(fromPosition);
-            if (target == null)
-                return false;
-
-            target.IsTargeted = true;
-
-            float distanceToTarget = Vector3.Distance(fromPosition, target.transform.position);
-            float curveHeight = Mathf.Min(distanceToTarget * m_CurveHeightPerDistance, m_MaxCurveHeight);
-
-            BulletProjectile bullet = Instantiate(m_BulletPrefab, fromPosition, Quaternion.identity, transform);
-            bullet.Initialize(target, m_Speed, m_DriftLifetime, curveHeight);
+            BulletProjectile bullet = Instantiate(m_BulletPrefab, shotPoint.position, Quaternion.identity, transform);
+            bullet.Initialize(shotPoint.up, m_Speed);
             return true;
         }
 
-        /// <summary>Abandons every shot still waiting for a target. Call once a wave has fully cleared
-        /// (no more asteroids will ever appear to fulfill it), so a stray shot from the previous wave
-        /// doesn't unexpectedly fire the moment the next wave's first asteroid spawns.</summary>
+        /// <summary>Abandons every shot still waiting to fire. Call once a wave has fully cleared, so a
+        /// stray paused shot from the previous wave doesn't unexpectedly fire once the pause lifts.</summary>
         public void ClearPendingShots()
         {
-            m_PendingShotOrigins.Clear();
+            m_PendingShots.Clear();
         }
 
         /// <summary>Blocks every shot — a reward line hit during the pause still queues, it just won't
@@ -114,52 +136,6 @@ namespace Oxtail.SpaceshipIncremental
         public void PauseFiring(float duration)
         {
             m_FireUnlockTime = Mathf.Max(m_FireUnlockTime, Time.time + duration);
-        }
-
-        private Asteroid FindClosestAsteroid(Vector3 fromPosition)
-        {
-            float minDistance = float.MaxValue;
-            Asteroid closest = null;
-
-            for (int i = 0; i < Asteroid.ActiveAsteroids.Count; i++)
-            {
-                Asteroid asteroid = Asteroid.ActiveAsteroids[i];
-                if (asteroid.HasReachedCenter || asteroid.IsTargeted)
-                    continue;
-
-                if (Vector3.Distance(transform.position, asteroid.transform.position) < m_DeadZoneRadius)
-                    continue;
-
-                float distance = Vector3.Distance(fromPosition, asteroid.transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    closest = asteroid;
-                }
-            }
-
-            return closest;
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.matrix = transform.localToWorldMatrix;
-            DrawCircleGizmo(m_DeadZoneRadius);
-        }
-
-        private static void DrawCircleGizmo(float radius)
-        {
-            const int segments = 48;
-
-            Vector3 previousPoint = new Vector3(radius, 0f, 0f);
-            for (int i = 1; i <= segments; i++)
-            {
-                float angle = (i / (float)segments) * Mathf.PI * 2f;
-                Vector3 point = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * radius;
-                Gizmos.DrawLine(previousPoint, point);
-                previousPoint = point;
-            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Oxtail.Utils;
 using System;
 using System.Collections;
@@ -78,6 +79,21 @@ namespace Oxtail.SpaceshipIncremental
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
+
+        [Header("CPI Camera")]
+        [Tooltip("The CPI scene's camera Transform. Snapped to Inter Wave Camera Y / Inter Wave Ortho " +
+            "Size at scene start, then tweened between the Inter Wave and Battle values as SetWaveState " +
+            "toggles. Camera is optional if only its Transform matters, but Ortho Size tweening needs the " +
+            "Camera component too, so both are assigned from the same GameObject.")]
+        [SerializeField] private Transform m_Camera;
+        [SerializeField] private Camera m_CameraComponent;
+        [SerializeField] private float m_InterWaveCameraY;
+        [SerializeField] private float m_BattleCameraY;
+        [Tooltip("Orthographic size while a wave isn't active — left at the camera's authored value.")]
+        [SerializeField, Min(0.01f)] private float m_InterWaveOrthoSize = 6.8f;
+        [Tooltip("Orthographic size while a wave is active — larger zooms out to reveal more of the field.")]
+        [SerializeField, Min(0.01f)] private float m_BattleOrthoSize = 9f;
+        [SerializeField, Min(0f)] private float m_CameraTweenDuration = 0.5f;
 
         [Header("CPI Fail State")]
         [SerializeField, Min(0f)] private float m_FailDelay = 1f;
@@ -179,6 +195,8 @@ namespace Oxtail.SpaceshipIncremental
             ApplyPlanetSpriteOverride();
 
             PlanetHealth = m_StartHealthPercent;
+
+            SnapCameraTo(m_InterWaveCameraY, m_InterWaveOrthoSize);
         }
 
         private void OnEnable()
@@ -234,6 +252,8 @@ namespace Oxtail.SpaceshipIncremental
 
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(!active);
+
+            TweenCameraTo(active ? m_BattleCameraY : m_InterWaveCameraY, active ? m_BattleOrthoSize : m_InterWaveOrthoSize);
 
             if (active)
                 m_AsteroidSpawnManager.TriggerWave();
@@ -345,6 +365,34 @@ namespace Oxtail.SpaceshipIncremental
                 m_PlanetDissolve.SetProgressImmediate(dissolveProgress);
             else
                 m_PlanetDissolve.SetProgress(dissolveProgress);
+        }
+
+        private void SnapCameraTo(float y, float orthoSize)
+        {
+            if (m_Camera != null)
+            {
+                Vector3 localPos = m_Camera.localPosition;
+                localPos.y = y;
+                m_Camera.localPosition = localPos;
+            }
+
+            if (m_CameraComponent != null)
+                m_CameraComponent.orthographicSize = orthoSize;
+        }
+
+        private void TweenCameraTo(float y, float orthoSize)
+        {
+            if (m_Camera != null)
+            {
+                m_Camera.DOKill();
+                m_Camera.DOLocalMoveY(y, m_CameraTweenDuration).SetEase(Ease.InOutSine);
+            }
+
+            if (m_CameraComponent != null)
+            {
+                m_CameraComponent.DOKill();
+                m_CameraComponent.DOOrthoSize(orthoSize, m_CameraTweenDuration).SetEase(Ease.InOutSine);
+            }
         }
 
         private void ApplyPlanetSpriteOverride()
@@ -503,6 +551,12 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnDestroy()
         {
+            if (m_Camera != null)
+                m_Camera.DOKill();
+
+            if (m_CameraComponent != null)
+                m_CameraComponent.DOKill();
+
             if (m_OverrideTimeScale)
                 Time.timeScale = m_PreOverrideTimeScale;
         }
