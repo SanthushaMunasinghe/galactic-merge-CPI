@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>Every kind of enemy a wave can spawn. Add a value here, then give it an entry in
-    /// WaveManager's Asteroid Types (prefab and health). Keep BlueBat first: it is the default type.</summary>
+    /// WaveManager's Asteroid Types (prefab and health). Keep BlueCyclops first: it is the default type.</summary>
     public enum AsteroidType
     {
-        BlueBat,
+        BlueCyclops,
         CrystalCreature,
         GreenWing
     }

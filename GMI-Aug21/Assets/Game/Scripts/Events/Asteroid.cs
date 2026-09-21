@@ -46,7 +46,7 @@ namespace Oxtail.SpaceshipIncremental
 
         [Header("Shake")]
         [Tooltip("Keeps the comet sprite jittering while it is alive. Turn off for enemies that animate on " +
-            "their own (e.g. the blue bat).")]
+            "their own (e.g. the blue cyclops).")]
         [SerializeField] private bool m_ShakeComet = true;
 
         [Header("Death Effects")]
