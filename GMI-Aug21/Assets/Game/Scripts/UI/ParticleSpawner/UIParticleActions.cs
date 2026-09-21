@@ -17,6 +17,8 @@ namespace Oxtail.SpaceshipIncremental
 
         public static void PlayLineAdded() => Spawn(UIParticleType.LineAdded);
 
+        public static void PlayCanonAdded() => Spawn(UIParticleType.AddCanon);
+
         private static void Spawn(UIParticleType type, float? value = null)
         {
             if (CPIManager.Instance == null || UIParticleSpawner.Instance == null)

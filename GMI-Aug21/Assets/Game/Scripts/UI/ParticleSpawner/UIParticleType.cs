@@ -6,6 +6,7 @@ namespace Oxtail.SpaceshipIncremental
         HPLoss,
         ShipAdded,
         Merge,
-        LineAdded
+        LineAdded,
+        AddCanon
     }
 }

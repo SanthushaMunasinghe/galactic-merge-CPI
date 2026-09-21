@@ -34,6 +34,13 @@ namespace Oxtail.SpaceshipIncremental
             "instead of flying forever off-screen.")]
         [SerializeField, Min(0f)] private float m_MaxLifetime = 4f;
 
+        [Header("Hit Effect")]
+        [Tooltip("Child particle effect played when this bullet hits an asteroid (not when it merely runs out " +
+            "of lifetime). On a hit the bullet's own visuals, particles, sounds and colliders are turned off, " +
+            "this plays where it stopped, and the bullet is destroyed once the effect has finished. Keep it " +
+            "inactive in the prefab. Leave empty to destroy the bullet immediately on a hit.")]
+        [SerializeField] private ParticleSystem m_HitParticle;
+
         private Rigidbody m_Rigidbody;
         private Vector3 m_Direction;
         private float m_Speed;
@@ -100,7 +107,7 @@ namespace Oxtail.SpaceshipIncremental
             // destroyed event and no collect point yet.
             if (!target.TakeBulletHit())
             {
-                Destroy(gameObject);
+                FinishHit();
                 return;
             }
 
@@ -110,7 +117,67 @@ namespace Oxtail.SpaceshipIncremental
 
             target.DestroyWithEffect();
 
-            Destroy(gameObject);
+            FinishHit();
+        }
+
+        /// <summary>
+        /// Ends this bullet after it hit an asteroid. Movement already stopped (m_HasHit). With a Hit Particle,
+        /// everything that made up the flying bullet is switched off — colliders, renderers, particle
+        /// systems and audio, except anything inside the hit effect itself — then the hit effect plays and
+        /// the bullet is destroyed once it has finished. Without one it is destroyed right away.
+        /// </summary>
+        private void FinishHit()
+        {
+            if (m_HitParticle == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            foreach (Collider bulletCollider in GetComponentsInChildren<Collider>())
+                bulletCollider.enabled = false;
+
+            foreach (Renderer bulletRenderer in GetComponentsInChildren<Renderer>())
+            {
+                if (!IsPartOfHitEffect(bulletRenderer.transform))
+                    bulletRenderer.enabled = false;
+            }
+
+            foreach (ParticleSystem bulletParticles in GetComponentsInChildren<ParticleSystem>())
+            {
+                if (!IsPartOfHitEffect(bulletParticles.transform))
+                    bulletParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+
+            foreach (AudioSource bulletAudio in GetComponentsInChildren<AudioSource>())
+            {
+                if (!IsPartOfHitEffect(bulletAudio.transform))
+                    bulletAudio.Stop();
+            }
+
+            m_HitParticle.gameObject.SetActive(true);
+            m_HitParticle.Play(true);
+
+            Destroy(gameObject, GetEffectDuration(m_HitParticle));
+        }
+
+        private bool IsPartOfHitEffect(Transform candidate)
+        {
+            return candidate.IsChildOf(m_HitParticle.transform);
+        }
+
+        /// <summary>How long until every particle system in the effect (including its children) has finished.</summary>
+        private static float GetEffectDuration(ParticleSystem effect)
+        {
+            float duration = 0f;
+
+            foreach (ParticleSystem system in effect.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                ParticleSystem.MainModule main = system.main;
+                duration = Mathf.Max(duration, main.duration + main.startDelayMultiplier + main.startLifetimeMultiplier);
+            }
+
+            return duration;
         }
     }
 }

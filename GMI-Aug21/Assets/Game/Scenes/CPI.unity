@@ -6706,7 +6706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.CPIUpgradeButton
   m_Type: 4
-  m_Title: ADD CANON
+  m_Title: ADD BULLET
   m_ForceFakeMax: 0
   m_Button: {fileID: 1334631919}
   m_TitleText: {fileID: 233385478}
@@ -11701,6 +11701,11 @@ MonoBehaviour:
     Color: {r: 0.6367924, g: 1, b: 0.6692998, a: 1}
     Prefix: 
     Suffix: MERGE
+  - Type: 5
+    SpawnPoint: {fileID: 777481514}
+    Color: {r: 0.6367924, g: 1, b: 0.6692998, a: 1}
+    Prefix: +1
+    Suffix: BULLET
   m_SpriteParticlePrefab: {fileID: 0}
 --- !u!1 &1640220713
 GameObject:

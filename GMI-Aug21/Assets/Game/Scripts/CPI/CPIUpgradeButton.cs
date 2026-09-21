@@ -105,6 +105,7 @@ namespace Oxtail.SpaceshipIncremental
                     break;
                 case CPIUpgradeType.AddCanon:
                     CPIManager.Instance.AddCanon();
+                    UIParticleActions.PlayCanonAdded();
                     break;
             }
 
