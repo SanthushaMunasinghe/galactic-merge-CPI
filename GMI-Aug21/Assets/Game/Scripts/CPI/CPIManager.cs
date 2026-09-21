@@ -182,6 +182,7 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_HasFailed;
         private float m_PreOverrideTimeScale = 1f;
         private Tween m_CameraOffsetTween;
+        private CursorFollowElement m_HandFollower;
 
         private bool m_IsDragging;
         private float m_DragOffset;
@@ -222,7 +223,10 @@ namespace Oxtail.SpaceshipIncremental
             RewardLinesActive = false;
 
             if (m_HandPointer != null)
+            {
+                m_HandFollower = m_HandPointer.GetComponent<CursorFollowElement>();
                 m_HandPointer.SetActive(true);
+            }
 
             // Swapped here rather than in Start because SandDissolveEffect builds its grain table from the
             // sprite in its own Awake, which this component's execution order puts after this one.
@@ -369,9 +373,13 @@ namespace Oxtail.SpaceshipIncremental
             m_IsWaveActive = active;
             RewardLinesActive = active;
 
-            // Hidden for the whole camera transition; TweenCameraTo brings it back once that is done.
+            // Hidden for the whole camera transition; TweenCameraTo brings it back once that is done. The hand
+            // switches to its wave (press-scale) or inter-wave (pose) animator layer while hidden.
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(false);
+
+            if (m_HandFollower != null)
+                m_HandFollower.SetWaveMode(active);
 
             TweenCameraTo(active ? m_BattleCameraY : m_InterWaveCameraY, active ? m_BattleOrthoSize : m_InterWaveOrthoSize);
 
