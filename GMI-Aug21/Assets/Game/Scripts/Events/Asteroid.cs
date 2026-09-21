@@ -44,6 +44,13 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Parts")]
         [SerializeField] private SpriteRenderer[] m_CometParts;
 
+        [Header("Death Effects")]
+        [Tooltip("Flings Comet Parts outward on death. Turn off for enemies with no debris.")]
+        [SerializeField] private bool m_ShowDebris = true;
+        [Tooltip("Plays Destroy Particle on death (needs one assigned). Independent of Show Debris.")]
+        [SerializeField] private bool m_ShowDestroyParticle;
+        [SerializeField] private ParticleSystem m_DestroyParticle;
+
         [Header("Projectile Mode")]
         [Tooltip("Turns the comet so it flies nose first, which keeps the fire trailing behind it. Only " +
             "used when a spawner drives this comet as a projectile.")]
@@ -236,9 +243,9 @@ namespace Oxtail.SpaceshipIncremental
         }
 
         /// <summary>
-        /// Immediately stops this comet moving and being targetable, plays the same part scatter the level
-        /// death uses, then destroys the GameObject once the scatter has played. Unlike SetDead it never
-        /// writes to the save. Safe to call more than once.
+        /// Immediately stops this comet moving and being targetable, plays the same death effects the level
+        /// death uses (debris and/or destroy particle, per their toggles), then destroys the GameObject once
+        /// they have played. Unlike SetDead it never writes to the save. Safe to call more than once.
         /// </summary>
         public void DestroyWithEffect()
         {
@@ -255,9 +262,7 @@ namespace Oxtail.SpaceshipIncremental
             // of a comet that died mid slide.
             NotifyJumpComplete();
 
-            ShatterParts();
-
-            Destroy(gameObject, k_ShatterLifetime);
+            Destroy(gameObject, PlayDeathEffects());
         }
 
         /// <summary>
@@ -308,19 +313,47 @@ namespace Oxtail.SpaceshipIncremental
         {
             IsDead = true;
 
-            ShatterParts();
+            PlayDeathEffects();
 
             SaveLoadManager.Instance.SaveTargetHealth(m_TargetIndex, -1);
         }
 
         /// <summary>
-        /// Hides the comet and flings its parts outward. Shared by the level death path (SetDead, which also
+        /// Hides the comet (and its fire, if it has one), then plays whichever death effects are switched on:
+        /// Show Debris flings the parts outward, and Show Destroy Particle plays the assigned particle
+        /// system. The two are independent. Returns how long this GameObject has to stay alive for the
+        /// effects to finish, 0 when none played. Shared by the level death path (SetDead, which also
         /// persists the kill) and by projectile mode, which must never write to the save.
         /// </summary>
-        private void ShatterParts()
+        private float PlayDeathEffects()
         {
-            m_Fire.gameObject.SetActive(false);
+            if (m_Fire != null)
+                m_Fire.gameObject.SetActive(false);
+
             m_Comet.gameObject.SetActive(false);
+
+            float lifetime = 0f;
+
+            if (m_ShowDebris && m_Comet_Parent != null && m_CometParts != null && m_CometParts.Length > 0)
+            {
+                FlingDebris();
+                lifetime = k_ShatterLifetime;
+            }
+
+            if (m_ShowDestroyParticle && m_DestroyParticle != null)
+            {
+                m_DestroyParticle.gameObject.SetActive(true);
+                m_DestroyParticle.Play();
+
+                ParticleSystem.MainModule main = m_DestroyParticle.main;
+                lifetime = Mathf.Max(lifetime, main.duration + main.startLifetime.constantMax);
+            }
+
+            return lifetime;
+        }
+
+        private void FlingDebris()
+        {
             m_Comet_Parent.SetActive(true);
 
             float angleStep = 360f / m_CometParts.Length;

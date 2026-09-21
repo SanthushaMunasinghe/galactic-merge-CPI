@@ -658,7 +658,7 @@ MonoBehaviour:
   m_DragMaxSpeed: 40
   m_DragDeadZone: 0.02
   m_BulletSpawnManager: {fileID: 1941943882}
-  m_StartHealthPercent: 100
+  m_StartHealthPercent: 0
   m_HealthGainPercent: 10
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
@@ -9819,7 +9819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e84b037ae0b374bb893897337e6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.WaveManager
-  m_AsteroidPrefab: {fileID: 751793167670176148, guid: be482b5a836a9c3499d37d89b7641170, type: 3}
+  m_AsteroidPrefab: {fileID: 751793167670176148, guid: 82504477886f35c4bacc67fcb9ef7b96, type: 3}
   m_ColumnSpacing: 1.2
   m_RowSpacing: 1.2
   m_SubWaveSpacing: 2

@@ -1,0 +1,945 @@
+fileFormatVersion: 2
+guid: 1c4e0ba3dc70d654aa9b3d3d575147a7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9192457684463844591
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_0
+  - first:
+      213: -5543607701608855077
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_1
+  - first:
+      213: -4384281847498700812
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_2
+  - first:
+      213: -180709066465333931
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_3
+  - first:
+      213: 7494675853084718287
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_4
+  - first:
+      213: 3752145571197091523
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_5
+  - first:
+      213: 7901658350394096001
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_6
+  - first:
+      213: 5157182666328336554
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_7
+  - first:
+      213: 8080594972351808661
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_8
+  - first:
+      213: -6479718894712344438
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_9
+  - first:
+      213: -9204738867317604967
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_10
+  - first:
+      213: -3381761496561788450
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_11
+  - first:
+      213: 2661600672103797292
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_12
+  - first:
+      213: 4991147580889145630
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_13
+  - first:
+      213: -8738723693899466630
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_14
+  - first:
+      213: -6117196020554275184
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_15
+  - first:
+      213: -8902319610147346167
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_16
+  - first:
+      213: -6349838922499668954
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_17
+  - first:
+      213: 857974860518723324
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_18
+  - first:
+      213: 9064490650303984629
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_19
+  - first:
+      213: 7347864803523754463
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_20
+  - first:
+      213: -3093414358326602464
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_21
+  - first:
+      213: -3386302351984285608
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_22
+  - first:
+      213: 1645151703288459650
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_23
+  - first:
+      213: -9155445961505750598
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_24
+  - first:
+      213: -3084188081825907969
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_25
+  - first:
+      213: -3792725475473149063
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_26
+  - first:
+      213: 3355889602319565545
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_27
+  - first:
+      213: -3031323181314246078
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_28
+  - first:
+      213: 3647681294100592221
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_29
+  - first:
+      213: -1891308566018086056
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_30
+  - first:
+      213: -4314972846719371332
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_31
+  - first:
+      213: -4002487194275046404
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_32
+  - first:
+      213: 8401163248103647129
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_33
+  - first:
+      213: -9023387946146392865
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_34
+  - first:
+      213: -6001340865274910413
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_35
+  - first:
+      213: 4357080358226755328
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_36
+  - first:
+      213: -1247208973338935949
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_37
+  - first:
+      213: -3051434084711107709
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_38
+  - first:
+      213: -8077216083843642832
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_39
+  - first:
+      213: -3027041681125575719
+    second: ChatGPT Image Sep 21, 2026, 12_13_19 PM_40
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: NewBat_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.542042, y: 0.36786795}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4b806156b9aada4ca5f385d33ef97ee
+      internalID: 203327813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_1
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5360358, y: 0.37387392}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e47ba1d0bd3b67b4fbc35e54a3c5c497
+      internalID: 1055569860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_2
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.51201165, y: 0.36186197}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1dd2562c447c6541937e9fa88c13e8a
+      internalID: -631905496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_3
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.49999973, y: 0.36786795}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88377cff5f440464aaabfed5bbb23bdd
+      internalID: -1820497908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_4
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46996963, y: 0.37387392}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 029d5801a76d57d43b7f17bf40aa31d8
+      internalID: 339923113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_5
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 916
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46996963, y: 0.37387392}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ab97e2ed44c15049b47618ac7cecf85
+      internalID: -1901387100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5360358, y: 0.36186197}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec1e5b5a92797314e9a907c4be82c918
+      internalID: -1768715006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_7
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.53002995, y: 0.35585603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7edd34ef97aec544ac28e5c365947b0
+      internalID: 1846206186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_8
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.51201165, y: 0.3498498}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2da4866769c63ba47bb92eb0e944f2f0
+      internalID: -1770862495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_9
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.48798782, y: 0.36186197}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e458852d55ba63a4b9c9a02cf2f75f8c
+      internalID: 1262403459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_10
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46996963, y: 0.35585603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22bb1ba7cd58e5940aae6fd020fabfe5
+      internalID: 1019884852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_11
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 687
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46396366, y: 0.35585603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 436df3d32cc141f4ea815771378828bc
+      internalID: 1525792499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5360358, y: 0.37387392}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 708376b37be71e14db579b7e9761bf62
+      internalID: 994037556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_13
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5360361, y: 0.37387392}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c2c1f52971227048897fe41d871e434
+      internalID: 4296763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_14
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5240239, y: 0.3798799}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40c8b4db6cc1d684399c936b55b5c45a
+      internalID: 904843216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_15
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.48798782, y: 0.36786795}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3791b0072b4aeac418b376d9c2d5eec4
+      internalID: -480511988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_16
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46996963, y: 0.33783785}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1142f0eff0bf5ef4597d4e9c7e298d1a
+      internalID: -1818406444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_17
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 458
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.4759756, y: 0.32582593}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81ff7c040bfde0b41a1c659114079956
+      internalID: -1031938700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5360358, y: 0.3438441}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6d9cefc21fed044eba5afa2f5d19e42
+      internalID: -1028238249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_19
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5420418, y: 0.34985006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6dc5553802af51469e18e0b7060821e
+      internalID: -945469086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_20
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5180179, y: 0.35585603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8dc0ac69b83f6b44bdc21d74f33a695
+      internalID: -1000094593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_21
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.48798782, y: 0.34985006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f790ec3fd045cf438cfcd299361b705
+      internalID: -431154858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_22
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.4759756, y: 0.34985006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2f1997f5ab4a894b97ee55a1bd1fa79
+      internalID: -488905737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_23
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 229
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.46996963, y: 0.35585603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aa3b09c116c4794e8afe45bcce4f08b
+      internalID: -1092593137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5420418, y: 0.42792812}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b585ed69da996543a11e69fdcae31be
+      internalID: -1151315002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_25
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.53002983, y: 0.43994015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f082860d49d1e194eb7d729861b773b8
+      internalID: 2017870151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_26
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.5060057, y: 0.43393415}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 898ee1480139ffa4797906f55ac42cad
+      internalID: -131069002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_27
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.48198184, y: 0.43994015}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90f010f69d917fa47a9ae13c52c82aa5
+      internalID: 1134759034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_28
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.4759756, y: 0.43393415}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d283ddc5c675ef42a4c93630e6ca4f1
+      internalID: -41594899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NewBat_29
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 0
+        width: 229
+        height: 229
+      alignment: 9
+      pivot: {x: 0.4579577, y: 0.44594613}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc51a5506ea57cb408ee720a8e23d80a
+      internalID: 2048845893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 257e95ed71512a04d85175cdad22e34d
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":6.0,"y":5.0},"gridSpriteSize":{"x":229.0,"y":229.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      NewBat_0: 203327813
+      NewBat_1: 1055569860
+      NewBat_10: 1019884852
+      NewBat_11: 1525792499
+      NewBat_12: 994037556
+      NewBat_13: 4296763
+      NewBat_14: 904843216
+      NewBat_15: -480511988
+      NewBat_16: -1818406444
+      NewBat_17: -1031938700
+      NewBat_18: -1028238249
+      NewBat_19: -945469086
+      NewBat_2: -631905496
+      NewBat_20: -1000094593
+      NewBat_21: -431154858
+      NewBat_22: -488905737
+      NewBat_23: -1092593137
+      NewBat_24: -1151315002
+      NewBat_25: 2017870151
+      NewBat_26: -131069002
+      NewBat_27: 1134759034
+      NewBat_28: -41594899
+      NewBat_29: 2048845893
+      NewBat_3: -1820497908
+      NewBat_4: 339923113
+      NewBat_5: -1901387100
+      NewBat_6: -1768715006
+      NewBat_7: 1846206186
+      NewBat_8: -1770862495
+      NewBat_9: 1262403459
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
