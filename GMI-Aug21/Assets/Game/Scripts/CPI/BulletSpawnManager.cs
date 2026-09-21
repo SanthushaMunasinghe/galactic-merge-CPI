@@ -37,6 +37,23 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Transform[] m_ShotPoints;
         [SerializeField, Min(0)] private int m_InitialUnlockedShotPointCount = 1;
 
+        [Header("Shot Point Generator")]
+        [Tooltip("Generated shot points are placed on a circle around this transform.")]
+        [SerializeField] private Transform m_ShotPointCenter;
+        [SerializeField, Min(0f)] private float m_ShotPointRadius = 2.6f;
+        [Tooltip("Angle in degrees between neighbouring shot points, measured around the center.")]
+        [SerializeField, Min(0f)] private float m_ShotPointAngleStep = 10f;
+        [SerializeField, Min(1)] private int m_ShotPointCount = 7;
+
+        [Header("Collect Point")]
+        [SerializeField] private CollectPoint m_CollectPointPrefab;
+        [Tooltip("Units per second a collect point flies toward the planet.")]
+        [SerializeField, Min(0f)] private float m_CollectPointSpeed = 12f;
+        [Tooltip("What collect points fly toward.")]
+        [SerializeField] private Transform m_PlanetCenter;
+        [Tooltip("How close a collect point has to get to Planet Center to be collected.")]
+        [SerializeField, Min(0f)] private float m_PlanetBoundsRadius = 1.5f;
+
         private readonly List<Transform> m_PendingShots = new List<Transform>();
         private float m_FireUnlockTime;
         private int m_UnlockedShotPointCount;
@@ -83,6 +100,64 @@ namespace Oxtail.SpaceshipIncremental
             m_UnlockedShotPointCount++;
         }
 
+#if UNITY_EDITOR
+        private const string k_GeneratedContainerName = "GeneratedShotPoints";
+
+        /// <summary>
+        /// Edit-time button (see BulletSpawnManagerEditor). Clears everything previously generated and
+        /// rebuilds Shot Points: Shot Point Count points on a circle of Shot Point Radius around Shot Point
+        /// Center, each rotated so its up direction points straight out from the center. Index 0 is straight
+        /// up, then they alternate left, right, left, right..., each pair one Shot Point Angle Step further
+        /// out, so unlocking them in order widens the fan symmetrically. Points live under a
+        /// "GeneratedShotPoints" child, which is the only thing a regenerate deletes — shot points you made
+        /// by hand elsewhere are left alone (though the array itself is replaced).
+        /// </summary>
+        [ContextMenu("Generate Shot Points")]
+        public void GenerateShotPoints()
+        {
+            if (m_ShotPointCenter == null)
+            {
+                Debug.LogError($"{nameof(BulletSpawnManager)}: Shot Point Center must be assigned.", this);
+                return;
+            }
+
+            UnityEditor.Undo.RecordObject(this, "Generate Shot Points");
+
+            Transform container = transform.Find(k_GeneratedContainerName);
+            if (container == null)
+            {
+                GameObject containerObject = new GameObject(k_GeneratedContainerName);
+                UnityEditor.Undo.RegisterCreatedObjectUndo(containerObject, "Generate Shot Points");
+                container = containerObject.transform;
+                container.SetParent(transform, false);
+            }
+
+            for (int i = container.childCount - 1; i >= 0; i--)
+                UnityEditor.Undo.DestroyObjectImmediate(container.GetChild(i).gameObject);
+
+            m_ShotPoints = new Transform[m_ShotPointCount];
+
+            for (int i = 0; i < m_ShotPointCount; i++)
+            {
+                // 0 -> 0, 1 -> +1 step (left), 2 -> -1 step (right), 3 -> +2 steps, 4 -> -2 steps, ...
+                int stepIndex = (i + 1) / 2;
+                float angle = (i % 2 == 1 ? 1f : -1f) * stepIndex * m_ShotPointAngleStep;
+                Quaternion rotation = m_ShotPointCenter.rotation * Quaternion.Euler(0f, 0f, angle);
+
+                GameObject point = new GameObject($"ShotPoint_{i}");
+                UnityEditor.Undo.RegisterCreatedObjectUndo(point, "Generate Shot Points");
+                point.transform.SetParent(container, false);
+                point.transform.SetPositionAndRotation(
+                    m_ShotPointCenter.position + (rotation * Vector3.up * m_ShotPointRadius),
+                    rotation);
+
+                m_ShotPoints[i] = point.transform;
+            }
+
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
+
         private void OnSpaceshipHitRewardLine(SpaceshipHitRewardLineEvent evt)
         {
             if (m_BulletPrefab == null)
@@ -118,9 +193,26 @@ namespace Oxtail.SpaceshipIncremental
             if (Time.time < m_FireUnlockTime)
                 return false;
 
-            BulletProjectile bullet = Instantiate(m_BulletPrefab, shotPoint.position, Quaternion.identity, transform);
+            // Parented to the scene root rather than to this transform: this manager sits under the Circuits
+            // object, which is dragged sideways during a wave and would carry in-flight bullets with it.
+            BulletProjectile bullet = Instantiate(m_BulletPrefab, shotPoint.position, Quaternion.identity, transform.root);
             bullet.Initialize(shotPoint.up, m_Speed);
             return true;
+        }
+
+        /// <summary>Spawns the pickup a bullet kill leaves behind; it flies straight to Planet Center at Collect
+        /// Point Speed and heals on arrival (see CollectPoint). Parented to the scene root, not to anything
+        /// that moves, so nothing but its own flight carries it.</summary>
+        public void SpawnCollectPoint(Vector3 worldPosition)
+        {
+            if (m_CollectPointPrefab == null || m_PlanetCenter == null)
+            {
+                Debug.LogError($"{nameof(BulletSpawnManager)}: Collect Point Prefab and Planet Center must be assigned.", this);
+                return;
+            }
+
+            CollectPoint collectPoint = Instantiate(m_CollectPointPrefab, worldPosition, Quaternion.identity, transform.root);
+            collectPoint.Initialize(m_CollectPointSpeed, m_PlanetCenter, m_PlanetBoundsRadius);
         }
 
         /// <summary>Abandons every shot still waiting to fire. Call once a wave has fully cleared, so a

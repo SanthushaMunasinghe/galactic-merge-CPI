@@ -47,8 +47,32 @@ namespace Oxtail.SpaceshipIncremental
         [Header("CPI Circuit")]
         [SerializeField] private CircuitController m_Circuit;
 
-        [Header("CPI Asteroids")]
-        [SerializeField] private AsteroidSpawnManager m_AsteroidSpawnManager;
+        [Header("CPI Waves")]
+        [SerializeField] private WaveManager m_WaveManager;
+
+        [Header("CPI Background Scroll")]
+        [Tooltip("Background layers (set to Externally Controlled). They only scroll while a wave is " +
+            "active, each at this speed scaled by its own Parallax Multiplier, and stop when it ends.")]
+        [SerializeField] private ScrollSprite2D[] m_BackgroundLayers;
+        [Tooltip("Units per second the background scrolls down during a wave, before each layer's Parallax " +
+            "Multiplier. Overrides the layers' own Speed, which is ignored while they are externally controlled.")]
+        [SerializeField, Min(0f)] private float m_WaveBackgroundScrollSpeed = 1.5f;
+
+        [Header("CPI Circuit Drag")]
+        [Tooltip("Everything that slides left and right together while dragging: the Circuits object " +
+            "(ring, ships, shot points) and the planet, which is a sibling of it rather than a child.")]
+        [SerializeField] private Transform[] m_DragTargets;
+        [Tooltip("A drag only starts when the press lands within Drag Grab Radius of this — the planet.")]
+        [SerializeField] private Transform m_DragGrabPoint;
+        [SerializeField, Min(0f)] private float m_DragGrabRadius = 2f;
+        [Tooltip("How far left or right of where they started the drag targets can be dragged.")]
+        [SerializeField, Min(0f)] private float m_DragMaxOffset = 2.5f;
+        [Tooltip("Time (seconds) to catch up to the mouse. Higher = smoother/laggier, lower = snappier.")]
+        [SerializeField, Min(0f)] private float m_DragSmoothTime = 0.08f;
+        [Tooltip("Maximum move speed in world units/sec, so fast mouse flicks don't cause a huge jump.")]
+        [SerializeField, Min(0f)] private float m_DragMaxSpeed = 40f;
+        [Tooltip("Ignore mouse movement smaller than this many world units, to prevent jitter from tiny movements.")]
+        [SerializeField, Min(0f)] private float m_DragDeadZone = 0.02f;
 
         [Header("CPI Bullets")]
         [SerializeField] private BulletSpawnManager m_BulletSpawnManager;
@@ -81,13 +105,15 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
 
         [Header("CPI Camera")]
-        [Tooltip("The CPI scene's camera Transform. Snapped to Inter Wave Camera Y / Inter Wave Ortho " +
-            "Size at scene start, then tweened between the Inter Wave and Battle values as SetWaveState " +
-            "toggles. Camera is optional if only its Transform matters, but Ortho Size tweening needs the " +
+        [Tooltip("The camera's CameraFollow, which smoothly follows the Circuits. Its Vertical Offset is " +
+            "snapped to Inter Wave Camera Y / Inter Wave Ortho Size at scene start, then tweened between " +
+            "the Inter Wave and Battle values as SetWaveState toggles. Ortho Size tweening needs the " +
             "Camera component too, so both are assigned from the same GameObject.")]
-        [SerializeField] private Transform m_Camera;
+        [SerializeField] private CameraFollow m_CameraFollow;
         [SerializeField] private Camera m_CameraComponent;
+        [Tooltip("Camera height above where it follows the Circuits while no wave is active.")]
         [SerializeField] private float m_InterWaveCameraY;
+        [Tooltip("Camera height above where it follows the Circuits while a wave is active.")]
         [SerializeField] private float m_BattleCameraY;
         [Tooltip("Orthographic size while a wave isn't active — left at the camera's authored value.")]
         [SerializeField, Min(0.01f)] private float m_InterWaveOrthoSize = 6.8f;
@@ -155,10 +181,18 @@ namespace Oxtail.SpaceshipIncremental
         private float m_HealthRefillUnlockTime;
         private bool m_HasFailed;
         private float m_PreOverrideTimeScale = 1f;
+        private Tween m_CameraOffsetTween;
+
+        private bool m_IsDragging;
+        private float m_DragOffset;
+        private float m_DragTargetOffset;
+        private float m_DragVelocity;
+        private float m_DragGrabMouseX;
+        private float m_DragGrabStartTargetOffset;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
-        public AsteroidSpawnManager AsteroidSpawner => m_AsteroidSpawnManager;
+        public WaveManager WaveManager => m_WaveManager;
         public BulletSpawnManager BulletSpawner => m_BulletSpawnManager;
 
         public float PlanetHealth { get; private set; }
@@ -206,7 +240,7 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<AsteroidDestroyedByPlanetEvent>.AddListener(OnAsteroidDestroyedByPlanet);
             EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
 
-            m_AsteroidSpawnManager.OnWaveCleared += OnWaveCleared;
+            m_WaveManager.OnWaveCleared += OnWaveCleared;
         }
 
         private void OnDisable()
@@ -216,7 +250,92 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<AsteroidDestroyedByPlanetEvent>.RemoveListener(OnAsteroidDestroyedByPlanet);
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
 
-            m_AsteroidSpawnManager.OnWaveCleared -= OnWaveCleared;
+            m_WaveManager.OnWaveCleared -= OnWaveCleared;
+        }
+
+        private void Update()
+        {
+            UpdateCircuitDrag();
+        }
+
+        /// <summary>
+        /// While a wave is active, pressing on the planet and dragging slides every Drag Target left and right
+        /// by however far the mouse moved horizontally since the press, clamped to Drag Max Offset and eased
+        /// with a SmoothDamp (same smoothing settings as the hand pointer). Between waves the targets ease
+        /// back to where they started, and a failed run freezes wherever it was. The offset is applied to
+        /// each target as a delta, so their positions relative to one another are never disturbed.
+        /// </summary>
+        private void UpdateCircuitDrag()
+        {
+            if (m_DragTargets == null || m_DragTargets.Length == 0 || m_HasFailed)
+            {
+                m_IsDragging = false;
+                return;
+            }
+
+            if (!m_IsWaveActive)
+            {
+                m_IsDragging = false;
+                m_DragTargetOffset = 0f;
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                if (TryGetMouseWorldPoint(out Vector3 pressPoint) && IsOnDragGrabPoint(pressPoint))
+                {
+                    m_IsDragging = true;
+                    m_DragGrabMouseX = pressPoint.x;
+                    m_DragGrabStartTargetOffset = m_DragTargetOffset;
+                }
+            }
+            else if (m_IsDragging && !Input.GetMouseButton(0))
+            {
+                m_IsDragging = false;
+            }
+
+            if (m_IsDragging && TryGetMouseWorldPoint(out Vector3 mousePoint))
+            {
+                float wanted = Mathf.Clamp(
+                    m_DragGrabStartTargetOffset + (mousePoint.x - m_DragGrabMouseX), -m_DragMaxOffset, m_DragMaxOffset);
+
+                if (Mathf.Abs(wanted - m_DragTargetOffset) >= m_DragDeadZone)
+                    m_DragTargetOffset = wanted;
+            }
+
+            float previousOffset = m_DragOffset;
+            m_DragOffset = Mathf.SmoothDamp(
+                m_DragOffset, m_DragTargetOffset, ref m_DragVelocity, m_DragSmoothTime, m_DragMaxSpeed, Time.unscaledDeltaTime);
+
+            float delta = m_DragOffset - previousOffset;
+            if (delta == 0f)
+                return;
+
+            foreach (Transform target in m_DragTargets)
+            {
+                if (target != null)
+                    target.position += Vector3.right * delta;
+            }
+        }
+
+        private bool IsOnDragGrabPoint(Vector3 worldPoint)
+        {
+            return m_DragGrabPoint != null
+                && Vector2.Distance(worldPoint, m_DragGrabPoint.position) <= m_DragGrabRadius;
+        }
+
+        private bool TryGetMouseWorldPoint(out Vector3 worldPoint)
+        {
+            Camera cam = m_CameraComponent != null ? m_CameraComponent : Camera.main;
+            if (cam == null)
+            {
+                worldPoint = default;
+                return false;
+            }
+
+            // The camera is orthographic, so depth doesn't change X/Y; it only has to be in front of it.
+            Vector3 screenPoint = Input.mousePosition;
+            screenPoint.z = Mathf.Abs(cam.transform.position.z);
+            worldPoint = cam.ScreenToWorldPoint(screenPoint);
+            return true;
         }
 
         private void OnShortcutTriggered(ShortcutManager.ShortcutTriggeredEvent shortcutEvent)
@@ -250,20 +369,23 @@ namespace Oxtail.SpaceshipIncremental
             m_IsWaveActive = active;
             RewardLinesActive = active;
 
+            // Hidden for the whole camera transition; TweenCameraTo brings it back once that is done.
             if (m_HandPointer != null)
-                m_HandPointer.SetActive(!active);
+                m_HandPointer.SetActive(false);
 
             TweenCameraTo(active ? m_BattleCameraY : m_InterWaveCameraY, active ? m_BattleOrthoSize : m_InterWaveOrthoSize);
 
+            SetBackgroundScroll(active);
+
             if (active)
-                m_AsteroidSpawnManager.TriggerWave();
+                m_WaveManager.TriggerWave();
 
             EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
         }
 
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
         {
-            m_AsteroidSpawnManager.SpawnCollectPoint(evt.Asteroid.transform.position);
+            m_BulletSpawnManager.SpawnCollectPoint(evt.Asteroid.transform.position);
         }
 
         private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
@@ -367,14 +489,24 @@ namespace Oxtail.SpaceshipIncremental
                 m_PlanetDissolve.SetProgress(dissolveProgress);
         }
 
+        private void SetBackgroundScroll(bool scrolling)
+        {
+            if (m_BackgroundLayers == null)
+                return;
+
+            Vector2 velocity = scrolling ? new Vector2(0f, -m_WaveBackgroundScrollSpeed) : Vector2.zero;
+
+            foreach (ScrollSprite2D layer in m_BackgroundLayers)
+            {
+                if (layer != null)
+                    layer.SetScrollVelocity(velocity);
+            }
+        }
+
         private void SnapCameraTo(float y, float orthoSize)
         {
-            if (m_Camera != null)
-            {
-                Vector3 localPos = m_Camera.localPosition;
-                localPos.y = y;
-                m_Camera.localPosition = localPos;
-            }
+            if (m_CameraFollow != null)
+                m_CameraFollow.VerticalOffset = y;
 
             if (m_CameraComponent != null)
                 m_CameraComponent.orthographicSize = orthoSize;
@@ -382,17 +514,40 @@ namespace Oxtail.SpaceshipIncremental
 
         private void TweenCameraTo(float y, float orthoSize)
         {
-            if (m_Camera != null)
+            // Both tweens share one duration, so whichever was created last finishing means the whole
+            // transition is done. A tween killed by a newer transition never completes, which keeps the
+            // hand hidden until the final one lands.
+            Tween lastTween = null;
+
+            if (m_CameraFollow != null)
             {
-                m_Camera.DOKill();
-                m_Camera.DOLocalMoveY(y, m_CameraTweenDuration).SetEase(Ease.InOutSine);
+                m_CameraOffsetTween?.Kill();
+                m_CameraOffsetTween = DOTween.To(
+                        () => m_CameraFollow.VerticalOffset,
+                        offset => m_CameraFollow.VerticalOffset = offset,
+                        y, m_CameraTweenDuration)
+                    .SetEase(Ease.InOutSine);
+                lastTween = m_CameraOffsetTween;
             }
 
             if (m_CameraComponent != null)
             {
                 m_CameraComponent.DOKill();
-                m_CameraComponent.DOOrthoSize(orthoSize, m_CameraTweenDuration).SetEase(Ease.InOutSine);
+                lastTween = m_CameraComponent.DOOrthoSize(orthoSize, m_CameraTweenDuration).SetEase(Ease.InOutSine);
             }
+
+            if (lastTween != null)
+                lastTween.OnComplete(OnCameraTransitionComplete);
+            else
+                OnCameraTransitionComplete();
+        }
+
+        /// <summary>The hand pointer is only hidden while the camera is moving between views; it snaps to the
+        /// cursor as it re-enables (see CursorFollowElement), so it never visibly glides into place.</summary>
+        private void OnCameraTransitionComplete()
+        {
+            if (m_HandPointer != null)
+                m_HandPointer.SetActive(true);
         }
 
         private void ApplyPlanetSpriteOverride()
@@ -551,8 +706,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnDestroy()
         {
-            if (m_Camera != null)
-                m_Camera.DOKill();
+            m_CameraOffsetTween?.Kill();
 
             if (m_CameraComponent != null)
                 m_CameraComponent.DOKill();

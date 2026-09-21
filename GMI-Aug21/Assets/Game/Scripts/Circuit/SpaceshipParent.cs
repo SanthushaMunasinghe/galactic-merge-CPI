@@ -11,8 +11,8 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Transform m_InitialWaypoint;
 
         private float m_Velocity = 1.25f;
-        private Vector3 m_NextWaypoint;
-        private Vector3 m_DefaultPos;
+        private Vector3 m_NextWaypointLocal;
+        private Vector3 m_DefaultLocalPos;
 
         private Tween m_PathTween;
         private float m_SpeedMultiplier = 1f;
@@ -28,9 +28,13 @@ namespace Oxtail.SpaceshipIncremental
 
         public float Velocity => m_PathTween != null ? m_PathTween.timeScale * m_Velocity : m_Velocity;
 
+        private Vector3 NextWaypointWorld => transform.parent != null
+            ? transform.parent.TransformPoint(m_NextWaypointLocal)
+            : m_NextWaypointLocal;
+
         private void Awake()
         {
-            m_DefaultPos = transform.position;
+            m_DefaultLocalPos = transform.localPosition;
         }
 
         private void OnEnable()
@@ -44,30 +48,40 @@ namespace Oxtail.SpaceshipIncremental
             SaveLoadManager.Instance.OnPowerUpUpdated -= OnPowerUpUpdated;
         }
 
+        /// <summary>
+        /// path is given in world space, but is converted to this transform's parent space and driven
+        /// with DOLocalPath, so the ship keeps orbiting while any ancestor (e.g. the Circuits object while
+        /// it is dragged sideways during a CPI wave) is moved — a world-space tween would overwrite the
+        /// parent's movement every frame.
+        /// </summary>
         public void SetPath(Vector3[] path, PathType pathType, bool alignWithPathLocal = false, float rotationOffsetDegrees = 0f)
         {
-            m_NextWaypoint = path[0];
+            Vector3[] localPath = new Vector3[path.Length];
+            for (int i = 0; i < path.Length; i++)
+                localPath[i] = transform.parent != null ? transform.parent.InverseTransformPoint(path[i]) : path[i];
+
+            m_NextWaypointLocal = localPath[0];
             m_AlignWithPathLocal = alignWithPathLocal;
             m_RotationOffsetDegrees = rotationOffsetDegrees;
 
             SetInitialRotation();
 
-            m_PathTween = transform.DOPath(path, m_Velocity, pathType, PathMode.TopDown2D)
+            m_PathTween = transform.DOLocalPath(localPath, m_Velocity, pathType, PathMode.TopDown2D)
                 .SetOptions(true)
                 .OnWaypointChange((index) =>
                 {
                     int nextIndex = index + 1;
-                    if (nextIndex >= path.Length)
+                    if (nextIndex >= localPath.Length)
                         nextIndex = 0;
 
-                    m_NextWaypoint = path[nextIndex];
+                    m_NextWaypointLocal = localPath[nextIndex];
                 }).SetSpeedBased(true)
             .OnUpdate(() =>
             {
                 if (m_AlignWithPathLocal)
                     transform.localEulerAngles = new Vector3(0, 0, CheckNextWaypointRotationLocal());
                 else
-                    transform.eulerAngles = new Vector3(0, 0, CheckNextWaypointRotation(m_NextWaypoint));
+                    transform.eulerAngles = new Vector3(0, 0, CheckNextWaypointRotation(NextWaypointWorld));
             })
             .SetEase(Ease.Linear)
             .SetLoops(-1);
@@ -89,7 +103,7 @@ namespace Oxtail.SpaceshipIncremental
         {
             Spaceship = null;
             m_PathTween.Kill();
-            transform.position = m_DefaultPos;
+            transform.localPosition = m_DefaultLocalPos;
         }
 
         private void SetInitialRotation()
@@ -100,14 +114,14 @@ namespace Oxtail.SpaceshipIncremental
                 return;
             }
 
-            Vector3 dir = (m_NextWaypoint - transform.position).normalized;
+            Vector3 dir = (NextWaypointWorld - transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             transform.eulerAngles = new Vector3(0, 0, angle - 90f);
         }
 
-        private float CheckNextWaypointRotation(Vector2 waypoint)
+        private float CheckNextWaypointRotation(Vector3 waypointWorld)
         {
-            Vector3 dir = (m_NextWaypoint - transform.position).normalized;
+            Vector3 dir = (waypointWorld - transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             float finalAngle = Mathf.LerpAngle(transform.eulerAngles.z, angle - 90f, 5f * Time.deltaTime);
             return finalAngle;
@@ -127,7 +141,7 @@ namespace Oxtail.SpaceshipIncremental
         /// </summary>
         private float TargetLocalZAngle()
         {
-            Vector3 dir = (m_NextWaypoint - transform.position).normalized;
+            Vector3 dir = (NextWaypointWorld - transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             float desiredWorldZ = angle - 90f + m_RotationOffsetDegrees;
 

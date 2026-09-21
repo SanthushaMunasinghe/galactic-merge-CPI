@@ -182,6 +182,25 @@ namespace Oxtail.SpaceshipIncremental
                 .OnComplete(BeginHoming);
         }
 
+        /// <summary>
+        /// Hands this comet to a WaveManager for grid-formation mode: registers into ActiveAsteroids so
+        /// bullets can target/hit it exactly like a projectile-mode comet, but it never slides or homes —
+        /// the wave manager's own transform carries it along as a passive child. Reuses the same arrival
+        /// check InitializeAsProjectile uses (PlanetPosition / Planet Bounds Radius, evaluated every
+        /// Update), just pointed at the Circuits ring instead of the planet: getting within
+        /// circleBoundsRadius of circleCenter counts as the asteroid reaching it, and raises
+        /// AsteroidDestroyedByPlanetEvent exactly like a real planet hit, so CPIManager's existing
+        /// health-loss handling applies unchanged.
+        /// </summary>
+        public void InitializeInGrid(Transform circleCenter, float circleBoundsRadius)
+        {
+            m_IsProjectile = true;
+            m_PlanetCenter = circleCenter;
+            m_PlanetBoundsRadius = circleBoundsRadius;
+
+            ActiveAsteroids.Add(this);
+        }
+
         private void BeginHoming()
         {
             m_State = ProjectileState.Homing;
@@ -239,6 +258,26 @@ namespace Oxtail.SpaceshipIncremental
             ShatterParts();
 
             Destroy(gameObject, k_ShatterLifetime);
+        }
+
+        /// <summary>
+        /// Removes this comet immediately: no scatter effect and no destroyed-by-bullet or
+        /// destroyed-by-planet event, so nothing (collect points, health loss) follows from it. Used by
+        /// WaveManager for grid asteroids that scrolled past the circuit unharmed. Safe to call more than
+        /// once, and a no-op on a comet that is already dying.
+        /// </summary>
+        public void DestroyQuietly()
+        {
+            if (m_IsShattered)
+                return;
+
+            m_IsShattered = true;
+            IsDead = true;
+
+            transform.DOKill();
+            ActiveAsteroids.Remove(this);
+
+            Destroy(gameObject);
         }
 
         private void NotifyJumpComplete()

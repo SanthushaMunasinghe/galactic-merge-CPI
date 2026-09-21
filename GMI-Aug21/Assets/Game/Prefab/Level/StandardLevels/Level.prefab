@@ -7769,6 +7769,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Speed: {x: 0.03, y: 0.015}
   m_FollowCamera: 0
+  m_ExternallyControlled: 0
+  m_ParallaxMultiplier: 1
+  m_CoverMargin: 0
 --- !u!1 &297035156861651576
 GameObject:
   m_ObjectHideFlags: 0
@@ -85370,6 +85373,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Speed: {x: 0.1, y: 0.05}
   m_FollowCamera: 0
+  m_ExternallyControlled: 0
+  m_ParallaxMultiplier: 1
+  m_CoverMargin: 0
 --- !u!1 &3474021225931530618
 GameObject:
   m_ObjectHideFlags: 0
@@ -142421,6 +142427,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Speed: {x: 0.22, y: 0.1}
   m_FollowCamera: 0
+  m_ExternallyControlled: 0
+  m_ParallaxMultiplier: 1
+  m_CoverMargin: 0
 --- !u!1 &6585633271470210661
 GameObject:
   m_ObjectHideFlags: 0

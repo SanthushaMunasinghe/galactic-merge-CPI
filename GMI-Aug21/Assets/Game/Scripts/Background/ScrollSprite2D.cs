@@ -28,8 +28,22 @@ namespace Oxtail.SpaceshipIncremental
         [Tooltip("The background follows the camera (keep enabled if the camera moves).")]
         [SerializeField] private bool m_FollowCamera = true;
 
+        [Header("External Control")]
+        [Tooltip("Speed is ignored: the layer stays still until something calls SetScrollVelocity (CPIManager " +
+            "does, only while a wave is active).")]
+        [SerializeField] private bool m_ExternallyControlled;
+        [Tooltip("Scales the externally set velocity for this layer, which is what makes the parallax: far " +
+            "layers get a small value, near layers a large one.")]
+        [SerializeField, Min(0f)] private float m_ParallaxMultiplier = 1f;
+
+        [Header("Coverage")]
+        [Tooltip("Extra world units of tiles added beyond each edge of the camera's view. Raise it when the " +
+            "camera zooms out or pans after this layer starts, so the tile grid still covers the screen.")]
+        [SerializeField, Min(0f)] private float m_CoverMargin;
+
         private Transform m_Container;
         private Transform m_Camera;
+        private Vector2 m_ExternalVelocity;
         private Vector2 m_TileSize;
         private Vector2 m_Offset;
         private Vector2 m_Anchor;
@@ -46,6 +60,8 @@ namespace Oxtail.SpaceshipIncremental
             m_Camera = cam != null ? cam.transform : null;
             float viewH = cam != null ? cam.orthographicSize * 2f : m_TileSize.y;
             float viewW = cam != null ? viewH * cam.aspect : m_TileSize.x;
+            viewH += m_CoverMargin * 2f;
+            viewW += m_CoverMargin * 2f;
 
             // enough copies to cover the screen plus one tile of margin per side
             int tilesX = Mathf.Max(2, Mathf.CeilToInt(viewW / m_TileSize.x) + 2);
@@ -93,12 +109,24 @@ namespace Oxtail.SpaceshipIncremental
             Reposition(); // avoid a one-frame gap before the first Update
         }
 
+        /// <summary>
+        /// Only used by layers with Externally Controlled on. velocity is how the picture itself moves
+        /// (down is negative Y), scaled by this layer's Parallax Multiplier. Zero stops the layer.
+        /// </summary>
+        public void SetScrollVelocity(Vector2 velocity)
+        {
+            m_ExternalVelocity = velocity;
+        }
+
         private void Update()
         {
             // Wrap the offset every frame (instead of letting it grow forever) so float precision
             // never degrades: over a long idle session an ever-growing m_Offset eventually loses
             // enough precision that the scroll visibly stutters or appears to stop looping.
-            Vector2 delta = m_Speed * Time.deltaTime;
+            // Speed is the opposite of the picture's motion (the container is placed at center - offset),
+            // hence the negation of the externally supplied velocity.
+            Vector2 speed = m_ExternallyControlled ? -m_ExternalVelocity * m_ParallaxMultiplier : m_Speed;
+            Vector2 delta = speed * Time.deltaTime;
             m_Offset.x = Mathf.Repeat(m_Offset.x + delta.x, m_TileSize.x);
             m_Offset.y = Mathf.Repeat(m_Offset.y + delta.y, m_TileSize.y);
             Reposition();

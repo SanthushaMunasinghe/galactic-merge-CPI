@@ -26,6 +26,26 @@ public sealed class CursorFollowElement : MonoBehaviour
         _parentRectTransform = _rectTransform != null ? _rectTransform.parent as RectTransform : null;
     }
 
+    private void OnEnable()
+    {
+        // Runs before this frame's first render, so a hand that was hidden appears already under the cursor
+        // instead of gliding in from wherever (and however fast) it was last moving.
+        SnapToCursor();
+    }
+
+    private void SnapToCursor()
+    {
+        if (_rectTransform == null || _parentRectTransform == null) return;
+
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _parentRectTransform, Input.mousePosition, _canvasCamera, out var localPoint))
+            return;
+
+        _targetPoint = localPoint;
+        _rectTransform.anchoredPosition = localPoint;
+        _followVelocity = Vector2.zero;
+    }
+
     private void Update()
     {
         FollowCursor();
