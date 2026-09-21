@@ -10,7 +10,8 @@ namespace Oxtail.SpaceshipIncremental
     public enum AsteroidType
     {
         BlueBat,
-        CrystalCreature
+        CrystalCreature,
+        GreenWing
     }
 
     /// <summary>

@@ -10401,6 +10401,9 @@ MonoBehaviour:
   - Type: 1
     Prefab: {fileID: 751793167670176148, guid: 762264c4d5b18aa4b8d3031089cc88d7, type: 3}
     Health: 3
+  - Type: 2
+    Prefab: {fileID: 751793167670176148, guid: 07c52a43a4e499f4cb929ae579b980d9, type: 3}
+    Health: 6
   m_ColumnSpacing: 1.5
   m_RowSpacing: 1.5
   m_SubWaveSpacing: 2
