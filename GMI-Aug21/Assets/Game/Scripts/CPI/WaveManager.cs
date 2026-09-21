@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Oxtail.SpaceshipIncremental
 {
+    /// <summary>Every kind of enemy a wave can spawn. Add a value here, then give it an entry in
+    /// WaveManager's Asteroid Types (prefab and health). Keep BlueBat first: it is the default type.</summary>
+    public enum AsteroidType
+    {
+        BlueBat,
+        CrystalCreature
+    }
+
     /// <summary>
     /// Spawns a wave of Asteroid comets (in grid mode, via Asteroid.InitializeInGrid — they never slide or
     /// home, they only ride this transform) and scrolls it down past the circuit. TriggerWave places this
@@ -14,9 +22,15 @@ namespace Oxtail.SpaceshipIncremental
     /// first sub-wave lowest so it arrives first. This transform then moves straight down at Move Speed for
     /// as long as the wave is active.
     ///
+    /// What each cell spawns is an AsteroidType: every sub-wave has a Default Type, and Cell Overrides can
+    /// swap individual cells (row 0 is the row nearest the circuit, column 0 the leftmost) for another type.
+    /// Asteroid Types maps each type to its prefab and to its Health, the number of bullets it takes to
+    /// destroy it.
+    ///
     /// An asteroid reaching the planet (within Planet Bounds Radius of Planet Center) deals the usual
     /// planet-hit damage via the shared AsteroidDestroyedByPlanetEvent (and, unlike a bullet kill, leaves no
-    /// collect point behind), and a bullet destroys it the usual way (collect point and all). One that instead scrolls Pass Distance below the Circuit's Y is simply
+    /// collect point behind), and enough bullets destroy it the usual way (collect point and all). One that
+    /// instead scrolls Pass Distance below the Circuit's Y is simply
     /// removed with no effect and no event. The wave is over the moment no asteroid is left alive, however
     /// that happened, at which point OnWaveCleared fires and this transform stops moving. Wave configs are
     /// consumed in order by TriggerWave and clamp to the last entry once exhausted.
@@ -24,10 +38,33 @@ namespace Oxtail.SpaceshipIncremental
     public class WaveManager : MonoBehaviour
     {
         [Serializable]
+        public struct AsteroidTypeConfig
+        {
+            public AsteroidType Type;
+            public Asteroid Prefab;
+            [Tooltip("How many bullets it takes to destroy this type.")]
+            [Min(1)] public int Health;
+        }
+
+        [Serializable]
+        public struct CellOverride
+        {
+            [Tooltip("0 is the row nearest the circuit.")]
+            [Min(0)] public int Row;
+            [Tooltip("0 is the leftmost column.")]
+            [Min(0)] public int Column;
+            public AsteroidType Type;
+        }
+
+        [Serializable]
         public struct SubWaveConfig
         {
             public int Rows;
             public int Columns;
+            [Tooltip("What every cell of this sub-wave spawns unless a Cell Override says otherwise.")]
+            public AsteroidType DefaultType;
+            [Tooltip("Individual cells that spawn a different type. If a cell is listed twice, the last entry wins.")]
+            public List<CellOverride> CellOverrides;
         }
 
         [Serializable]
@@ -36,8 +73,8 @@ namespace Oxtail.SpaceshipIncremental
             public List<SubWaveConfig> SubWaves = new List<SubWaveConfig>();
         }
 
-        [Header("Prefab")]
-        [SerializeField] private Asteroid m_AsteroidPrefab;
+        [Header("Asteroid Types")]
+        [SerializeField] private List<AsteroidTypeConfig> m_AsteroidTypes = new List<AsteroidTypeConfig>();
 
         [Header("Grid")]
         [SerializeField, Min(0f)] private float m_ColumnSpacing = 1.2f;
@@ -67,6 +104,8 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private List<WaveConfig> m_Waves = new List<WaveConfig>();
 
         private readonly List<Asteroid> m_WaveAsteroids = new List<Asteroid>();
+        private readonly Dictionary<AsteroidType, AsteroidTypeConfig> m_TypeLookup = new Dictionary<AsteroidType, AsteroidTypeConfig>();
+        private readonly HashSet<AsteroidType> m_ReportedMissingTypes = new HashSet<AsteroidType>();
         private int m_CurrentWaveIndex;
         private bool m_IsWaveActive;
 
@@ -110,11 +149,13 @@ namespace Oxtail.SpaceshipIncremental
                 return;
             }
 
-            if (m_Circuit == null || m_PlanetCenter == null || m_AsteroidPrefab == null)
+            if (m_Circuit == null || m_PlanetCenter == null)
             {
-                Debug.LogError($"{nameof(WaveManager)}: Circuit, Planet Center and Asteroid Prefab must be assigned.", this);
+                Debug.LogError($"{nameof(WaveManager)}: Circuit and Planet Center must be assigned.", this);
                 return;
             }
+
+            BuildTypeLookup();
 
             WaveConfig config = m_Waves[Mathf.Min(m_CurrentWaveIndex, m_Waves.Count - 1)];
             m_CurrentWaveIndex++;
@@ -122,6 +163,7 @@ namespace Oxtail.SpaceshipIncremental
             transform.position = new Vector3(m_Circuit.position.x, m_Circuit.position.y + m_SpawnDistance, transform.position.z);
 
             m_WaveAsteroids.Clear();
+            m_ReportedMissingTypes.Clear();
             m_IsWaveActive = true;
             SpawnSubWaves(config);
 
@@ -135,27 +177,63 @@ namespace Oxtail.SpaceshipIncremental
 
             foreach (SubWaveConfig subWave in config.SubWaves)
             {
-                SpawnGrid(subWave.Rows, subWave.Columns, subWaveBaseY);
+                SpawnGrid(subWave, subWaveBaseY);
 
                 // The next sub-wave's first row sits one Row Spacing plus Sub Wave Spacing above this one's last.
                 subWaveBaseY += (Mathf.Max(0, subWave.Rows) * m_RowSpacing) + m_SubWaveSpacing;
             }
         }
 
-        private void SpawnGrid(int rows, int columns, float baseY)
+        private void SpawnGrid(SubWaveConfig subWave, float baseY)
         {
-            float rowWidth = (columns - 1) * m_ColumnSpacing;
+            float rowWidth = (subWave.Columns - 1) * m_ColumnSpacing;
 
-            for (int r = 0; r < rows; r++)
+            for (int r = 0; r < subWave.Rows; r++)
             {
-                for (int c = 0; c < columns; c++)
+                for (int c = 0; c < subWave.Columns; c++)
                 {
+                    AsteroidType type = GetCellType(subWave, r, c);
+                    if (!m_TypeLookup.TryGetValue(type, out AsteroidTypeConfig typeConfig) || typeConfig.Prefab == null)
+                    {
+                        if (m_ReportedMissingTypes.Add(type))
+                            Debug.LogError($"{nameof(WaveManager)}: no prefab assigned for asteroid type {type} in Asteroid Types; its cells are skipped.", this);
+
+                        continue;
+                    }
+
                     Vector3 localPos = new Vector3((c * m_ColumnSpacing) - (rowWidth * 0.5f), baseY + (r * m_RowSpacing), 0f);
 
-                    Asteroid asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(localPos), Quaternion.identity, transform);
-                    asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius);
+                    Asteroid asteroid = Instantiate(typeConfig.Prefab, transform.TransformPoint(localPos), Quaternion.identity, transform);
+                    asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius, typeConfig.Health);
                     m_WaveAsteroids.Add(asteroid);
                 }
+            }
+        }
+
+        private static AsteroidType GetCellType(SubWaveConfig subWave, int row, int column)
+        {
+            AsteroidType type = subWave.DefaultType;
+
+            if (subWave.CellOverrides != null)
+            {
+                foreach (CellOverride cellOverride in subWave.CellOverrides)
+                {
+                    if (cellOverride.Row == row && cellOverride.Column == column)
+                        type = cellOverride.Type;
+                }
+            }
+
+            return type;
+        }
+
+        private void BuildTypeLookup()
+        {
+            m_TypeLookup.Clear();
+
+            foreach (AsteroidTypeConfig typeConfig in m_AsteroidTypes)
+            {
+                if (!m_TypeLookup.TryAdd(typeConfig.Type, typeConfig))
+                    Debug.LogWarning($"{nameof(WaveManager)}: asteroid type {typeConfig.Type} is listed more than once in Asteroid Types; only the first entry is used.", this);
             }
         }
 

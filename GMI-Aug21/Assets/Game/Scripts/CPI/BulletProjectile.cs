@@ -96,6 +96,14 @@ namespace Oxtail.SpaceshipIncremental
         {
             m_HasHit = true;
 
+            // A comet with hit points left survives: the bullet is spent, but it isn't destroyed, so no
+            // destroyed event and no collect point yet.
+            if (!target.TakeBulletHit())
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Asteroid.ActiveAsteroids.Remove(target);
 
             EventManager<AsteroidDestroyedByBulletEvent>.TriggerEvent(new AsteroidDestroyedByBulletEvent { Asteroid = target });

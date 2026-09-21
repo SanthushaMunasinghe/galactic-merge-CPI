@@ -44,6 +44,11 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Parts")]
         [SerializeField] private SpriteRenderer[] m_CometParts;
 
+        [Header("Shake")]
+        [Tooltip("Keeps the comet sprite jittering while it is alive. Turn off for enemies that animate on " +
+            "their own (e.g. the blue bat).")]
+        [SerializeField] private bool m_ShakeComet = true;
+
         [Header("Death Effects")]
         [Tooltip("Flings Comet Parts outward on death. Turn off for enemies with no debris.")]
         [SerializeField] private bool m_ShowDebris = true;
@@ -65,6 +70,7 @@ namespace Oxtail.SpaceshipIncremental
         private System.Action m_OnJumpComplete;
         private bool m_NotifiedJumpComplete;
         private bool m_IsShattered;
+        private int m_HitPointsLeft = 1;
 
         /// <summary>True once this comet has arrived inside the planet bounds.</summary>
         public bool HasReachedCenter { get; private set; }
@@ -122,6 +128,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void StartCometShake()
         {
+            if (!m_ShakeComet)
+                return;
+
             m_Comet.transform.DOShakePosition(0.35f, 0.1f).SetLoops(-1);
         }
 
@@ -199,13 +208,47 @@ namespace Oxtail.SpaceshipIncremental
         /// AsteroidDestroyedByPlanetEvent exactly like a real planet hit, so CPIManager's existing
         /// health-loss handling applies unchanged.
         /// </summary>
-        public void InitializeInGrid(Transform circleCenter, float circleBoundsRadius)
+        public void InitializeInGrid(Transform circleCenter, float circleBoundsRadius, int hitPoints = 1)
         {
             m_IsProjectile = true;
             m_PlanetCenter = circleCenter;
             m_PlanetBoundsRadius = circleBoundsRadius;
+            m_HitPointsLeft = Mathf.Max(1, hitPoints);
 
             ActiveAsteroids.Add(this);
+        }
+
+        /// <summary>
+        /// Applies one bullet hit and returns true if it was the killing one (the caller then destroys the
+        /// comet the usual way). A non-lethal hit just flashes the comet and leaves it alive. Comets start with
+        /// one hit point, so anything that never calls InitializeInGrid with a health dies to the first bullet
+        /// exactly as before.
+        /// </summary>
+        public bool TakeBulletHit()
+        {
+            m_HitPointsLeft--;
+
+            if (m_HitPointsLeft <= 0)
+                return true;
+
+            PlayHitFlash();
+            return false;
+        }
+
+        private void PlayHitFlash()
+        {
+            Material material = m_Comet.material;
+            if (!material.HasProperty("_StrongTintFade"))
+                return;
+
+            // Restarts cleanly if a second bullet lands mid-flash.
+            m_Comet.transform.DOKill();
+            material.SetFloat("_StrongTintFade", 0f);
+
+            DOTween.Sequence()
+                .Append(material.DOFloat(1f, "_StrongTintFade", 0.05f))
+                .Append(material.DOFloat(0f, "_StrongTintFade", 0.05f))
+                .SetTarget(m_Comet.transform);
         }
 
         private void BeginHoming()
