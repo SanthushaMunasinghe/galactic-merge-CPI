@@ -16,7 +16,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Awake()
         {
-            m_Buttons = GetComponentsInChildren<CPIUpgradeButton>(true);
+            // Active buttons only: a button left disabled in the scene (e.g. Merge) never runs its own Awake,
+            // so animating it would hit its uninitialized scale target.
+            m_Buttons = GetComponentsInChildren<CPIUpgradeButton>();
             EventManager<CPIManager.CPIWaveStateChangedEvent>.AddListener(OnWaveStateChanged);
         }
 

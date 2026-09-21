@@ -202,6 +202,10 @@ namespace Oxtail.SpaceshipIncremental
         public int AddSpaceshipLevel { get; private set; }
         public int RewardLineLevel { get; private set; }
         public int CircuitLevel { get; private set; }
+        public int CanonLevel { get; private set; }
+
+        /// <summary>False once every shot point is unlocked, which the Add Canon button shows as MAX.</summary>
+        public bool CanAddCanon => m_BulletSpawnManager != null && !m_BulletSpawnManager.AllShotPointsUnlocked;
 
         protected override void Awake()
         {
@@ -849,6 +853,20 @@ namespace Oxtail.SpaceshipIncremental
         protected override void SaveIncreaseRewardLineLevel()
         {
             RewardLineLevel++;
+            OnUpgradePerformed?.Invoke();
+        }
+
+        /// <summary>Buys one canon: spends its cost (priced at the current Canon Level) and unlocks the next
+        /// shot point, so every reward line hit fires from one more point.</summary>
+        public void AddCanon()
+        {
+            if (!CanAddCanon)
+                return;
+
+            RemoveMoney(GameUpgradesCostSO.Instance.GetCanonUpgradeCost());
+
+            m_BulletSpawnManager.UnlockNextShotPoint();
+            CanonLevel++;
             OnUpgradePerformed?.Invoke();
         }
 

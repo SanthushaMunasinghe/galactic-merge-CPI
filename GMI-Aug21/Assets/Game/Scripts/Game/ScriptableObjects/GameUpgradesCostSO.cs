@@ -67,6 +67,18 @@ namespace Oxtail.SpaceshipIncremental
             return Mathf.CeilToInt(Mathf.Pow(m_RewardLineBaseCost * level, 1.35f));
         }
 
+        /// <summary>Same pricing pattern as the reward line (its base cost and formula), but keyed to how many
+        /// canons the CPI scene has bought instead of how many lines.</summary>
+        public BigNumber GetCanonUpgradeCost()
+        {
+            int level = LevelManager.Instance is CPIManager cpiManager ? cpiManager.CanonLevel : 0;
+
+            if (level == 0)
+                return m_RewardLineBaseCost;
+
+            return Mathf.CeilToInt(Mathf.Pow(m_RewardLineBaseCost * level, 1.35f));
+        }
+
         public BigNumber GetCircuitUpgradeCost()
         {
             int level = 0;

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Oxtail.SpaceshipIncremental
 {
-    public enum CPIUpgradeType { Merge, AddSpaceship, AddRewardLine, UpgradeCircuit }
+    public enum CPIUpgradeType { Merge, AddSpaceship, AddRewardLine, UpgradeCircuit, AddCanon }
 
     /// <summary>
     /// Single, unified upgrade-button script for the CPI test scene. One instance per button,
@@ -103,6 +103,9 @@ namespace Oxtail.SpaceshipIncremental
                     LevelManager.Instance.ChangeCircuit();
                     LevelManager.Instance.IncreaseCircuitLevel();
                     break;
+                case CPIUpgradeType.AddCanon:
+                    CPIManager.Instance.AddCanon();
+                    break;
             }
 
             RefreshState();
@@ -169,6 +172,9 @@ namespace Oxtail.SpaceshipIncremental
                 case CPIUpgradeType.UpgradeCircuit:
                     return LevelManager.Instance.HasMoreCircuits
                         ? GameUpgradesCostSO.Instance.GetCircuitUpgradeCost() : -1;
+                case CPIUpgradeType.AddCanon:
+                    return CPIManager.Instance.CanAddCanon
+                        ? GameUpgradesCostSO.Instance.GetCanonUpgradeCost() : -1;
                 default:
                     return -1;
             }
