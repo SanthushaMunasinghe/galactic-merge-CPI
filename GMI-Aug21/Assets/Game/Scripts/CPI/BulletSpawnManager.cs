@@ -38,6 +38,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0)] private int m_InitialUnlockedShotPointCount = 1;
 
         [Header("Shot Point Generator")]
+        [Tooltip("Instantiated for each generated shot point (see GenerateShotPoints). Its child sprite " +
+            "renderer shows where the point is and which way it fires.")]
+        [SerializeField] private GameObject m_ShotPointPrefab;
         [Tooltip("Generated shot points are placed on a circle around this transform.")]
         [SerializeField] private Transform m_ShotPointCenter;
         [SerializeField, Min(0f)] private float m_ShotPointRadius = 2.6f;
@@ -66,6 +69,8 @@ namespace Oxtail.SpaceshipIncremental
             m_UnlockedShotPointCount = m_ShotPoints != null
                 ? Mathf.Clamp(m_InitialUnlockedShotPointCount, 0, m_ShotPoints.Length)
                 : 0;
+
+            RefreshShotPointVisuals();
         }
 
         private void OnEnable()
@@ -90,14 +95,38 @@ namespace Oxtail.SpaceshipIncremental
             }
         }
 
-        /// <summary>Unlocks the next Shot Point in the array, if any remain locked. Exposed as a public
-        /// method for future upgrade/UI code to call — nothing in the scene wires this up yet.</summary>
+        /// <summary>Unlocks the next Shot Point in the array, if any remain locked, and activates its
+        /// sprite renderer so the newly unlocked point becomes visible.</summary>
         public void UnlockNextShotPoint()
         {
             if (m_ShotPoints == null || m_UnlockedShotPointCount >= m_ShotPoints.Length)
                 return;
 
+            SetShotPointVisualActive(m_UnlockedShotPointCount, true);
             m_UnlockedShotPointCount++;
+        }
+
+        /// <summary>Shows the sprite renderer of every currently unlocked Shot Point and hides it on every
+        /// locked one. Called on Awake so a Shot Point Count saved/serialized higher than the initial
+        /// unlocked count doesn't show points the player hasn't unlocked yet.</summary>
+        private void RefreshShotPointVisuals()
+        {
+            if (m_ShotPoints == null)
+                return;
+
+            for (int i = 0; i < m_ShotPoints.Length; i++)
+                SetShotPointVisualActive(i, i < m_UnlockedShotPointCount);
+        }
+
+        private void SetShotPointVisualActive(int index, bool active)
+        {
+            Transform shotPoint = m_ShotPoints[index];
+            if (shotPoint == null)
+                return;
+
+            SpriteRenderer visual = shotPoint.GetComponentInChildren<SpriteRenderer>(true);
+            if (visual != null)
+                visual.gameObject.SetActive(active);
         }
 
 #if UNITY_EDITOR
@@ -118,6 +147,12 @@ namespace Oxtail.SpaceshipIncremental
             if (m_ShotPointCenter == null)
             {
                 Debug.LogError($"{nameof(BulletSpawnManager)}: Shot Point Center must be assigned.", this);
+                return;
+            }
+
+            if (m_ShotPointPrefab == null)
+            {
+                Debug.LogError($"{nameof(BulletSpawnManager)}: Shot Point Prefab must be assigned.", this);
                 return;
             }
 
@@ -144,9 +179,9 @@ namespace Oxtail.SpaceshipIncremental
                 float angle = (i % 2 == 1 ? 1f : -1f) * stepIndex * m_ShotPointAngleStep;
                 Quaternion rotation = m_ShotPointCenter.rotation * Quaternion.Euler(0f, 0f, angle);
 
-                GameObject point = new GameObject($"ShotPoint_{i}");
+                GameObject point = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(m_ShotPointPrefab, container);
+                point.name = $"ShotPoint_{i}";
                 UnityEditor.Undo.RegisterCreatedObjectUndo(point, "Generate Shot Points");
-                point.transform.SetParent(container, false);
                 point.transform.SetPositionAndRotation(
                     m_ShotPointCenter.position + (rotation * Vector3.up * m_ShotPointRadius),
                     rotation);
