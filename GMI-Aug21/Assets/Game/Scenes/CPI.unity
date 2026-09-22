@@ -10643,8 +10643,8 @@ MonoBehaviour:
     Health: 6
   m_ColumnSpacing: 1.5
   m_RowSpacing: 1.5
-  m_SubWaveSpacing: 2
-  m_MoveSpeed: 1
+  m_SubWaveSpacing: 1
+  m_MoveSpeed: 1.5
   m_SpawnDistance: 13
   m_PassDistance: 7
   m_Circuit: {fileID: 1591009722}
@@ -10652,27 +10652,295 @@ MonoBehaviour:
   m_PlanetBoundsRadius: 1.5
   m_Waves:
   - SubWaves:
-    - Rows: 3
-      Columns: 5
-      DefaultType: 0
-      CellOverrides: []
-    - Rows: 2
-      Columns: 4
+    - Rows: 6
+      Columns: 6
       DefaultType: 0
       CellOverrides: []
   - SubWaves:
-    - Rows: 2
+    - Rows: 10
       Columns: 5
       DefaultType: 0
-      CellOverrides: []
-    - Rows: 3
-      Columns: 4
-      DefaultType: 1
-      CellOverrides: []
-    - Rows: 4
-      Columns: 5
+      CellOverrides:
+      - Row: 0
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 0
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 1
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 1
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 1
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 2
+        Column: 1
+        Empty: 0
+        Type: 1
+      - Row: 2
+        Column: 3
+        Empty: 0
+        Type: 1
+      - Row: 3
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 8
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 8
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 4
+        Empty: 1
+        Type: 0
+    - Rows: 12
+      Columns: 6
       DefaultType: 0
-      CellOverrides: []
+      CellOverrides:
+      - Row: 0
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 0
+        Column: 5
+        Empty: 1
+        Type: 0
+      - Row: 2
+        Column: 2
+        Empty: 0
+        Type: 1
+      - Row: 2
+        Column: 3
+        Empty: 0
+        Type: 1
+      - Row: 3
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 1
+        Empty: 0
+        Type: 1
+      - Row: 3
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 3
+        Empty: 0
+        Type: 1
+      - Row: 3
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 5
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 0
+        Empty: 0
+        Type: 1
+      - Row: 4
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 5
+        Empty: 0
+        Type: 1
+      - Row: 5
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 1
+        Empty: 0
+        Type: 2
+      - Row: 5
+        Column: 2
+        Empty: 0
+        Type: 2
+      - Row: 5
+        Column: 3
+        Empty: 0
+        Type: 2
+      - Row: 5
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 5
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 1
+        Empty: 0
+        Type: 2
+      - Row: 6
+        Column: 2
+        Empty: 0
+        Type: 2
+      - Row: 6
+        Column: 3
+        Empty: 0
+        Type: 2
+      - Row: 6
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 5
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 0
+        Empty: 0
+        Type: 1
+      - Row: 7
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 5
+        Empty: 0
+        Type: 1
+      - Row: 8
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 8
+        Column: 1
+        Empty: 0
+        Type: 1
+      - Row: 8
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 8
+        Column: 3
+        Empty: 0
+        Type: 1
+      - Row: 8
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 8
+        Column: 5
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 2
+        Empty: 0
+        Type: 1
+      - Row: 9
+        Column: 3
+        Empty: 0
+        Type: 1
+      - Row: 11
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 11
+        Column: 5
+        Empty: 1
+        Type: 0
 --- !u!1001 &1555188785
 PrefabInstance:
   m_ObjectHideFlags: 0

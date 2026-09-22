@@ -54,6 +54,8 @@ namespace Oxtail.SpaceshipIncremental
             [Min(0)] public int Row;
             [Tooltip("0 is the leftmost column.")]
             [Min(0)] public int Column;
+            [Tooltip("If true, this cell spawns nothing at all and Type is ignored.")]
+            public bool Empty;
             public AsteroidType Type;
         }
 
@@ -193,7 +195,9 @@ namespace Oxtail.SpaceshipIncremental
             {
                 for (int c = 0; c < subWave.Columns; c++)
                 {
-                    AsteroidType type = GetCellType(subWave, r, c);
+                    if (!TryGetCellType(subWave, r, c, out AsteroidType type))
+                        continue;
+
                     if (!m_TypeLookup.TryGetValue(type, out AsteroidTypeConfig typeConfig) || typeConfig.Prefab == null)
                     {
                         if (m_ReportedMissingTypes.Add(type))
@@ -211,20 +215,26 @@ namespace Oxtail.SpaceshipIncremental
             }
         }
 
-        private static AsteroidType GetCellType(SubWaveConfig subWave, int row, int column)
+        /// <summary>False means the cell is empty and should spawn nothing (a later, empty override for
+        /// the same cell beats an earlier, non-empty one, and vice versa).</summary>
+        private static bool TryGetCellType(SubWaveConfig subWave, int row, int column, out AsteroidType type)
         {
-            AsteroidType type = subWave.DefaultType;
+            type = subWave.DefaultType;
+            bool empty = false;
 
             if (subWave.CellOverrides != null)
             {
                 foreach (CellOverride cellOverride in subWave.CellOverrides)
                 {
-                    if (cellOverride.Row == row && cellOverride.Column == column)
-                        type = cellOverride.Type;
+                    if (cellOverride.Row != row || cellOverride.Column != column)
+                        continue;
+
+                    empty = cellOverride.Empty;
+                    type = cellOverride.Type;
                 }
             }
 
-            return type;
+            return !empty;
         }
 
         private void BuildTypeLookup()
