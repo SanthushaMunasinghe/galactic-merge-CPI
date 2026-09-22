@@ -6,12 +6,15 @@ using UnityEngine;
 namespace Oxtail.SpaceshipIncremental
 {
     /// <summary>Every kind of enemy a wave can spawn. Add a value here, then give it an entry in
-    /// WaveManager's Asteroid Types (prefab and health). Keep BlueCyclops first: it is the default type.</summary>
+    /// WaveManager's Asteroid Types (prefab and health). Keep BlueCyclops first: it is the default type.
+    /// Boss is special: a sub-wave never spawns it (see SpawnBoss on WaveConfig instead), it just needs an
+    /// Asteroid Types entry for its prefab and Health.</summary>
     public enum AsteroidType
     {
         BlueCyclops,
         CrystalCreature,
-        GreenWing
+        GreenWing,
+        Boss
     }
 
     /// <summary>
@@ -20,8 +23,19 @@ namespace Oxtail.SpaceshipIncremental
     /// transform Spawn Distance above the Circuit's Y (at the Circuit's X) and spawns every sub-wave of the
     /// current wave at once: each sub-wave is its own Rows x Columns grid, stacked upward one after
     /// another with Sub Wave Spacing of extra empty space between them (0 makes them read as one grid), the
-    /// first sub-wave lowest so it arrives first. This transform then moves straight down at Move Speed for
-    /// as long as the wave is active.
+    /// first sub-wave lowest so it arrives first. This transform then moves straight down for as long as the
+    /// wave is active, at Move Speed for the first full (sub-wave-having) wave, plus one Move Speed
+    /// Increment for every full wave triggered before it. Every grid cell's Health likewise gets one Health
+    /// Increment added per full wave triggered before the current one (never applied to the boss).
+    ///
+    /// A wave whose Spawn Boss is on also spawns one Boss-type asteroid, Boss Spawn Distance above the
+    /// Circuit's Y — independent of Spawn Distance and of any sub-waves the same wave might have. Unlike a
+    /// grid asteroid it is spawned unparented rather than riding this transform (via Asteroid.InitializeAsBoss
+    /// instead of InitializeInGrid), since it always moves at its own fixed Boss Move Speed — never the
+    /// incrementing Move Speed — until its Y reaches Boss Stop Distance above the Circuit's Y (the same kind
+    /// of line as Spawn Distance, not a radius around Planet Center), where it stops to attack: see
+    /// InitializeAsBoss for its walk-then-attack behavior. A boss wave doesn't count towards Move Speed
+    /// Increment either, since it has no sub-waves.
     ///
     /// What each cell spawns is an AsteroidType: every sub-wave has a Default Type, and Cell Overrides can
     /// swap individual cells (row 0 is the row nearest the circuit, column 0 the leftmost) for another type.
@@ -74,10 +88,15 @@ namespace Oxtail.SpaceshipIncremental
         public class WaveConfig
         {
             public List<SubWaveConfig> SubWaves = new List<SubWaveConfig>();
+            [Tooltip("If true, a Boss-type asteroid spawns Boss Spacing above this wave's last sub-wave.")]
+            public bool SpawnBoss;
         }
 
         [Header("Asteroid Types")]
         [SerializeField] private List<AsteroidTypeConfig> m_AsteroidTypes = new List<AsteroidTypeConfig>();
+        [Tooltip("Added to every non-boss asteroid type's Health after each full (non-boss) wave, so later " +
+            "waves take more hits to kill. Never applied to the boss, which always uses its own Health as-is.")]
+        [SerializeField, Min(0)] private int m_HealthIncrement;
 
         [Header("Grid")]
         [SerializeField, Min(0f)] private float m_ColumnSpacing = 1.2f;
@@ -87,8 +106,11 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0f)] private float m_SubWaveSpacing = 2f;
 
         [Header("Movement")]
-        [Tooltip("Units per second the wave scrolls down.")]
+        [Tooltip("Units per second the first full (non-boss) wave scrolls down at.")]
         [SerializeField, Min(0f)] private float m_MoveSpeed = 1.5f;
+        [Tooltip("Added to Move Speed after each full (non-boss) wave, so later waves scroll faster. The " +
+            "boss wave never counts towards this and always moves at Boss Move Speed regardless.")]
+        [SerializeField, Min(0f)] private float m_MoveSpeedIncrement = 0f;
         [Tooltip("How far above the Circuit's Y the first row of a wave spawns.")]
         [SerializeField, Min(0f)] private float m_SpawnDistance = 13f;
         [Tooltip("How far below the Circuit's Y an asteroid has to scroll to count as having passed it and " +
@@ -103,6 +125,17 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Transform m_PlanetCenter;
         [SerializeField, Min(0f)] private float m_PlanetBoundsRadius = 1.5f;
 
+        [Header("Boss")]
+        [Tooltip("How far above the Circuit's Y the boss spawns, independent of Spawn Distance.")]
+        [SerializeField, Min(0f)] private float m_BossSpawnDistance = 13f;
+        [Tooltip("Units per second the boss scrolls down at, independent of Move Speed.")]
+        [SerializeField, Min(0f)] private float m_BossMoveSpeed = 1f;
+        [Tooltip("How far above the Circuit's Y the boss stops to attack, measured the same way as Spawn " +
+            "Distance (not a radius around Planet Center).")]
+        [SerializeField, Min(0f)] private float m_BossStopDistance = 3f;
+        [Tooltip("Planet health percent lost each time the boss's attack animation lands a hit.")]
+        [SerializeField, Range(0f, 100f)] private float m_BossAttackDamagePercent = 10f;
+
         [Header("Wave Settings")]
         [SerializeField] private List<WaveConfig> m_Waves = new List<WaveConfig>();
 
@@ -110,6 +143,9 @@ namespace Oxtail.SpaceshipIncremental
         private readonly Dictionary<AsteroidType, AsteroidTypeConfig> m_TypeLookup = new Dictionary<AsteroidType, AsteroidTypeConfig>();
         private readonly HashSet<AsteroidType> m_ReportedMissingTypes = new HashSet<AsteroidType>();
         private int m_CurrentWaveIndex;
+        private int m_FullWaveCount;
+        private float m_CurrentMoveSpeed;
+        private int m_CurrentHealthBonus;
         private bool m_IsWaveActive;
 
         /// <summary>Fired once no asteroid from the current wave is left alive (bullet-killed, planet-hit
@@ -133,7 +169,7 @@ namespace Oxtail.SpaceshipIncremental
             if (!m_IsWaveActive)
                 return;
 
-            transform.position += Vector3.down * m_MoveSpeed * Time.deltaTime;
+            transform.position += Vector3.down * m_CurrentMoveSpeed * Time.deltaTime;
 
             RemovePassedAsteroids();
         }
@@ -163,6 +199,18 @@ namespace Oxtail.SpaceshipIncremental
             WaveConfig config = m_Waves[Mathf.Min(m_CurrentWaveIndex, m_Waves.Count - 1)];
             m_CurrentWaveIndex++;
 
+            // Only a full wave's own grid scroll speed and unit health increment; a boss wave has no
+            // sub-waves to apply either to (it has no grid cells, and rides no shared transform), so it just
+            // keeps whatever speed was last set (irrelevant, since nothing rides it) and moves independently
+            // at Boss Move Speed with its own fixed Health instead (see SpawnBoss/InitializeAsBoss).
+            bool isFullWave = config.SubWaves != null && config.SubWaves.Count > 0;
+            if (isFullWave)
+            {
+                m_CurrentMoveSpeed = m_MoveSpeed + (m_FullWaveCount * m_MoveSpeedIncrement);
+                m_CurrentHealthBonus = m_FullWaveCount * m_HealthIncrement;
+                m_FullWaveCount++;
+            }
+
             transform.position = new Vector3(m_Circuit.position.x, m_Circuit.position.y + m_SpawnDistance, transform.position.z);
 
             m_WaveAsteroids.Clear();
@@ -185,6 +233,28 @@ namespace Oxtail.SpaceshipIncremental
                 // The next sub-wave's first row sits one Row Spacing plus Sub Wave Spacing above this one's last.
                 subWaveBaseY += (Mathf.Max(0, subWave.Rows) * m_RowSpacing) + m_SubWaveSpacing;
             }
+
+            if (config.SpawnBoss)
+                SpawnBoss();
+        }
+
+        private void SpawnBoss()
+        {
+            if (!m_TypeLookup.TryGetValue(AsteroidType.Boss, out AsteroidTypeConfig typeConfig) || typeConfig.Prefab == null)
+            {
+                Debug.LogError($"{nameof(WaveManager)}: this wave has Spawn Boss on, but no prefab is assigned for AsteroidType.Boss in Asteroid Types.", this);
+                return;
+            }
+
+            // Measured from the Circuit directly (like Spawn Distance), not from this transform's current
+            // position or any sub-wave stacking, so it's independent of the rest of the wave's own spawn point.
+            Vector3 worldPos = new Vector3(m_Circuit.position.x, m_Circuit.position.y + m_BossSpawnDistance, transform.position.z);
+            float stopY = m_Circuit.position.y + m_BossStopDistance;
+
+            // Unparented, unlike a grid cell: the boss moves at its own Boss Move Speed and stops to attack,
+            // so it can't ride this transform's shared scroll the way SpawnGrid's children do.
+            Asteroid boss = Instantiate(typeConfig.Prefab, worldPos, Quaternion.identity);
+            boss.InitializeAsBoss(m_BossMoveSpeed, stopY, m_BossAttackDamagePercent, typeConfig.Health);
         }
 
         private void SpawnGrid(SubWaveConfig subWave, float baseY)
@@ -209,7 +279,7 @@ namespace Oxtail.SpaceshipIncremental
                     Vector3 localPos = new Vector3((c * m_ColumnSpacing) - (rowWidth * 0.5f), baseY + (r * m_RowSpacing), 0f);
 
                     Asteroid asteroid = Instantiate(typeConfig.Prefab, transform.TransformPoint(localPos), Quaternion.identity, transform);
-                    asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius, typeConfig.Health);
+                    asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius, typeConfig.Health + m_CurrentHealthBonus);
                     m_WaveAsteroids.Add(asteroid);
                 }
             }
@@ -311,6 +381,14 @@ namespace Oxtail.SpaceshipIncremental
             Gizmos.color = Color.red;
             Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y - m_PassDistance, circuit.z),
                 new Vector3(circuit.x + halfWidth, circuit.y - m_PassDistance, circuit.z));
+
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y + m_BossSpawnDistance, circuit.z),
+                new Vector3(circuit.x + halfWidth, circuit.y + m_BossSpawnDistance, circuit.z));
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y + m_BossStopDistance, circuit.z),
+                new Vector3(circuit.x + halfWidth, circuit.y + m_BossStopDistance, circuit.z));
         }
     }
 }

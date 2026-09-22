@@ -11,6 +11,14 @@ namespace Oxtail.SpaceshipIncremental
         public Asteroid Asteroid;
     }
 
+    /// <summary>Raised once per attack-animation loop by a boss comet (see Asteroid.InitializeAsBoss),
+    /// unlike AsteroidDestroyedByPlanetEvent this never destroys the asteroid.</summary>
+    public struct BossAttackEvent
+    {
+        public Asteroid Asteroid;
+        public float DamagePercent;
+    }
+
     /// <summary>
     /// The 2D comet. By default it is a hand placed level target: it drops in from above on Start, then sits
     /// still taking damage through CombatTarget until SetDead scatters its parts.
@@ -62,6 +70,13 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_AlignToTravelDirection = true;
         [SerializeField] private float m_TravelRotationOffsetDegrees;
 
+        [Header("Boss")]
+        [Tooltip("Animator this comet triggers Attack on once it stops to fight. Leave unset on a non-boss " +
+            "comet.")]
+        [SerializeField] private Animator m_BossAnimator;
+
+        private static readonly int k_BossAttackTrigger = Animator.StringToHash("Attack");
+
         private bool m_IsProjectile;
         private ProjectileState m_State;
         private float m_CenteringSpeed;
@@ -71,6 +86,12 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_NotifiedJumpComplete;
         private bool m_IsShattered;
         private int m_HitPointsLeft = 1;
+
+        private bool m_IsBoss;
+        private bool m_IsBossAttacking;
+        private float m_BossMoveSpeed;
+        private float m_BossStopY;
+        private float m_BossAttackDamagePercent;
 
         /// <summary>True once this comet has arrived inside the planet bounds.</summary>
         public bool HasReachedCenter { get; private set; }
@@ -136,6 +157,12 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Update()
         {
+            if (m_IsBoss)
+            {
+                UpdateBoss();
+                return;
+            }
+
             if (!m_IsProjectile || m_IsShattered)
                 return;
 
@@ -216,6 +243,55 @@ namespace Oxtail.SpaceshipIncremental
             m_HitPointsLeft = Mathf.Max(1, hitPoints);
 
             ActiveAsteroids.Add(this);
+        }
+
+        /// <summary>
+        /// Hands this comet to a WaveManager as a boss: it walks straight down at moveSpeed, independent of
+        /// any wave transform, until its Y reaches stopY (a world Y, computed by WaveManager the same way as
+        /// its Spawn Distance line), then stops and triggers its Boss Animator's Attack state. Unlike
+        /// InitializeInGrid it never calls HandlePlanetHit, so it stays alive and targetable by bullets
+        /// (HasReachedCenter never becomes true) — the Attack clip loops on its own, and its Animation Event
+        /// (OnBossAttackLanded) raises BossAttackEvent once per loop, repeating the attack for as long as the
+        /// boss survives. Sets m_IsProjectile too, exactly like InitializeInGrid, so Start() skips the
+        /// hand-placed level drop-in tween.
+        /// </summary>
+        public void InitializeAsBoss(float moveSpeed, float stopY, float attackDamagePercent, int hitPoints = 1)
+        {
+            m_IsProjectile = true;
+            m_IsBoss = true;
+            m_BossMoveSpeed = moveSpeed;
+            m_BossStopY = stopY;
+            m_BossAttackDamagePercent = attackDamagePercent;
+            m_HitPointsLeft = Mathf.Max(1, hitPoints);
+
+            ActiveAsteroids.Add(this);
+        }
+
+        private void UpdateBoss()
+        {
+            if (m_IsShattered || m_IsBossAttacking)
+                return;
+
+            transform.position += Vector3.down * m_BossMoveSpeed * Time.deltaTime;
+
+            if (transform.position.y <= m_BossStopY)
+                BeginBossAttack();
+        }
+
+        private void BeginBossAttack()
+        {
+            m_IsBossAttacking = true;
+
+            if (m_BossAnimator != null)
+                m_BossAnimator.SetTrigger(k_BossAttackTrigger);
+        }
+
+        /// <summary>Called once per loop of the boss's looping Attack clip, via a BossAttackRelay on the
+        /// same GameObject as the Animator (an Animation Event can't reach this directly, since Asteroid is
+        /// one level up from the Animator on the prefab's sprite child).</summary>
+        public void OnBossAttackLanded()
+        {
+            EventManager<BossAttackEvent>.TriggerEvent(new BossAttackEvent { Asteroid = this, DamagePercent = m_BossAttackDamagePercent });
         }
 
         /// <summary>

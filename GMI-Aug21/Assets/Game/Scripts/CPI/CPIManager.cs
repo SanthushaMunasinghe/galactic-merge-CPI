@@ -246,6 +246,7 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<ShortcutManager.ShortcutTriggeredEvent>.AddListener(OnShortcutTriggered);
             EventManager<AsteroidDestroyedByBulletEvent>.AddListener(OnAsteroidDestroyedByBullet);
             EventManager<AsteroidDestroyedByPlanetEvent>.AddListener(OnAsteroidDestroyedByPlanet);
+            EventManager<BossAttackEvent>.AddListener(OnBossAttack);
             EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
 
             m_WaveManager.OnWaveCleared += OnWaveCleared;
@@ -256,6 +257,7 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<ShortcutManager.ShortcutTriggeredEvent>.RemoveListener(OnShortcutTriggered);
             EventManager<AsteroidDestroyedByBulletEvent>.RemoveListener(OnAsteroidDestroyedByBullet);
             EventManager<AsteroidDestroyedByPlanetEvent>.RemoveListener(OnAsteroidDestroyedByPlanet);
+            EventManager<BossAttackEvent>.RemoveListener(OnBossAttack);
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
 
             m_WaveManager.OnWaveCleared -= OnWaveCleared;
@@ -422,12 +424,22 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
         {
+            ApplyPlanetDamage(m_HealthLossPercent);
+        }
+
+        private void OnBossAttack(BossAttackEvent evt)
+        {
+            ApplyPlanetDamage(evt.DamagePercent);
+        }
+
+        private void ApplyPlanetDamage(float percent)
+        {
             if (m_HasFailed)
                 return;
 
             bool wasAtZeroHealth = PlanetHealth <= 0f;
 
-            ChangePlanetHealth(-m_HealthLossPercent);
+            ChangePlanetHealth(-percent);
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
 
             if (m_StopShootingDuringCooldown)

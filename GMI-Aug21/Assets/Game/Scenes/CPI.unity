@@ -10641,94 +10641,116 @@ MonoBehaviour:
   - Type: 2
     Prefab: {fileID: 751793167670176148, guid: 07c52a43a4e499f4cb929ae579b980d9, type: 3}
     Health: 6
+  - Type: 3
+    Prefab: {fileID: 1444682376886358041, guid: bca06f455d50edb46af925a3c64819b8, type: 3}
+    Health: 100000
+  m_HealthIncrement: 1
   m_ColumnSpacing: 1.5
   m_RowSpacing: 1.5
   m_SubWaveSpacing: 1
   m_MoveSpeed: 1.5
+  m_MoveSpeedIncrement: 0.3
   m_SpawnDistance: 13
-  m_PassDistance: 7
+  m_PassDistance: 5.92
   m_Circuit: {fileID: 1591009722}
   m_PlanetCenter: {fileID: 408897348}
   m_PlanetBoundsRadius: 1.5
+  m_BossSpawnDistance: 16.5
+  m_BossMoveSpeed: 1
+  m_BossStopDistance: 6.17
+  m_BossAttackDamagePercent: 100
   m_Waves:
   - SubWaves:
-    - Rows: 6
+    - Rows: 3
       Columns: 6
       DefaultType: 0
       CellOverrides: []
+    SpawnBoss: 0
   - SubWaves:
     - Rows: 10
       Columns: 5
       DefaultType: 0
       CellOverrides:
       - Row: 0
-        Column: 1
+        Column: 0
         Empty: 1
         Type: 0
       - Row: 0
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 1
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 1
         Column: 2
         Empty: 1
         Type: 0
-      - Row: 1
+      - Row: 0
         Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 1
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 1
+        Column: 3
         Empty: 1
         Type: 0
       - Row: 2
-        Column: 1
-        Empty: 0
-        Type: 1
+        Column: 0
+        Empty: 1
+        Type: 0
       - Row: 2
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 2
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 3
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 4
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 5
+        Column: 3
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 0
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 2
+        Empty: 1
+        Type: 0
+      - Row: 6
+        Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 7
+        Column: 1
+        Empty: 0
+        Type: 1
+      - Row: 7
         Column: 3
         Empty: 0
         Type: 1
-      - Row: 3
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 3
-        Empty: 1
-        Type: 0
       - Row: 7
         Column: 0
         Empty: 1
@@ -10742,23 +10764,23 @@ MonoBehaviour:
         Empty: 1
         Type: 0
       - Row: 8
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 9
         Column: 0
         Empty: 1
         Type: 0
-      - Row: 9
+      - Row: 8
         Column: 2
         Empty: 1
         Type: 0
-      - Row: 9
+      - Row: 8
         Column: 4
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 3
         Empty: 1
         Type: 0
     - Rows: 12
@@ -10781,6 +10803,14 @@ MonoBehaviour:
         Column: 3
         Empty: 0
         Type: 1
+      - Row: 2
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 2
+        Column: 4
+        Empty: 1
+        Type: 0
       - Row: 3
         Column: 0
         Empty: 1
@@ -10933,6 +10963,14 @@ MonoBehaviour:
         Column: 3
         Empty: 0
         Type: 1
+      - Row: 9
+        Column: 1
+        Empty: 1
+        Type: 0
+      - Row: 9
+        Column: 4
+        Empty: 1
+        Type: 0
       - Row: 11
         Column: 0
         Empty: 1
@@ -10941,6 +10979,9 @@ MonoBehaviour:
         Column: 5
         Empty: 1
         Type: 0
+    SpawnBoss: 0
+  - SubWaves: []
+    SpawnBoss: 1
 --- !u!1001 &1555188785
 PrefabInstance:
   m_ObjectHideFlags: 0
