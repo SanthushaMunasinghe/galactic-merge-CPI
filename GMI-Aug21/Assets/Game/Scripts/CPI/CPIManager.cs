@@ -81,14 +81,14 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Range(0f, 100f)] private float m_StartHealthPercent = 100f;
         [SerializeField, Range(0f, 100f)] private float m_HealthGainPercent = 10f;
         [SerializeField, Range(0f, 100f)] private float m_HealthLossPercent = 10f;
-        [Tooltip("After an asteroid hits the planet, how long collect points stop granting health. If " +
-            "Stop Shooting During Cooldown is also on, reward lines stop firing new bullets for the " +
-            "same duration.")]
+        [Tooltip("After an asteroid hits the planet, how long collect points stop granting health.")]
         [SerializeField, Min(0f)] private float m_HealthRefillCooldown = 3f;
-        [Tooltip("When on, an asteroid hitting the planet also pauses reward line shooting for Health " +
-            "Refill Cooldown, resetting together with the health refill block on every hit. When off, " +
-            "shooting is never paused by a planet hit.")]
+        [Tooltip("When on, an asteroid hitting the planet also pauses reward line shooting for Shooting " +
+            "Stop Duration. When off, shooting is never paused by a planet hit.")]
         [SerializeField] private bool m_StopShootingDuringCooldown = true;
+        [Tooltip("How long reward line shooting pauses after a planet hit, while Stop Shooting During " +
+            "Cooldown is on. A separate value from Health Refill Cooldown, so the two can be tuned independently.")]
+        [SerializeField, Min(0f)] private float m_ShootingStopDuration = 1f;
         [Tooltip("The dissolve effect on the greyscale planet sprite (the one layered over the colored " +
             "planet). Health drives it: zero health leaves the grey layer intact, full health dissolves " +
             "it away to reveal the colored planet underneath.")]
@@ -155,7 +155,11 @@ namespace Oxtail.SpaceshipIncremental
 
         [Header("CPI Spaceship Speed")]
         [SerializeField] private bool m_OverrideSpaceshipSpeed;
-        [SerializeField, Min(0.01f)] private float m_SpaceshipSpeedMultiplier = 1f;
+        [Tooltip("Spaceship speed multiplier while a wave is active.")]
+        [SerializeField, Min(0.01f)] private float m_WaveSpaceshipSpeedMultiplier = 1f;
+        [Tooltip("Spaceship speed multiplier while no wave is active (inter-wave). Also the value applied " +
+            "at scene start, before any wave has run.")]
+        [SerializeField, Min(0.01f)] private float m_InterWaveSpaceshipSpeedMultiplier = 1f;
 
         [Header("CPI Time Scale")]
         [Tooltip("Overrides Time.timeScale for the whole game while this scene plays — slows or speeds " +
@@ -409,6 +413,9 @@ namespace Oxtail.SpaceshipIncremental
 
             TweenCameraTo(active ? m_BattleCameraY : m_InterWaveCameraY, active ? m_BattleOrthoSize : m_InterWaveOrthoSize);
 
+            if (m_OverrideSpaceshipSpeed)
+                m_CurrentCircuit.SetSpeedMultiplier(active ? m_WaveSpaceshipSpeedMultiplier : m_InterWaveSpaceshipSpeedMultiplier);
+
             SetBackgroundScroll(active);
 
             if (active)
@@ -443,7 +450,7 @@ namespace Oxtail.SpaceshipIncremental
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
 
             if (m_StopShootingDuringCooldown)
-                m_BulletSpawnManager.PauseFiring(m_HealthRefillCooldown);
+                m_BulletSpawnManager.PauseFiring(m_ShootingStopDuration);
 
             OnPlanetHit?.Invoke();
 
@@ -698,7 +705,7 @@ namespace Oxtail.SpaceshipIncremental
             m_CurrentCircuit.SetSpaceshipParentsPath(m_AlignSpaceshipRotationWithPath, m_SpaceshipRotationOffsetDegrees, m_NegateSpaceshipPathDirection);
 
             if (m_OverrideSpaceshipSpeed)
-                m_CurrentCircuit.SetSpeedMultiplier(m_SpaceshipSpeedMultiplier);
+                m_CurrentCircuit.SetSpeedMultiplier(m_InterWaveSpaceshipSpeedMultiplier);
 
             if (m_OverrideRewardLineAppearance)
                 m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);

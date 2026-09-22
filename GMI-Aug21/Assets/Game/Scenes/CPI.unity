@@ -782,7 +782,8 @@ MonoBehaviour:
   m_HealthGainPercent: 8
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
-  m_StopShootingDuringCooldown: 0
+  m_StopShootingDuringCooldown: 1
+  m_ShootingStopDuration: 1
   m_PlanetDissolve: {fileID: 1367779878}
   m_OverridePlanetSprite: 0
   m_PlanetSprite: {fileID: 21300000, guid: 464eea557254b0c409a58e445d5aaa29, type: 3}
@@ -792,7 +793,7 @@ MonoBehaviour:
   m_CameraFollow: {fileID: 1737069231}
   m_CameraComponent: {fileID: 1737069224}
   m_InterWaveCameraY: 0
-  m_BattleCameraY: 6
+  m_BattleCameraY: 4
   m_InterWaveOrthoSize: 6.8
   m_BattleOrthoSize: 9
   m_CameraTweenDuration: 0.5
@@ -817,9 +818,10 @@ MonoBehaviour:
   m_SpaceshipRotationOffsetDegrees: 10
   m_NegateSpaceshipPathDirection: 1
   m_OverrideSpaceshipSpeed: 1
-  m_SpaceshipSpeedMultiplier: 3
+  m_WaveSpaceshipSpeedMultiplier: 1
+  m_InterWaveSpaceshipSpeedMultiplier: 1
   m_OverrideTimeScale: 0
-  m_TimeScaleMultiplier: 1.25
+  m_TimeScaleMultiplier: 1.5
   m_InfiniteMoney: 1
   m_ScaleSpawnTier: 1
   m_UpgradeButtonsRoot: {fileID: 103680969}
@@ -6714,7 +6716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.CPIUpgradeButton
   m_Type: 4
-  m_Title: ADD BULLET
+  m_Title: CANNON
   m_ForceFakeMax: 0
   m_Button: {fileID: 1334631919}
   m_TitleText: {fileID: 233385478}
@@ -10646,17 +10648,17 @@ MonoBehaviour:
     Health: 100000
   m_HealthIncrement: 1
   m_ColumnSpacing: 1.5
-  m_RowSpacing: 1.5
+  m_RowSpacing: 1
   m_SubWaveSpacing: 1
-  m_MoveSpeed: 1.5
-  m_MoveSpeedIncrement: 0.3
+  m_MoveSpeed: 1.25
+  m_MoveSpeedIncrement: 0.5
   m_SpawnDistance: 13
   m_PassDistance: 5.92
   m_Circuit: {fileID: 1591009722}
   m_PlanetCenter: {fileID: 408897348}
   m_PlanetBoundsRadius: 1.5
   m_BossSpawnDistance: 16.5
-  m_BossMoveSpeed: 1
+  m_BossMoveSpeed: 2
   m_BossStopDistance: 6.17
   m_BossAttackDamagePercent: 100
   m_Waves:
@@ -12320,7 +12322,7 @@ MonoBehaviour:
     SpawnPoint: {fileID: 777481514}
     Color: {r: 0.6367924, g: 1, b: 0.6692998, a: 1}
     Prefix: +1
-    Suffix: BULLET
+    Suffix: CANNON
   m_SpriteParticlePrefab: {fileID: 0}
 --- !u!1 &1717012709
 GameObject:
