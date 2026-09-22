@@ -170,4 +170,5 @@ MonoBehaviour:
   m_DestroyParticle: {fileID: 0}
   m_AlignToTravelDirection: 0
   m_TravelRotationOffsetDegrees: 180
+  m_HitRadius: 0.9
   m_BossAnimator: {fileID: 0}

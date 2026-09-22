@@ -16,17 +16,21 @@ namespace Oxtail.SpaceshipIncremental
     /// Atan2(dir.y, dir.x) * Rad2Deg - 90f convention as Asteroid.FaceTravelDirection. From there it flies
     /// in a straight line at a constant Speed via Rigidbody.MovePosition every FixedUpdate — no
     /// prediction, no curve. After moving, it checks every entry in Asteroid.ActiveAsteroids (skipping any
-    /// that has already reached the planet) for one within Hit Radius of its new position; the first one
-    /// found is destroyed exactly as before (AsteroidDestroyedByBulletEvent, DestroyWithEffect, removed
-    /// from ActiveAsteroids) and this bullet is destroyed with it — any bullet can hit any asteroid it
-    /// happens to pass near, there is no longer a locked one-bullet-one-target relationship. A bullet that
-    /// never gets that close to anything self-destructs after Max Lifetime seconds instead of flying
-    /// forever off-screen. Requires a kinematic Rigidbody on this GameObject.
+    /// that has already reached the planet) for one within this bullet's Hit Radius plus that asteroid's own
+    /// Hit Radius of its new position (so a wide sprite like the boss can be given a bigger Hit Radius on
+    /// its own prefab instead of every bullet needing one big enough for it); the first one found is
+    /// destroyed exactly as before (AsteroidDestroyedByBulletEvent, DestroyWithEffect, removed from
+    /// ActiveAsteroids) and this bullet is destroyed with it — any bullet can hit any asteroid it happens to
+    /// pass near, there is no longer a locked one-bullet-one-target relationship. A bullet that never gets
+    /// that close to anything self-destructs after Max Lifetime seconds instead of flying forever
+    /// off-screen. Requires a kinematic Rigidbody on this GameObject.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class BulletProjectile : MonoBehaviour
     {
         [Header("Hit")]
+        [Tooltip("Added to the target asteroid's own Hit Radius (see Asteroid) when checking whether this " +
+            "bullet connected — this is the bullet's share of that combined radius, not the whole thing.")]
         [SerializeField, Min(0f)] private float m_HitRadius = 0.35f;
 
         [Header("Flight")]
@@ -91,7 +95,7 @@ namespace Oxtail.SpaceshipIncremental
                 if (asteroid == null || asteroid.HasReachedCenter)
                     continue;
 
-                if (Vector3.Distance(position, asteroid.transform.position) <= m_HitRadius)
+                if (Vector3.Distance(position, asteroid.transform.position) <= m_HitRadius + asteroid.HitRadius)
                 {
                     HitTarget(asteroid);
                     return;

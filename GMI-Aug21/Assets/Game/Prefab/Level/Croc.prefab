@@ -13,6 +13,10 @@ PrefabInstance:
       value: Croc
       objectReference: {fileID: 0}
     - target: {fileID: 751793167670176148, guid: 82504477886f35c4bacc67fcb9ef7b96, type: 3}
+      propertyPath: m_HitRadius
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 751793167670176148, guid: 82504477886f35c4bacc67fcb9ef7b96, type: 3}
       propertyPath: m_BossAnimator
       value: 
       objectReference: {fileID: 1089081176110517790}

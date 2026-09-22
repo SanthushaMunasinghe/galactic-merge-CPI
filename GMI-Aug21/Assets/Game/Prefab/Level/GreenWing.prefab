@@ -171,6 +171,7 @@ MonoBehaviour:
   m_DestroyParticle: {fileID: 2172567200151674572}
   m_AlignToTravelDirection: 0
   m_TravelRotationOffsetDegrees: 180
+  m_HitRadius: 0.7
   m_BossAnimator: {fileID: 0}
 --- !u!1001 &2082626906234119396
 PrefabInstance:

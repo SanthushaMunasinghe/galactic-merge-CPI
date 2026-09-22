@@ -70,6 +70,14 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_AlignToTravelDirection = true;
         [SerializeField] private float m_TravelRotationOffsetDegrees;
 
+        [Header("Hit Detection")]
+        [Tooltip("Added to a bullet's own Hit Radius when checking whether it connected with this comet, on " +
+            "top of the distance from the bullet to this transform's position (its pivot, not its visual " +
+            "edge). Tune this per prefab to roughly match half the sprite's visible width/height — a wide " +
+            "sprite (like the boss) needs a much bigger radius than a small one, or bullets that clearly " +
+            "clip its edges will still miss.")]
+        [SerializeField, Min(0f)] private float m_HitRadius = 0.5f;
+
         [Header("Boss")]
         [Tooltip("Animator this comet triggers Attack on once it stops to fight. Leave unset on a non-boss " +
             "comet.")]
@@ -95,6 +103,10 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>True once this comet has arrived inside the planet bounds.</summary>
         public bool HasReachedCenter { get; private set; }
+
+        /// <summary>How far from this comet's pivot a bullet still counts as having hit it (added to the
+        /// bullet's own Hit Radius). See the Hit Detection tooltip for how to tune it per prefab.</summary>
+        public float HitRadius => m_HitRadius;
 
         /// <summary>True while a bullet is already assigned to hit this comet.</summary>
         public bool IsTargeted { get; set; }
