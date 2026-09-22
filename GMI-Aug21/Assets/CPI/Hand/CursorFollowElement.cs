@@ -26,6 +26,41 @@ public sealed class CursorFollowElement : MonoBehaviour
     private bool _animatorNeedsSync;
     private bool _waveMode;
 
+    private bool _worldOffsetFollowActive;
+    private Transform _worldFollowTarget;
+    private Camera _worldFollowCamera;
+    private Vector2 _worldFollowOffset;
+
+    /// <summary>
+    /// Switches from following the cursor to following Target's projected position, offset by however far
+    /// this element currently is from that projected position (so it doesn't jump on the switch) — used
+    /// while dragging the planet, whose motion is clamped/eased and so can lag behind the raw cursor. The
+    /// cursor is not read at all while this is active — the element only ever moves because Target moves.
+    /// Call EndWorldOffsetFollow to resume plain cursor following; because both modes feed the same
+    /// SmoothDamp'd _targetPoint, the switch back eases smoothly rather than snapping.
+    /// </summary>
+    public void BeginWorldOffsetFollow(Transform target, Camera worldCamera)
+    {
+        if (target == null || worldCamera == null || _rectTransform == null || _parentRectTransform == null)
+            return;
+
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _parentRectTransform, worldCamera.WorldToScreenPoint(target.position), _canvasCamera, out var targetLocalPoint))
+            return;
+
+        _worldFollowOffset = _rectTransform.anchoredPosition - targetLocalPoint;
+        _worldFollowTarget = target;
+        _worldFollowCamera = worldCamera;
+        _worldOffsetFollowActive = true;
+    }
+
+    public void EndWorldOffsetFollow()
+    {
+        _worldOffsetFollowActive = false;
+        _worldFollowTarget = null;
+        _worldFollowCamera = null;
+    }
+
     /// <summary>
     /// Picks which animator layer plays: the wave layer (pointer down/up as a scale press) during a wave, the
     /// inter-wave layer (the hand poses) otherwise. Safe to call while the hand is hidden; a re-enabled
@@ -59,6 +94,11 @@ public sealed class CursorFollowElement : MonoBehaviour
 
     private void OnEnable()
     {
+        // A re-enabled hand (e.g. after the camera transition between wave/inter-wave) always starts back
+        // in plain cursor-following mode; CPIManager re-enters world-offset mode itself if a drag is still
+        // in progress.
+        EndWorldOffsetFollow();
+
         // Runs before this frame's first render, so a hand that was hidden appears already under the cursor
         // instead of gliding in from wherever (and however fast) it was last moving.
         SnapToCursor();
@@ -114,13 +154,44 @@ public sealed class CursorFollowElement : MonoBehaviour
         _animator.SetBool(PointerUpBool, !down);
     }
 
+    /// <summary>The local point FollowCursor eases (or, while world-offset following, snaps) toward: the
+    /// cursor normally, or — while world-offset following is active — Target's projected position plus the
+    /// captured offset. The cursor is never consulted in the latter case, so nothing about the mouse,
+    /// including vertical movement, affects the element while it's following the planet.</summary>
+    private bool TryGetTargetLocalPoint(out Vector2 localPoint)
+    {
+        if (_worldOffsetFollowActive && _worldFollowTarget != null && _worldFollowCamera != null)
+        {
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    _parentRectTransform, _worldFollowCamera.WorldToScreenPoint(_worldFollowTarget.position), _canvasCamera, out var targetLocalPoint))
+            {
+                localPoint = targetLocalPoint + _worldFollowOffset;
+                return true;
+            }
+        }
+
+        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _parentRectTransform, Input.mousePosition, _canvasCamera, out localPoint);
+    }
+
     private void FollowCursor()
     {
         if (_rectTransform == null || _parentRectTransform == null) return;
 
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _parentRectTransform, Input.mousePosition, _canvasCamera, out var localPoint))
+        if (!TryGetTargetLocalPoint(out var localPoint))
             return;
+
+        if (_worldOffsetFollowActive)
+        {
+            // Tracks the planet exactly, with no smoothing lag, while its own drag is already eased —
+            // stacking this element's smoothing on top would make it visibly trail the planet. Velocity is
+            // zeroed so EndWorldOffsetFollow's switch back to cursor-following eases in cleanly instead of
+            // inheriting leftover momentum from before the drag.
+            _targetPoint = localPoint;
+            _rectTransform.anchoredPosition = localPoint;
+            _followVelocity = Vector2.zero;
+            return;
+        }
 
         if (!_targetPoint.HasValue)
         {

@@ -277,27 +277,27 @@ namespace Oxtail.SpaceshipIncremental
         {
             if (m_DragTargets == null || m_DragTargets.Length == 0 || m_HasFailed)
             {
-                m_IsDragging = false;
+                SetIsDragging(false);
                 return;
             }
 
             if (!m_IsWaveActive)
             {
-                m_IsDragging = false;
+                SetIsDragging(false);
                 m_DragTargetOffset = 0f;
             }
             else if (Input.GetMouseButtonDown(0))
             {
                 if (TryGetMouseWorldPoint(out Vector3 pressPoint) && IsOnDragGrabPoint(pressPoint))
                 {
-                    m_IsDragging = true;
+                    SetIsDragging(true);
                     m_DragGrabMouseX = pressPoint.x;
                     m_DragGrabStartTargetOffset = m_DragTargetOffset;
                 }
             }
             else if (m_IsDragging && !Input.GetMouseButton(0))
             {
-                m_IsDragging = false;
+                SetIsDragging(false);
             }
 
             if (m_IsDragging && TryGetMouseWorldPoint(out Vector3 mousePoint))
@@ -322,6 +322,26 @@ namespace Oxtail.SpaceshipIncremental
                 if (target != null)
                     target.position += Vector3.right * delta;
             }
+        }
+
+        /// <summary>Toggles m_IsDragging and, on an actual change, switches the hand pointer between
+        /// following Drag Grab Point (the planet) and following the cursor as usual — see
+        /// CursorFollowElement.BeginWorldOffsetFollow for why the planet needs its own follow mode while
+        /// its drag is clamped/eased and can lag behind the raw cursor.</summary>
+        private void SetIsDragging(bool isDragging)
+        {
+            if (m_IsDragging == isDragging)
+                return;
+
+            m_IsDragging = isDragging;
+
+            if (m_HandFollower == null)
+                return;
+
+            if (isDragging)
+                m_HandFollower.BeginWorldOffsetFollow(m_DragGrabPoint, m_CameraComponent != null ? m_CameraComponent : Camera.main);
+            else
+                m_HandFollower.EndWorldOffsetFollow();
         }
 
         private bool IsOnDragGrabPoint(Vector3 worldPoint)
