@@ -14,7 +14,10 @@ namespace Oxtail.SpaceshipIncremental
         BlueCyclops,
         CrystalCreature,
         GreenWing,
-        Boss
+        Boss,
+        GrayBellyBug,
+        GrayLeafWings,
+        SilverInsect
     }
 
     /// <summary>

@@ -10647,6 +10647,15 @@ MonoBehaviour:
   - Type: 3
     Prefab: {fileID: 1444682376886358041, guid: bca06f455d50edb46af925a3c64819b8, type: 3}
     Health: 100000
+  - Type: 4
+    Prefab: {fileID: 751793167670176148, guid: f9bb82a2cd52e7447833793739b2623e, type: 3}
+    Health: 9
+  - Type: 5
+    Prefab: {fileID: 751793167670176148, guid: c60ad0e7c3974a9479be57d9bf007dc4, type: 3}
+    Health: 12
+  - Type: 6
+    Prefab: {fileID: 751793167670176148, guid: 4a7810736e2778045a4ca58f9310533c, type: 3}
+    Health: 15
   m_HealthIncrement: 1
   m_ColumnSpacing: 1.5
   m_RowSpacing: 1
