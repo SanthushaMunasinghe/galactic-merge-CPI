@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.BulletProjectile
   m_HitRadius: 0.35
-  m_MaxLifetime: 0.95
+  m_MaxLifetime: 0.85
   m_HitParticle: {fileID: 7557450980802527517}
 --- !u!54 &8000301771182673465
 Rigidbody:

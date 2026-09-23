@@ -800,6 +800,7 @@ MonoBehaviour:
   m_FailDelay: 1
   m_GlobalVolume: {fileID: 1717012710}
   m_FailObject: {fileID: 1841117579}
+  m_DestroyAsteroidsOnFail: 0
   m_StartArrowCount: 2
   m_StartArrowTier: 1
   m_StartLineCount: 1
@@ -818,8 +819,8 @@ MonoBehaviour:
   m_SpaceshipRotationOffsetDegrees: 10
   m_NegateSpaceshipPathDirection: 1
   m_OverrideSpaceshipSpeed: 1
-  m_WaveSpaceshipSpeedMultiplier: 1
-  m_InterWaveSpaceshipSpeedMultiplier: 1
+  m_WaveSpaceshipSpeedMultiplier: 3
+  m_InterWaveSpaceshipSpeedMultiplier: 3
   m_OverrideTimeScale: 0
   m_TimeScaleMultiplier: 1.5
   m_InfiniteMoney: 1
@@ -10651,14 +10652,14 @@ MonoBehaviour:
   m_RowSpacing: 1
   m_SubWaveSpacing: 1
   m_MoveSpeed: 1.25
-  m_MoveSpeedIncrement: 0.5
-  m_SpawnDistance: 13
+  m_MoveSpeedIncrement: 0.75
+  m_SpawnDistance: 11.1
   m_PassDistance: 5.92
   m_Circuit: {fileID: 1591009722}
   m_PlanetCenter: {fileID: 408897348}
   m_PlanetBoundsRadius: 1.5
   m_BossSpawnDistance: 16.5
-  m_BossMoveSpeed: 2
+  m_BossMoveSpeed: 2.75
   m_BossStopDistance: 6.17
   m_BossAttackDamagePercent: 100
   m_Waves:
@@ -10669,6 +10670,10 @@ MonoBehaviour:
       CellOverrides: []
     SpawnBoss: 0
   - SubWaves:
+    - Rows: 3
+      Columns: 6
+      DefaultType: 0
+      CellOverrides: []
     - Rows: 10
       Columns: 5
       DefaultType: 0
@@ -10862,10 +10867,6 @@ MonoBehaviour:
         Empty: 0
         Type: 1
       - Row: 5
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 5
         Column: 1
         Empty: 0
         Type: 2
@@ -10879,14 +10880,6 @@ MonoBehaviour:
         Type: 2
       - Row: 5
         Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 5
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 0
         Empty: 1
         Type: 0
       - Row: 6
@@ -10903,10 +10896,6 @@ MonoBehaviour:
         Type: 2
       - Row: 6
         Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 5
         Empty: 1
         Type: 0
       - Row: 7
@@ -10982,7 +10971,11 @@ MonoBehaviour:
         Empty: 1
         Type: 0
     SpawnBoss: 0
-  - SubWaves: []
+  - SubWaves:
+    - Rows: 3
+      Columns: 6
+      DefaultType: 0
+      CellOverrides: []
     SpawnBoss: 1
 --- !u!1001 &1555188785
 PrefabInstance:
@@ -12759,7 +12752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.BulletSpawnManager
   m_BulletPrefab: {fileID: 3969778941504757267, guid: b57f4d6fa6b5b324a980e86aae6d28f4, type: 3}
-  m_Speed: 13
+  m_Speed: 12
   m_ShotPoints:
   - {fileID: 845342209}
   - {fileID: 997794231}

@@ -125,6 +125,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0f)] private float m_FailDelay = 1f;
         [SerializeField] private Volume m_GlobalVolume;
         [SerializeField] private GameObject m_FailObject;
+        [Tooltip("When on, failing destroys every asteroid still on screen (including the boss). When off " +
+            "(the default), they're left alone.")]
+        [SerializeField] private bool m_DestroyAsteroidsOnFail;
 
         [Header("CPI Start Values")]
         [SerializeField, Min(0)] private int m_StartArrowCount = 1;
@@ -401,7 +404,6 @@ namespace Oxtail.SpaceshipIncremental
         private void SetWaveState(bool active)
         {
             m_IsWaveActive = active;
-            RewardLinesActive = active;
 
             // Hidden for the whole camera transition; TweenCameraTo brings it back once that is done. The hand
             // switches to its wave (press-scale) or inter-wave (pose) animator layer while hidden.
@@ -411,17 +413,30 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HandFollower != null)
                 m_HandFollower.SetWaveMode(active);
 
-            TweenCameraTo(active ? m_BattleCameraY : m_InterWaveCameraY, active ? m_BattleOrthoSize : m_InterWaveOrthoSize);
-
             if (m_OverrideSpaceshipSpeed)
                 m_CurrentCircuit.SetSpeedMultiplier(active ? m_WaveSpaceshipSpeedMultiplier : m_InterWaveSpaceshipSpeedMultiplier);
 
             SetBackgroundScroll(active);
 
             if (active)
-                m_WaveManager.TriggerWave();
+            {
+                // Shooting and the wave itself wait for the camera to actually finish moving into battle
+                // view, instead of starting immediately and racing the tween.
+                TweenCameraTo(m_BattleCameraY, m_BattleOrthoSize, StartWave);
+            }
+            else
+            {
+                RewardLinesActive = false;
+                TweenCameraTo(m_InterWaveCameraY, m_InterWaveOrthoSize);
+            }
 
             EventManager<CPIWaveStateChangedEvent>.TriggerEvent(new CPIWaveStateChangedEvent { IsWaveActive = active });
+        }
+
+        private void StartWave()
+        {
+            RewardLinesActive = true;
+            m_WaveManager.TriggerWave();
         }
 
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
@@ -477,10 +492,13 @@ namespace Oxtail.SpaceshipIncremental
             if (m_Circuit != null)
                 m_Circuit.StopPath();
 
-            foreach (var asteroid in Asteroid.ActiveAsteroids.ToList())
+            if (m_DestroyAsteroidsOnFail)
             {
-                if (asteroid != null)
-                    asteroid.DestroyWithEffect();
+                foreach (var asteroid in Asteroid.ActiveAsteroids.ToList())
+                {
+                    if (asteroid != null)
+                        asteroid.DestroyWithEffect();
+                }
             }
 
             m_BulletSpawnManager.ClearPendingShots();
@@ -563,11 +581,11 @@ namespace Oxtail.SpaceshipIncremental
                 m_CameraComponent.orthographicSize = orthoSize;
         }
 
-        private void TweenCameraTo(float y, float orthoSize)
+        private void TweenCameraTo(float y, float orthoSize, Action onComplete = null)
         {
             // Both tweens share one duration, so whichever was created last finishing means the whole
             // transition is done. A tween killed by a newer transition never completes, which keeps the
-            // hand hidden until the final one lands.
+            // hand hidden (and onComplete unfired) until the final one lands.
             Tween lastTween = null;
 
             if (m_CameraFollow != null)
@@ -588,17 +606,21 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             if (lastTween != null)
-                lastTween.OnComplete(OnCameraTransitionComplete);
+                lastTween.OnComplete(() => OnCameraTransitionComplete(onComplete));
             else
-                OnCameraTransitionComplete();
+                OnCameraTransitionComplete(onComplete);
         }
 
         /// <summary>The hand pointer is only hidden while the camera is moving between views; it snaps to the
-        /// cursor as it re-enables (see CursorFollowElement), so it never visibly glides into place.</summary>
-        private void OnCameraTransitionComplete()
+        /// cursor as it re-enables (see CursorFollowElement), so it never visibly glides into place. onComplete
+        /// is SetWaveState's StartWave when entering a wave, so shooting and spawning wait for this same
+        /// moment instead of racing the tween.</summary>
+        private void OnCameraTransitionComplete(Action onComplete = null)
         {
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(true);
+
+            onComplete?.Invoke();
         }
 
         private void ApplyPlanetSpriteOverride()
