@@ -10672,22 +10672,22 @@ MonoBehaviour:
     Health: 1
   - Type: 1
     Prefab: {fileID: 751793167670176148, guid: 762264c4d5b18aa4b8d3031089cc88d7, type: 3}
-    Health: 3
+    Health: 1
   - Type: 2
     Prefab: {fileID: 751793167670176148, guid: 07c52a43a4e499f4cb929ae579b980d9, type: 3}
-    Health: 6
+    Health: 1
   - Type: 3
     Prefab: {fileID: 1444682376886358041, guid: bca06f455d50edb46af925a3c64819b8, type: 3}
     Health: 100000
   - Type: 4
     Prefab: {fileID: 751793167670176148, guid: f9bb82a2cd52e7447833793739b2623e, type: 3}
-    Health: 9
+    Health: 1
   - Type: 5
     Prefab: {fileID: 751793167670176148, guid: c60ad0e7c3974a9479be57d9bf007dc4, type: 3}
-    Health: 12
+    Health: 1
   - Type: 6
     Prefab: {fileID: 751793167670176148, guid: 4a7810736e2778045a4ca58f9310533c, type: 3}
-    Health: 15
+    Health: 1
   m_HealthIncrement: 1
   m_GridCenter: {fileID: 319836158}
   m_GridWidth: 9
@@ -10704,48 +10704,113 @@ MonoBehaviour:
   m_Waves:
   - SubWaves:
     - Cells:
-      - Row: 2
+      - Row: 5
+        Column: 1
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 5
         Column: 2
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 2
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 5
         Column: 3
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 2
-        Column: 4
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 3
-        Column: 2
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 3
-        Column: 3
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 3
-        Column: 4
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 4
+        Column: 0
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
       - Row: 4
         Column: 2
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
       - Row: 4
         Column: 3
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
       - Row: 4
         Column: 4
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 3
+        Column: 0
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 3
+        Column: 1
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 3
+        Column: 2
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 0
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 1
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 2
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 4
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 1
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 2
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 3
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 4
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 0
+        Column: 2
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 0
+        Column: 3
+        Type: 6
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 4
+        Column: 1
         Type: 0
         UseOverlayColor: 0
         OverlayColor: {r: 1, g: 1, b: 1, a: 1}
@@ -10753,27 +10818,449 @@ MonoBehaviour:
     RepeatCount: 0
   - SubWaves:
     - Cells:
+      - Row: 0
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 0
+        Column: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 0
+        Column: 2
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 0
+        Column: 3
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 0
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 0
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 1
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 2
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 1
+        Column: 3
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 1
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 1
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 2
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
       - Row: 2
         Column: 1
-        Type: 1
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
       - Row: 2
         Column: 2
-        Type: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 2
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 2
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 0, b: 1, a: 1}
+      - Row: 3
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 3
+        Column: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 3
+        Column: 2
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 3
+        Column: 3
+        Type: 5
         UseOverlayColor: 1
         OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 3
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 3
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 4
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 4
+        Column: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 4
+        Column: 2
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 4
+        Column: 3
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 4
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 4
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 5
+        Column: 0
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 5
+        Column: 1
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 5
+        Column: 2
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 0, g: 1, b: 0, a: 1}
+      - Row: 5
+        Column: 3
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 5
+        Column: 4
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 5
+        Column: 5
+        Type: 5
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+    SpawnBoss: 0
+    RepeatCount: 0
+  - SubWaves:
+    - Cells:
+      - Row: 5
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 5
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 5
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 5
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 4
+        Column: 0
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 4
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 4
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 4
+        Column: 5
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 3
+        Column: 0
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 3
+        Column: 5
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
       - Row: 2
+        Column: 0
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 2
+        Column: 5
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 1
+        Column: 0
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 1
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 1
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 1
+        Column: 5
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 0
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 0
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 0
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 0
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 0.6, g: 0.93, b: 0.6, a: 1}
+      - Row: 4
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 4
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 3
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 3
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 2
+        Column: 1
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 2
+        Column: 4
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 1
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 1
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0.75, b: 0.4, a: 1}
+      - Row: 3
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 2
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 4
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+    SpawnBoss: 0
+    RepeatCount: 0
+  - SubWaves:
+    - Cells:
+      - Row: 0
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 0
+        Column: 1
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 0
+        Column: 2
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 0
         Column: 3
         Type: 1
         UseOverlayColor: 0
         OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 2
+      - Row: 0
         Column: 4
         Type: 1
         UseOverlayColor: 0
         OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-    - Cells:
+      - Row: 0
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 1
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 2
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 3
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 4
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 1
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 1
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 2
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 4
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
       - Row: 3
         Column: 1
         Type: 2
@@ -10794,31 +11281,72 @@ MonoBehaviour:
         Type: 2
         UseOverlayColor: 0
         OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 1
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 2
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 3
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 4
+        Type: 2
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 1
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 2
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 3
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 4
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 5
+        Column: 5
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     SpawnBoss: 0
-    RepeatCount: 0
-  - SubWaves:
-    - Cells:
-      - Row: 2
-        Column: 2
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 2
-        Column: 3
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 3
-        Column: 2
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-      - Row: 3
-        Column: 3
-        Type: 0
-        UseOverlayColor: 0
-        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
-    SpawnBoss: 1
     RepeatCount: 0
 --- !u!1001 &1555188785
 PrefabInstance:

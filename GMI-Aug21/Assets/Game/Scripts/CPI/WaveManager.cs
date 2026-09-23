@@ -343,11 +343,16 @@ namespace Oxtail.SpaceshipIncremental
             m_CurrentBoss.ReleaseBossAdvance();
         }
 
+        /// <summary>Checks Asteroid.ActiveAsteroids membership rather than IsDead: every removal path
+        /// (bullet kill, planet hit, DestroyQuietly) removes an asteroid from ActiveAsteroids synchronously,
+        /// before firing the event that leads here, but only sets IsDead afterward (inside
+        /// DestroyWithEffect). Checking IsDead here would miss the very asteroid whose own death just
+        /// triggered this check, since its DestroyWithEffect call hasn't run yet at this point.</summary>
         private bool AnyWaveAsteroidAlive()
         {
             foreach (Asteroid asteroid in m_WaveAsteroids)
             {
-                if (asteroid != null && !asteroid.IsDead)
+                if (asteroid != null && Asteroid.ActiveAsteroids.Contains(asteroid))
                     return true;
             }
 
