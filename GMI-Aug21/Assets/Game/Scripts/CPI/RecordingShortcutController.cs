@@ -15,6 +15,12 @@ namespace Oxtail.SpaceshipIncremental
     /// take always uses exactly what is set up there (recorders, output path, resolution, format,
     /// frame rate) - pressing Q is the same as clicking its START/STOP RECORDING button. Listens to
     /// ShortcutManager the same way CPIManager does, but doesn't touch any CPI game state.
+    ///
+    /// Shares a GameObject with ShortcutManager, separate from the CPI level, which that component
+    /// makes a PersistentMonoSingleton: this GameObject survives an R reload (and any other scene load)
+    /// instead of resetting with the level, so a take started before a reload keeps counting down
+    /// uninterrupted and Max Duration Seconds caps the total recording time across however many reloads
+    /// happen during it, not just the time before the next one.
     /// </summary>
     public class RecordingShortcutController : MonoBehaviour
     {

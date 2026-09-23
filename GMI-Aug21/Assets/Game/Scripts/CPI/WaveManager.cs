@@ -42,6 +42,11 @@ namespace Oxtail.SpaceshipIncremental
     /// Asteroid Types maps each type to its prefab and to its Health, the number of bullets it takes to
     /// destroy it.
     ///
+    /// A wave whose Repeat Count is above 0 is played that many extra times in a row (same SubWaves,
+    /// SpawnBoss and all) before TriggerWave advances to the next entry in Waves - each repeat is still its
+    /// own full TriggerWave call, so Move Speed Increment and Health Increment keep stacking across them the
+    /// same way they would across distinct waves.
+    ///
     /// An asteroid reaching the planet (within Planet Bounds Radius of Planet Center) deals the usual
     /// planet-hit damage via the shared AsteroidDestroyedByPlanetEvent (and, unlike a bullet kill, leaves no
     /// collect point behind), and enough bullets destroy it the usual way (collect point and all). One that
@@ -90,6 +95,9 @@ namespace Oxtail.SpaceshipIncremental
             public List<SubWaveConfig> SubWaves = new List<SubWaveConfig>();
             [Tooltip("If true, a Boss-type asteroid spawns Boss Spacing above this wave's last sub-wave.")]
             public bool SpawnBoss;
+            [Tooltip("How many extra times TriggerWave repeats this same wave before moving on to the next " +
+                "one. 0 plays it once and progresses as usual; 2 plays it a total of three times.")]
+            [Min(0)] public int RepeatCount;
         }
 
         [Header("Asteroid Types")]
@@ -143,6 +151,7 @@ namespace Oxtail.SpaceshipIncremental
         private readonly Dictionary<AsteroidType, AsteroidTypeConfig> m_TypeLookup = new Dictionary<AsteroidType, AsteroidTypeConfig>();
         private readonly HashSet<AsteroidType> m_ReportedMissingTypes = new HashSet<AsteroidType>();
         private int m_CurrentWaveIndex;
+        private int m_WaveRepeatsPlayed;
         private int m_FullWaveCount;
         private float m_CurrentMoveSpeed;
         private int m_CurrentHealthBonus;
@@ -197,7 +206,18 @@ namespace Oxtail.SpaceshipIncremental
             BuildTypeLookup();
 
             WaveConfig config = m_Waves[Mathf.Min(m_CurrentWaveIndex, m_Waves.Count - 1)];
-            m_CurrentWaveIndex++;
+
+            // Repeats the same wave config Repeat Count extra times before moving on: only advance to the
+            // next wave once that many repeats have already been played.
+            if (m_WaveRepeatsPlayed < config.RepeatCount)
+            {
+                m_WaveRepeatsPlayed++;
+            }
+            else
+            {
+                m_WaveRepeatsPlayed = 0;
+                m_CurrentWaveIndex++;
+            }
 
             // Only a full wave's own grid scroll speed and unit health increment; a boss wave has no
             // sub-waves to apply either to (it has no grid cells, and rides no shared transform), so it just

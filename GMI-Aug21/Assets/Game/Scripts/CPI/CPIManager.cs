@@ -459,8 +459,6 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HasFailed)
                 return;
 
-            bool wasAtZeroHealth = PlanetHealth <= 0f;
-
             ChangePlanetHealth(-percent);
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
 
@@ -469,11 +467,14 @@ namespace Oxtail.SpaceshipIncremental
 
             OnPlanetHit?.Invoke();
 
+            // Checked post-damage (not a pre-damage snapshot) so a single hit that overkills past the
+            // remaining health - however far past zero - fails immediately instead of waiting for a second
+            // hit to land while already at zero. Guarded by m_HasFailed above, so this can only fire once.
             if (PlanetHealth <= 0f)
+            {
                 StopAllBossAttacks();
-
-            if (wasAtZeroHealth)
                 TriggerFailSequence();
+            }
         }
 
         /// <summary>Freezes every active boss comet's attack the instant the planet's health hits zero or
@@ -530,7 +531,13 @@ namespace Oxtail.SpaceshipIncremental
 
         private IEnumerator FailDelayCO()
         {
-            yield return new WaitForSeconds(m_FailDelay);
+            // Waits for the planet's grey sand-dissolve to finish animating back to empty (health 0)
+            // before revealing the fail UI, rather than a fixed timer that may run short or long of the
+            // actual transition. Falls back to Fail Delay when no dissolve effect is assigned.
+            if (m_PlanetDissolve != null)
+                yield return new WaitUntil(() => m_PlanetDissolve.IsFullyRestored);
+            else
+                yield return new WaitForSeconds(m_FailDelay);
 
             EnableDepthOfField();
 

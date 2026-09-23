@@ -8,6 +8,12 @@ namespace Oxtail.Utils
     {
         protected override void Awake()
         {
+            if (m_Instance != null && m_Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             base.Awake();
             DontDestroyOnLoad(gameObject);
         }
