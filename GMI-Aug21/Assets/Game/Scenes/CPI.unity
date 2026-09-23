@@ -735,6 +735,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233385476}
   m_CullTransparentMesh: 1
+--- !u!1 &319836157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319836158}
+  m_Layer: 0
+  m_Name: GridCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &319836158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319836157}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1536801659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &325274733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10619,7 +10650,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 319836158}
   m_Father: {fileID: 1749699682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1536801660
@@ -10657,16 +10689,12 @@ MonoBehaviour:
     Prefab: {fileID: 751793167670176148, guid: 4a7810736e2778045a4ca58f9310533c, type: 3}
     Health: 15
   m_HealthIncrement: 1
-  m_ColumnSpacing: 1.5
-  m_RowSpacing: 1
-  m_SubWaveSpacing: 1
-  m_MoveSpeed: 3
-  m_MoveSpeedIncrement: 0.5
-  m_SpawnDistance: 11.1
-  m_PassDistance: 5.92
+  m_GridCenter: {fileID: 319836158}
+  m_GridWidth: 9
+  m_GridHeight: 9
+  m_GridRows: 10
+  m_GridColumns: 10
   m_Circuit: {fileID: 1591009722}
-  m_UseStopPoint: 1
-  m_StopDistance: 6.19
   m_PlanetCenter: {fileID: 408897348}
   m_PlanetBoundsRadius: 1.5
   m_BossSpawnDistance: 16.5
@@ -10675,320 +10703,121 @@ MonoBehaviour:
   m_BossAttackDamagePercent: 100
   m_Waves:
   - SubWaves:
-    - Rows: 6
-      Columns: 6
-      DefaultType: 0
-      CellOverrides: []
+    - Cells:
+      - Row: 2
+        Column: 2
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 4
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 2
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 3
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 4
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 2
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 3
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 4
+        Column: 4
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     SpawnBoss: 0
     RepeatCount: 0
   - SubWaves:
-    - Rows: 3
-      Columns: 6
-      DefaultType: 0
-      CellOverrides: []
-    - Rows: 10
-      Columns: 5
-      DefaultType: 0
-      CellOverrides:
-      - Row: 0
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 0
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 0
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 1
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 1
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 2
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 2
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 2
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 5
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 1
-        Empty: 0
-        Type: 1
-      - Row: 7
-        Column: 3
-        Empty: 0
-        Type: 1
-      - Row: 7
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 9
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 9
-        Column: 3
-        Empty: 1
-        Type: 0
-    - Rows: 12
-      Columns: 6
-      DefaultType: 0
-      CellOverrides:
-      - Row: 0
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 0
-        Column: 5
-        Empty: 1
-        Type: 0
-      - Row: 2
-        Column: 2
-        Empty: 0
-        Type: 1
-      - Row: 2
-        Column: 3
-        Empty: 0
-        Type: 1
+    - Cells:
       - Row: 2
         Column: 1
-        Empty: 1
-        Type: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 2
+        Type: 1
+        UseOverlayColor: 1
+        OverlayColor: {r: 1, g: 0, b: 0, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
       - Row: 2
         Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 0
-        Empty: 1
-        Type: 0
+        Type: 1
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+    - Cells:
       - Row: 3
         Column: 1
-        Empty: 0
-        Type: 1
-      - Row: 3
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 3
-        Empty: 0
-        Type: 1
-      - Row: 3
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 3
-        Column: 5
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 0
-        Empty: 0
-        Type: 1
-      - Row: 4
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 4
-        Column: 5
-        Empty: 0
-        Type: 1
-      - Row: 5
-        Column: 1
-        Empty: 0
         Type: 2
-      - Row: 5
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
         Column: 2
-        Empty: 0
         Type: 2
-      - Row: 5
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
         Column: 3
-        Empty: 0
         Type: 2
-      - Row: 5
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
         Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 6
-        Column: 1
-        Empty: 0
         Type: 2
-      - Row: 6
-        Column: 2
-        Empty: 0
-        Type: 2
-      - Row: 6
-        Column: 3
-        Empty: 0
-        Type: 2
-      - Row: 6
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 0
-        Empty: 0
-        Type: 1
-      - Row: 7
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 3
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 7
-        Column: 5
-        Empty: 0
-        Type: 1
-      - Row: 8
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 1
-        Empty: 0
-        Type: 1
-      - Row: 8
-        Column: 2
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 3
-        Empty: 0
-        Type: 1
-      - Row: 8
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 8
-        Column: 5
-        Empty: 1
-        Type: 0
-      - Row: 9
-        Column: 2
-        Empty: 0
-        Type: 1
-      - Row: 9
-        Column: 3
-        Empty: 0
-        Type: 1
-      - Row: 9
-        Column: 1
-        Empty: 1
-        Type: 0
-      - Row: 9
-        Column: 4
-        Empty: 1
-        Type: 0
-      - Row: 11
-        Column: 0
-        Empty: 1
-        Type: 0
-      - Row: 11
-        Column: 5
-        Empty: 1
-        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     SpawnBoss: 0
     RepeatCount: 0
   - SubWaves:
-    - Rows: 3
-      Columns: 6
-      DefaultType: 0
-      CellOverrides: []
+    - Cells:
+      - Row: 2
+        Column: 2
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 2
+        Column: 3
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 2
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
+      - Row: 3
+        Column: 3
+        Type: 0
+        UseOverlayColor: 0
+        OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     SpawnBoss: 1
     RepeatCount: 0
 --- !u!1001 &1555188785

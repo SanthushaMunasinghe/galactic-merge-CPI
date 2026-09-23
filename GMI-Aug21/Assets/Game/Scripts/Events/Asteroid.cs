@@ -342,6 +342,14 @@ namespace Oxtail.SpaceshipIncremental
                 m_BossAnimator.enabled = false;
         }
 
+        /// <summary>Tints the comet sprite with color (WaveManager uses this for a grid cell's optional
+        /// Overlay Color). White leaves the prefab's own authored color untouched.</summary>
+        public void SetOverlayColor(Color color)
+        {
+            if (m_Comet != null)
+                m_Comet.color = color;
+        }
+
         /// <summary>
         /// Applies one bullet hit and returns true if it was the killing one (the caller then destroys the
         /// comet the usual way). A non-lethal hit just flashes the comet and leaves it alive. Comets start with
