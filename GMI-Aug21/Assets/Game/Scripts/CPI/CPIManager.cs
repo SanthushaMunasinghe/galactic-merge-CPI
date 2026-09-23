@@ -469,8 +469,23 @@ namespace Oxtail.SpaceshipIncremental
 
             OnPlanetHit?.Invoke();
 
+            if (PlanetHealth <= 0f)
+                StopAllBossAttacks();
+
             if (wasAtZeroHealth)
                 TriggerFailSequence();
+        }
+
+        /// <summary>Freezes every active boss comet's attack the instant the planet's health hits zero or
+        /// the level fails, so it can't land another hit while the fail sequence (or the last grace hit)
+        /// catches up. Safe to call repeatedly and on non-boss comets.</summary>
+        private void StopAllBossAttacks()
+        {
+            foreach (var asteroid in Asteroid.ActiveAsteroids)
+            {
+                if (asteroid != null)
+                    asteroid.StopBossAttack();
+            }
         }
 
         private void OnCollectPointCollected(CollectPointCollectedEvent evt)
@@ -494,6 +509,8 @@ namespace Oxtail.SpaceshipIncremental
 
             if (m_Circuit != null)
                 m_Circuit.StopPath();
+
+            StopAllBossAttacks();
 
             if (m_DestroyAsteroidsOnFail)
             {

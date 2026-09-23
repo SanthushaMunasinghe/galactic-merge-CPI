@@ -121,12 +121,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void ReloadScene()
         {
-            // Finalize any in-progress take before the scene unloads, otherwise the recording keeps
-            // running across the reload with no countdown left to end it.
-            RecorderWindow window = GetRecorderWindow();
-            if (window != null && window.IsRecording())
-                StopRecording(window);
-
+            // Recording (owned by the Recorder window, not this GameObject) keeps running across the
+            // reload on its own; only the countdown coroutine dies with this instance, so a take started
+            // before an R reload has to be stopped with Q or by the window itself.
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 

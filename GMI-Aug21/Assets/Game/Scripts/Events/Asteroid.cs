@@ -97,6 +97,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private bool m_IsBoss;
         private bool m_IsBossAttacking;
+        private bool m_BossAttackStopped;
         private float m_BossMoveSpeed;
         private float m_BossStopY;
         private float m_BossAttackDamagePercent;
@@ -303,7 +304,28 @@ namespace Oxtail.SpaceshipIncremental
         /// one level up from the Animator on the prefab's sprite child).</summary>
         public void OnBossAttackLanded()
         {
+            if (m_BossAttackStopped)
+                return;
+
             EventManager<BossAttackEvent>.TriggerEvent(new BossAttackEvent { Asteroid = this, DamagePercent = m_BossAttackDamagePercent });
+        }
+
+        /// <summary>
+        /// Immediately halts this boss's attack: freezes its Animator (so the looping Attack clip stops
+        /// dead, mid frame, instead of finishing its loop) and ignores any OnBossAttackLanded that was
+        /// already in flight. Called by CPIManager the instant the planet's health reaches zero or the
+        /// level fails, so the boss can't land another hit while the fail sequence catches up. A no-op on a
+        /// non-boss comet or one already stopped.
+        /// </summary>
+        public void StopBossAttack()
+        {
+            if (!m_IsBoss || m_BossAttackStopped)
+                return;
+
+            m_BossAttackStopped = true;
+
+            if (m_BossAnimator != null)
+                m_BossAnimator.enabled = false;
         }
 
         /// <summary>
