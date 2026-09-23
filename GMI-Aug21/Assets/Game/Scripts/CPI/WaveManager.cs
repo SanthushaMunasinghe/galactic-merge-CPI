@@ -31,11 +31,12 @@ namespace Oxtail.SpaceshipIncremental
     /// A wave whose Spawn Boss is on also spawns one Boss-type asteroid, Boss Spawn Distance above the
     /// Circuit's Y — independent of Spawn Distance and of any sub-waves the same wave might have. Unlike a
     /// grid asteroid it is spawned unparented rather than riding this transform (via Asteroid.InitializeAsBoss
-    /// instead of InitializeInGrid), since it always moves at its own fixed Boss Move Speed — never the
-    /// incrementing Move Speed — until its Y reaches Boss Stop Distance above the Circuit's Y (the same kind
-    /// of line as Spawn Distance, not a radius around Planet Center), where it stops to attack: see
-    /// InitializeAsBoss for its walk-then-attack behavior. A boss wave doesn't count towards Move Speed
-    /// Increment either, since it has no sub-waves.
+    /// instead of InitializeInGrid), and it spawns held in place: it waits behind the sub-waves until every
+    /// grid asteroid from the same wave is gone (see TryReleaseBoss), then walks down at its own fixed Boss
+    /// Move Speed — never the incrementing Move Speed — until its Y reaches Boss Stop Distance above the
+    /// Circuit's Y (the same kind of line as Spawn Distance, not a radius around Planet Center), where it
+    /// stops to attack: see InitializeAsBoss for its held-then-walk-then-attack behavior. A boss wave doesn't
+    /// count towards Move Speed Increment either, since it has no sub-waves.
     ///
     /// What each cell spawns is an AsteroidType: every sub-wave has a Default Type, and Cell Overrides can
     /// swap individual cells (row 0 is the row nearest the circuit, column 0 the leftmost) for another type.
@@ -46,6 +47,11 @@ namespace Oxtail.SpaceshipIncremental
     /// SpawnBoss and all) before TriggerWave advances to the next entry in Waves - each repeat is still its
     /// own full TriggerWave call, so Move Speed Increment and Health Increment keep stacking across them the
     /// same way they would across distinct waves.
+    ///
+    /// If Use Stop Point is on, the wave halts once its frontmost row (nearest the circuit, among those
+    /// still alive) reaches Stop Distance above the Circuit's Y (see the Stop Point gizmo line), and only
+    /// scrolls again once that row is fully destroyed - repeating row by row until nothing grid-spawned is
+    /// left.
     ///
     /// An asteroid reaching the planet (within Planet Bounds Radius of Planet Center) deals the usual
     /// planet-hit damage via the shared AsteroidDestroyedByPlanetEvent (and, unlike a bullet kill, leaves no
@@ -127,6 +133,17 @@ namespace Oxtail.SpaceshipIncremental
         [Tooltip("Spawn and pass distances are measured from this transform's position.")]
         [SerializeField] private Transform m_Circuit;
 
+        [Header("Stop Point")]
+        [Tooltip("If true, the wave halts as soon as its frontmost row (the row nearest the circuit that " +
+            "still has a living asteroid) reaches Stop Distance above the Circuit's Y, instead of scrolling " +
+            "straight through. It resumes scrolling only once that frontmost row is entirely destroyed, at " +
+            "which point the next row becomes the new frontmost row and the wave advances until that one " +
+            "reaches the line in turn (or, once no grid asteroid is left, the wave simply clears as usual).")]
+        [SerializeField] private bool m_UseStopPoint;
+        [Tooltip("How far above the Circuit's Y the wave holds at when Use Stop Point is on, measured the " +
+            "same way as Spawn Distance.")]
+        [SerializeField, Min(0f)] private float m_StopDistance = 5f;
+
         [Header("Planet")]
         [Tooltip("What counts as the planet for asteroid arrival (health loss). Required: this transform " +
             "scrolls, so it can't stand in for it.")]
@@ -156,6 +173,8 @@ namespace Oxtail.SpaceshipIncremental
         private float m_CurrentMoveSpeed;
         private int m_CurrentHealthBonus;
         private bool m_IsWaveActive;
+        private Asteroid m_CurrentBoss;
+        private bool m_BossReleased;
 
         /// <summary>Fired once no asteroid from the current wave is left alive (bullet-killed, planet-hit
         /// or scrolled past the circuit).</summary>
@@ -178,9 +197,53 @@ namespace Oxtail.SpaceshipIncremental
             if (!m_IsWaveActive)
                 return;
 
-            transform.position += Vector3.down * m_CurrentMoveSpeed * Time.deltaTime;
+            float deltaY = -m_CurrentMoveSpeed * Time.deltaTime;
+
+            if (m_UseStopPoint && deltaY < 0f)
+                deltaY = ClampToStopPoint(deltaY);
+
+            transform.position += new Vector3(0f, deltaY, 0f);
 
             RemovePassedAsteroids();
+        }
+
+        /// <summary>Shortens deltaY (always <= 0 coming in) so the frontmost row - the lowest-local-Y grid
+        /// asteroid still alive in m_WaveAsteroids - never moves past Stop Distance above the Circuit's Y.
+        /// Grid asteroids stay parented with a fixed local position (see Asteroid.InitializeInGrid), so that
+        /// row's world Y is just this transform's position plus its local Y. Returns deltaY unchanged if no
+        /// grid asteroid is left alive (e.g. a boss-only wave, or every row already cleared).</summary>
+        private float ClampToStopPoint(float deltaY)
+        {
+            if (!TryGetFrontRowLocalY(out float frontRowLocalY))
+                return deltaY;
+
+            float stopWorldY = m_Circuit.position.y + m_StopDistance;
+            float frontRowWorldY = transform.position.y + frontRowLocalY;
+
+            return Mathf.Max(deltaY, stopWorldY - frontRowWorldY);
+        }
+
+        /// <summary>The local Y (relative to this transform) of the row nearest the circuit that still has a
+        /// living asteroid in m_WaveAsteroids, i.e. the smallest local Y among them. False if none are alive.</summary>
+        private bool TryGetFrontRowLocalY(out float localY)
+        {
+            localY = 0f;
+            bool found = false;
+
+            foreach (Asteroid asteroid in m_WaveAsteroids)
+            {
+                if (asteroid == null || asteroid.IsDead)
+                    continue;
+
+                float y = asteroid.transform.localPosition.y;
+                if (!found || y < localY)
+                {
+                    localY = y;
+                    found = true;
+                }
+            }
+
+            return found;
         }
 
         public void TriggerWave()
@@ -235,8 +298,14 @@ namespace Oxtail.SpaceshipIncremental
 
             m_WaveAsteroids.Clear();
             m_ReportedMissingTypes.Clear();
+            m_CurrentBoss = null;
+            m_BossReleased = false;
             m_IsWaveActive = true;
             SpawnSubWaves(config);
+
+            // Covers a boss with no sub-waves (or none that spawned anything), which would otherwise sit
+            // held forever since nothing would ever call TryReleaseBoss for it.
+            TryReleaseBoss();
 
             // Covers a wave with nothing in it, where no destroy event would ever trigger this check.
             CheckWaveCleared();
@@ -272,9 +341,30 @@ namespace Oxtail.SpaceshipIncremental
             float stopY = m_Circuit.position.y + m_BossStopDistance;
 
             // Unparented, unlike a grid cell: the boss moves at its own Boss Move Speed and stops to attack,
-            // so it can't ride this transform's shared scroll the way SpawnGrid's children do.
+            // so it can't ride this transform's shared scroll the way SpawnGrid's children do. It spawns
+            // held in place (see InitializeAsBoss) - TryReleaseBoss lets it start walking once this wave's
+            // own grid is cleared.
             Asteroid boss = Instantiate(typeConfig.Prefab, worldPos, Quaternion.identity);
             boss.InitializeAsBoss(m_BossMoveSpeed, stopY, m_BossAttackDamagePercent, typeConfig.Health);
+            m_CurrentBoss = boss;
+        }
+
+        /// <summary>Releases m_CurrentBoss (see Asteroid.ReleaseBossAdvance) once every grid asteroid from
+        /// this wave (m_WaveAsteroids) is gone, however that happened - bullet-killed, planet-hit, or
+        /// scrolled past the circuit. A no-op if there's no boss, or it was already released.</summary>
+        private void TryReleaseBoss()
+        {
+            if (m_BossReleased || m_CurrentBoss == null)
+                return;
+
+            foreach (Asteroid asteroid in m_WaveAsteroids)
+            {
+                if (asteroid != null && !asteroid.IsDead)
+                    return;
+            }
+
+            m_BossReleased = true;
+            m_CurrentBoss.ReleaseBossAdvance();
         }
 
         private void SpawnGrid(SubWaveConfig subWave, float baseY)
@@ -363,6 +453,13 @@ namespace Oxtail.SpaceshipIncremental
                 }
             }
 
+            // Unconditional, not just on removedAny: AsteroidDestroyedByBulletEvent/AsteroidDestroyedByPlanetEvent
+            // fire before DestroyWithEffect marks the asteroid IsDead (see BulletProjectile.HitTarget and
+            // Asteroid.HandlePlanetHit), so TryReleaseBoss's call from those handlers can miss the last grid
+            // asteroid dying. This runs every frame the wave is active (the boss itself keeps it active) and
+            // catches that case the very next frame; it's a no-op past the first successful release.
+            TryReleaseBoss();
+
             if (removedAny)
                 CheckWaveCleared();
         }
@@ -401,6 +498,13 @@ namespace Oxtail.SpaceshipIncremental
             Gizmos.color = Color.red;
             Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y - m_PassDistance, circuit.z),
                 new Vector3(circuit.x + halfWidth, circuit.y - m_PassDistance, circuit.z));
+
+            if (m_UseStopPoint)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y + m_StopDistance, circuit.z),
+                    new Vector3(circuit.x + halfWidth, circuit.y + m_StopDistance, circuit.z));
+            }
 
             Gizmos.color = Color.magenta;
             Gizmos.DrawLine(new Vector3(circuit.x - halfWidth, circuit.y + m_BossSpawnDistance, circuit.z),

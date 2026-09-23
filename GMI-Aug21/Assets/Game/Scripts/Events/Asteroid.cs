@@ -98,6 +98,7 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_IsBoss;
         private bool m_IsBossAttacking;
         private bool m_BossAttackStopped;
+        private bool m_BossHeld;
         private float m_BossMoveSpeed;
         private float m_BossStopY;
         private float m_BossAttackDamagePercent;
@@ -266,12 +267,14 @@ namespace Oxtail.SpaceshipIncremental
         /// (HasReachedCenter never becomes true) — the Attack clip loops on its own, and its Animation Event
         /// (OnBossAttackLanded) raises BossAttackEvent once per loop, repeating the attack for as long as the
         /// boss survives. Sets m_IsProjectile too, exactly like InitializeInGrid, so Start() skips the
-        /// hand-placed level drop-in tween.
+        /// hand-placed level drop-in tween. Starts held at its spawn point (see m_BossHeld) — WaveManager
+        /// releases it with ReleaseBossAdvance once the wave's own sub-wave grid is fully cleared.
         /// </summary>
         public void InitializeAsBoss(float moveSpeed, float stopY, float attackDamagePercent, int hitPoints = 1)
         {
             m_IsProjectile = true;
             m_IsBoss = true;
+            m_BossHeld = true;
             m_BossMoveSpeed = moveSpeed;
             m_BossStopY = stopY;
             m_BossAttackDamagePercent = attackDamagePercent;
@@ -280,9 +283,20 @@ namespace Oxtail.SpaceshipIncremental
             ActiveAsteroids.Add(this);
         }
 
+        /// <summary>Lets a boss held at its spawn point (see InitializeAsBoss) start walking down toward its
+        /// Boss Stop Distance line. Called by WaveManager once every grid asteroid from the same wave is
+        /// gone. No-op on a non-boss comet or one already released.</summary>
+        public void ReleaseBossAdvance()
+        {
+            if (!m_IsBoss)
+                return;
+
+            m_BossHeld = false;
+        }
+
         private void UpdateBoss()
         {
-            if (m_IsShattered || m_IsBossAttacking)
+            if (m_IsShattered || m_IsBossAttacking || m_BossHeld)
                 return;
 
             transform.position += Vector3.down * m_BossMoveSpeed * Time.deltaTime;
