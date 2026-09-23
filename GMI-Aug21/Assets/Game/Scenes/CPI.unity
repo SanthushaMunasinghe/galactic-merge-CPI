@@ -10694,6 +10694,8 @@ MonoBehaviour:
   m_GridHeight: 9
   m_GridRows: 21
   m_GridColumns: 21
+  m_FormationDuration: 1
+  m_EntranceMargin: 1.5
   m_Circuit: {fileID: 1591009722}
   m_PlanetCenter: {fileID: 408897348}
   m_PlanetBoundsRadius: 1.5

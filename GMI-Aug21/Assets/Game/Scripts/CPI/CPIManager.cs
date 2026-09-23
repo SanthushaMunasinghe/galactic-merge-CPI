@@ -257,6 +257,8 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CollectPointCollectedEvent>.AddListener(OnCollectPointCollected);
 
             m_WaveManager.OnWaveCleared += OnWaveCleared;
+            m_WaveManager.OnFormationStarted += OnFormationStarted;
+            m_WaveManager.OnFormationCompleted += OnFormationCompleted;
         }
 
         private void OnDisable()
@@ -268,6 +270,11 @@ namespace Oxtail.SpaceshipIncremental
             EventManager<CollectPointCollectedEvent>.RemoveListener(OnCollectPointCollected);
 
             m_WaveManager.OnWaveCleared -= OnWaveCleared;
+            m_WaveManager.OnFormationStarted -= OnFormationStarted;
+            m_WaveManager.OnFormationCompleted -= OnFormationCompleted;
+            RewardLinesActive = false;
+            m_BulletSpawnManager.ClearPendingShots();
+            m_WaveManager.StopFormation();
         }
 
         private void Update()
@@ -389,6 +396,7 @@ namespace Oxtail.SpaceshipIncremental
             if (m_HasFailed)
                 return;
 
+            RewardLinesActive = false;
             m_BulletSpawnManager.ClearPendingShots();
 
             StartCoroutine(InterWaveDelayCO());
@@ -404,6 +412,8 @@ namespace Oxtail.SpaceshipIncremental
         private void SetWaveState(bool active)
         {
             m_IsWaveActive = active;
+            RewardLinesActive = false;
+            m_BulletSpawnManager.ClearPendingShots();
 
             // Hidden for the whole camera transition; TweenCameraTo brings it back once that is done. The hand
             // switches to its wave (press-scale) or inter-wave (pose) animator layer while hidden.
@@ -420,8 +430,7 @@ namespace Oxtail.SpaceshipIncremental
 
             if (active)
             {
-                // Shooting and the wave itself wait for the camera to actually finish moving into battle
-                // view, instead of starting immediately and racing the tween.
+                // Finish the camera transition first, then form the creatures before enabling shooting.
                 TweenCameraTo(m_BattleCameraY, m_BattleOrthoSize, StartWave);
             }
             else
@@ -435,8 +444,22 @@ namespace Oxtail.SpaceshipIncremental
 
         private void StartWave()
         {
-            RewardLinesActive = true;
-            m_WaveManager.TriggerWave();
+            if (!isActiveAndEnabled || m_HasFailed || !m_IsWaveActive)
+                return;
+
+            m_WaveManager.TriggerWave(m_CameraComponent);
+        }
+
+        private void OnFormationStarted()
+        {
+            RewardLinesActive = false;
+            m_BulletSpawnManager.ClearPendingShots();
+        }
+
+        private void OnFormationCompleted()
+        {
+            if (isActiveAndEnabled && m_IsWaveActive && !m_HasFailed)
+                RewardLinesActive = true;
         }
 
         private void OnAsteroidDestroyedByBullet(AsteroidDestroyedByBulletEvent evt)
@@ -504,6 +527,8 @@ namespace Oxtail.SpaceshipIncremental
                 return;
 
             m_HasFailed = true;
+            RewardLinesActive = false;
+            m_WaveManager.StopFormation();
 
             if (m_HandPointer != null)
                 m_HandPointer.SetActive(false);
@@ -640,8 +665,7 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>The hand pointer is only hidden while the camera is moving between views; it snaps to the
         /// cursor as it re-enables (see CursorFollowElement), so it never visibly glides into place. onComplete
-        /// is SetWaveState's StartWave when entering a wave, so shooting and spawning wait for this same
-        /// moment instead of racing the tween.</summary>
+        /// is SetWaveState's StartWave when entering a wave; shooting waits for formation to finish too.</summary>
         private void OnCameraTransitionComplete(Action onComplete = null)
         {
             // A fail can land mid-tween (e.g. the fatal hit arrives while easing into battle view); once

@@ -106,6 +106,9 @@ namespace Oxtail.SpaceshipIncremental
         /// <summary>True once this comet has arrived inside the planet bounds.</summary>
         public bool HasReachedCenter { get; private set; }
 
+        /// <summary>Entrance animation is visual only: no bullet or planet hits until it has finished.</summary>
+        public bool IsForming { get; private set; }
+
         /// <summary>How far from this comet's pivot a bullet still counts as having hit it (added to the
         /// bullet's own Hit Radius). See the Hit Detection tooltip for how to tune it per prefab.</summary>
         public float HitRadius => m_HitRadius;
@@ -171,6 +174,9 @@ namespace Oxtail.SpaceshipIncremental
 
         private void Update()
         {
+            if (IsForming)
+                return;
+
             if (m_IsBoss)
             {
                 UpdateBoss();
@@ -241,22 +247,29 @@ namespace Oxtail.SpaceshipIncremental
 
         /// <summary>
         /// Hands this comet to a WaveManager for grid-formation mode: registers into ActiveAsteroids so
-        /// bullets can target/hit it exactly like a projectile-mode comet, but it never slides or homes —
-        /// the wave manager's own transform carries it along as a passive child. Reuses the same arrival
+        /// bullets can target/hit it after formation, but it never homes. WaveManager owns its entrance
+        /// animation and then leaves it fixed at its grid cell. Reuses the same arrival
         /// check InitializeAsProjectile uses (PlanetPosition / Planet Bounds Radius, evaluated every
         /// Update), just pointed at the Circuits ring instead of the planet: getting within
         /// circleBoundsRadius of circleCenter counts as the asteroid reaching it, and raises
         /// AsteroidDestroyedByPlanetEvent exactly like a real planet hit, so CPIManager's existing
         /// health-loss handling applies unchanged.
         /// </summary>
-        public void InitializeInGrid(Transform circleCenter, float circleBoundsRadius, int hitPoints = 1)
+        public void InitializeInGrid(Transform circleCenter, float circleBoundsRadius, int hitPoints = 1,
+            bool forming = false)
         {
             m_IsProjectile = true;
+            IsForming = forming;
             m_PlanetCenter = circleCenter;
             m_PlanetBoundsRadius = circleBoundsRadius;
             m_HitPointsLeft = Mathf.Max(1, hitPoints);
 
             ActiveAsteroids.Add(this);
+        }
+
+        public void CompleteGridFormation()
+        {
+            IsForming = false;
         }
 
         /// <summary>

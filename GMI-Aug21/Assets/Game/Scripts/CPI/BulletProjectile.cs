@@ -16,7 +16,7 @@ namespace Oxtail.SpaceshipIncremental
     /// Atan2(dir.y, dir.x) * Rad2Deg - 90f convention as Asteroid.FaceTravelDirection. From there it flies
     /// in a straight line at a constant Speed via Rigidbody.MovePosition every FixedUpdate — no
     /// prediction, no curve. After moving, it checks every entry in Asteroid.ActiveAsteroids (skipping any
-    /// that has already reached the planet) for one within this bullet's Hit Radius plus that asteroid's own
+    /// still forming or already at the planet) for one within this bullet's Hit Radius plus that asteroid's own
     /// Hit Radius of its new position (so a wide sprite like the boss can be given a bigger Hit Radius on
     /// its own prefab instead of every bullet needing one big enough for it); the first one found is
     /// destroyed exactly as before (AsteroidDestroyedByBulletEvent, DestroyWithEffect, removed from
@@ -92,7 +92,7 @@ namespace Oxtail.SpaceshipIncremental
             for (int i = 0; i < Asteroid.ActiveAsteroids.Count; i++)
             {
                 Asteroid asteroid = Asteroid.ActiveAsteroids[i];
-                if (asteroid == null || asteroid.HasReachedCenter)
+                if (asteroid == null || asteroid.HasReachedCenter || asteroid.IsForming)
                     continue;
 
                 if (Vector3.Distance(position, asteroid.transform.position) <= m_HitRadius + asteroid.HitRadius)

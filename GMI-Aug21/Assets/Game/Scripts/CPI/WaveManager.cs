@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Oxtail.Utils;
 using UnityEngine;
@@ -22,9 +23,8 @@ namespace Oxtail.SpaceshipIncremental
 
     /// <summary>
     /// Spawns waves of Asteroid comets into one shared, static grid (via Asteroid.InitializeInGrid) above
-    /// the Circuit. Nothing in the grid moves on its own once spawned - a cell's world position is fixed for
-    /// its whole life, set once from Grid Center/Width/Height/Rows/Columns at spawn time. Only the boss (see
-    /// below) ever scrolls.
+    /// the Circuit. Cells fly in from different screen edges, then stay at their fixed grid positions.
+    /// Formation completion signals when shooting can begin. Only the boss scrolls after forming.
     ///
     /// A WaveConfig's Sub Waves are sequential phases sharing that same grid, not stacked rows: TriggerWave
     /// spawns the first phase's cells, and only once every one of them is gone (bullet-killed or otherwise
@@ -41,8 +41,8 @@ namespace Oxtail.SpaceshipIncremental
     /// any per-wave scaling) until its Y reaches Boss Stop Distance above the Circuit's Y, where it stops to
     /// attack. A boss wave doesn't need any Sub Waves at all - it just needs Spawn Boss on.
     ///
-    /// Because grid cells never move, they can never drift into Planet Bounds Radius of Planet Center on
-    /// their own, so a non-boss wave cannot damage the planet by an asteroid reaching it - that only happens
+    /// Once formed, grid cells never move; during entrance they ignore planet hits. A non-boss wave cannot
+    /// damage the planet by an asteroid drifting into Planet Bounds Radius - that only happens
     /// via the boss's own attack once it stops (see BossAttackEvent). Planet Center/Bounds Radius are still
     /// required and passed into every spawned asteroid (grid and boss alike), since Asteroid checks arrival
     /// every frame regardless - place Grid Center's Y and Height so no cell's spawn point ever ends up
@@ -124,6 +124,12 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(1)] private int m_GridRows = 6;
         [SerializeField, Min(1)] private int m_GridColumns = 6;
 
+        [Header("Formation Entrance")]
+        [Tooltip("Total time for every creature to reach its grid cell, including stagger. 0 spawns instantly.")]
+        [SerializeField, Min(0f)] private float m_FormationDuration = 1f;
+        [Tooltip("How far outside the camera frame creatures start, in world units.")]
+        [SerializeField, Min(0f)] private float m_EntranceMargin = 1.5f;
+
         [Header("Circuit")]
         [Tooltip("Boss Spawn/Stop Distance are measured from this transform's position.")]
         [SerializeField] private Transform m_Circuit;
@@ -156,6 +162,21 @@ namespace Oxtail.SpaceshipIncremental
         private int m_CurrentPhaseIndex;
         private Asteroid m_CurrentBoss;
         private bool m_BossReleased;
+        private Camera m_FormationCamera;
+        private Coroutine m_FormationRoutine;
+        private readonly List<FormationEntry> m_FormationEntries = new List<FormationEntry>();
+
+        private struct FormationEntry
+        {
+            public Asteroid Asteroid;
+            public Vector3 Start;
+            public Vector3 Control;
+            public Vector3 Target;
+        }
+
+        public bool IsForming { get; private set; }
+        public event Action OnFormationStarted;
+        public event Action OnFormationCompleted;
 
         /// <summary>Fired once no asteroid from the current wave is left alive (bullet-killed, planet-hit,
         /// or - for the boss - however it eventually dies).</summary>
@@ -169,11 +190,17 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnDisable()
         {
+            StopFormation();
             EventManager<AsteroidDestroyedByBulletEvent>.RemoveListener(OnAsteroidDestroyedByBullet);
             EventManager<AsteroidDestroyedByPlanetEvent>.RemoveListener(OnAsteroidDestroyedByPlanet);
         }
 
         public void TriggerWave()
+        {
+            TriggerWave(null);
+        }
+
+        public void TriggerWave(Camera formationCamera)
         {
             if (m_IsWaveActive)
             {
@@ -194,6 +221,7 @@ namespace Oxtail.SpaceshipIncremental
             }
 
             BuildTypeLookup();
+            m_FormationCamera = formationCamera != null ? formationCamera : Camera.main;
 
             WaveConfig config = m_Waves[Mathf.Min(m_CurrentWaveIndex, m_Waves.Count - 1)];
 
@@ -261,18 +289,24 @@ namespace Oxtail.SpaceshipIncremental
                 SpawnPhaseCells(phases[m_CurrentPhaseIndex]);
 
                 if (m_WaveAsteroids.Count > 0)
+                {
+                    BeginFormation();
                     return;
+                }
 
                 m_CurrentPhaseIndex++;
             }
 
             TryReleaseBoss();
             CheckWaveCleared();
+            if (m_IsWaveActive)
+                OnFormationCompleted?.Invoke();
         }
 
         private void SpawnPhaseCells(SubWaveConfig phase)
         {
             m_WaveAsteroids.Clear();
+            m_FormationEntries.Clear();
 
             // Resolves duplicate (Row, Column) entries within the same phase - the last one listed wins -
             // before spawning anything, since Cells is a flat additive list rather than a default-plus-
@@ -301,15 +335,130 @@ namespace Oxtail.SpaceshipIncremental
                 }
 
                 Vector3 worldPos = GridCellPosition(cell.Row, cell.Column);
+                Vector3 startPos = EntrancePosition(worldPos, m_FormationEntries.Count);
 
-                Asteroid asteroid = Instantiate(typeConfig.Prefab, worldPos, Quaternion.identity, transform);
-                asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius, typeConfig.Health + m_CurrentHealthBonus);
+                Asteroid asteroid = Instantiate(typeConfig.Prefab, startPos, Quaternion.identity, transform);
+                asteroid.InitializeInGrid(m_PlanetCenter, m_PlanetBoundsRadius,
+                    typeConfig.Health + m_CurrentHealthBonus, forming: true);
 
                 if (cell.UseOverlayColor)
                     asteroid.SetOverlayColor(cell.OverlayColor);
 
                 m_WaveAsteroids.Add(asteroid);
+                Vector3 travel = worldPos - startPos;
+                Vector3 bend = new Vector3(-travel.y, travel.x, 0f).normalized
+                    * (m_FormationEntries.Count % 2 == 0 ? 0.75f : -0.75f);
+                m_FormationEntries.Add(new FormationEntry
+                {
+                    Asteroid = asteroid,
+                    Start = startPos,
+                    Control = (startPos + worldPos) * 0.5f + bend,
+                    Target = worldPos
+                });
             }
+        }
+
+        private Vector3 EntrancePosition(Vector3 target, int index)
+        {
+            Vector3 center = m_GridCenter.position;
+            float left = center.x - m_GridWidth * 0.5f;
+            float right = center.x + m_GridWidth * 0.5f;
+            float bottom = center.y - m_GridHeight * 0.5f;
+            float top = center.y + m_GridHeight * 0.5f;
+            if (m_FormationCamera != null)
+            {
+                float depth = m_FormationCamera.WorldToViewportPoint(target).z;
+                Vector3 lower = m_FormationCamera.ViewportToWorldPoint(new Vector3(0f, 0f, depth));
+                Vector3 upper = m_FormationCamera.ViewportToWorldPoint(new Vector3(1f, 1f, depth));
+                left = Mathf.Min(left, lower.x);
+                right = Mathf.Max(right, upper.x);
+                bottom = Mathf.Min(bottom, lower.y);
+                top = Mathf.Max(top, upper.y);
+            }
+
+            left -= m_EntranceMargin;
+            right += m_EntranceMargin;
+            bottom -= m_EntranceMargin;
+            top += m_EntranceMargin;
+            // Alternate edges and corners without depending on the gaps in the authored cell layout.
+            switch ((index * 5) % 8)
+            {
+                case 0: return new Vector3(left, target.y, target.z);
+                case 1: return new Vector3(left, top, target.z);
+                case 2: return new Vector3(target.x, top, target.z);
+                case 3: return new Vector3(right, top, target.z);
+                case 4: return new Vector3(right, target.y, target.z);
+                case 5: return new Vector3(right, bottom, target.z);
+                case 6: return new Vector3(target.x, bottom, target.z);
+                default: return new Vector3(left, bottom, target.z);
+            }
+        }
+
+        private void BeginFormation()
+        {
+            IsForming = true;
+            OnFormationStarted?.Invoke();
+            if (m_FormationDuration <= 0f)
+            {
+                CompleteFormation();
+                return;
+            }
+
+            m_FormationRoutine = StartCoroutine(FormationCO());
+        }
+
+        private IEnumerator FormationCO()
+        {
+            float duration = m_FormationDuration;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                yield return null;
+                elapsed += Time.deltaTime;
+                for (int i = 0; i < m_FormationEntries.Count; i++)
+                {
+                    FormationEntry entry = m_FormationEntries[i];
+                    if (entry.Asteroid == null || entry.Asteroid.IsDead)
+                        continue;
+
+                    // Delayed creatures travel faster so the entire shape still finishes in one second.
+                    float delay = duration * 0.15f * (i % 5) / 4f;
+                    float progress = Mathf.Clamp01((elapsed - delay) / (duration - delay));
+                    float eased = 1f - Mathf.Pow(1f - progress, 3f);
+                    Vector3 first = Vector3.Lerp(entry.Start, entry.Control, eased);
+                    Vector3 second = Vector3.Lerp(entry.Control, entry.Target, eased);
+                    entry.Asteroid.transform.position = Vector3.Lerp(first, second, eased);
+                }
+            }
+
+            m_FormationRoutine = null;
+            CompleteFormation();
+        }
+
+        private void CompleteFormation()
+        {
+            StopFormation();
+            if (AnyWaveAsteroidAlive())
+                OnFormationCompleted?.Invoke();
+            else
+                OnAsteroidRemoved();
+        }
+
+        /// <summary>Ends an interrupted entrance at its authored cells without enabling shooting.</summary>
+        public void StopFormation()
+        {
+            if (m_FormationRoutine != null)
+                StopCoroutine(m_FormationRoutine);
+            m_FormationRoutine = null;
+            foreach (FormationEntry entry in m_FormationEntries)
+            {
+                if (entry.Asteroid == null || entry.Asteroid.IsDead)
+                    continue;
+                entry.Asteroid.transform.position = entry.Target;
+                entry.Asteroid.CompleteGridFormation();
+            }
+            m_FormationEntries.Clear();
+            IsForming = false;
         }
 
         private void SpawnBoss()
@@ -386,7 +535,7 @@ namespace Oxtail.SpaceshipIncremental
         /// (or a stray event) - just rechecks whether the whole wave is finally over.</summary>
         private void OnAsteroidRemoved()
         {
-            if (!m_IsWaveActive || AnyWaveAsteroidAlive())
+            if (!m_IsWaveActive || IsForming || AnyWaveAsteroidAlive())
                 return;
 
             List<SubWaveConfig> phases = m_CurrentWaveConfig.SubWaves;
