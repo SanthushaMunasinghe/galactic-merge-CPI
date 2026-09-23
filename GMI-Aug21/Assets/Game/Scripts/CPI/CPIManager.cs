@@ -489,6 +489,9 @@ namespace Oxtail.SpaceshipIncremental
 
             m_HasFailed = true;
 
+            if (m_HandPointer != null)
+                m_HandPointer.SetActive(false);
+
             if (m_Circuit != null)
                 m_Circuit.StopPath();
 
@@ -617,7 +620,9 @@ namespace Oxtail.SpaceshipIncremental
         /// moment instead of racing the tween.</summary>
         private void OnCameraTransitionComplete(Action onComplete = null)
         {
-            if (m_HandPointer != null)
+            // A fail can land mid-tween (e.g. the fatal hit arrives while easing into battle view); once
+            // failed, the hand pointer stays hidden regardless of whichever transition happens to finish.
+            if (m_HandPointer != null && !m_HasFailed)
                 m_HandPointer.SetActive(true);
 
             onComplete?.Invoke();
