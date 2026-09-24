@@ -95,7 +95,8 @@ namespace Oxtail.SpaceshipIncremental
         /// <summary>
         /// Logs every 10 seconds of remaining time, then every second for the last 5 seconds, so the
         /// countdown is visible in the console without spamming it for the whole take, and stops the
-        /// recording once the duration runs out.
+        /// recording once the duration runs out. Uses unscaled/real time so a sped-up game time scale
+        /// doesn't shorten the recorded take - Max Duration Seconds is always real seconds.
         /// </summary>
         private IEnumerator CountdownCO(RecorderWindow window)
         {
@@ -103,7 +104,7 @@ namespace Oxtail.SpaceshipIncremental
 
             while (remaining > 0)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSecondsRealtime(1f);
 
                 // The window can end the take on its own (its own STOP RECORDING button, or a record
                 // mode other than Manual), in which case there is nothing left to count down.

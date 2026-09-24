@@ -810,7 +810,7 @@ MonoBehaviour:
   m_DragDeadZone: 0.02
   m_BulletSpawnManager: {fileID: 1941943882}
   m_StartHealthPercent: 0
-  m_HealthGainPercent: 8
+  m_HealthGainPercent: 1
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
   m_StopShootingDuringCooldown: 1
@@ -853,7 +853,7 @@ MonoBehaviour:
   m_WaveSpaceshipSpeedMultiplier: 4
   m_InterWaveSpaceshipSpeedMultiplier: 1
   m_OverrideTimeScale: 0
-  m_TimeScaleMultiplier: 1.5
+  m_TimeScaleMultiplier: 1.25
   m_InfiniteMoney: 1
   m_ScaleSpawnTier: 1
   m_UpgradeButtonsRoot: {fileID: 103680969}
