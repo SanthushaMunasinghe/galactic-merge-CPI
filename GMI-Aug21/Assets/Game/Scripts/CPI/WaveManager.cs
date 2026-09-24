@@ -23,7 +23,7 @@ namespace Oxtail.SpaceshipIncremental
 
     /// <summary>
     /// Spawns waves of Asteroid comets into one shared, static grid (via Asteroid.InitializeInGrid) above
-    /// the Circuit. Cells fly in from different screen edges, then stay at their fixed grid positions.
+    /// the Circuit. Cells fly in from above the screen, then stay at their fixed grid positions.
     /// Formation completion signals when shooting can begin. Only the boss scrolls after forming.
     ///
     /// A WaveConfig's Sub Waves are sequential phases sharing that same grid, not stacked rows: TriggerWave
@@ -127,7 +127,7 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Formation Entrance")]
         [Tooltip("Total time for every creature to reach its grid cell, including stagger. 0 spawns instantly.")]
         [SerializeField, Min(0f)] private float m_FormationDuration = 1f;
-        [Tooltip("How far outside the camera frame creatures start, in world units.")]
+        [Tooltip("How far above the camera frame creatures start, in world units.")]
         [SerializeField, Min(0f)] private float m_EntranceMargin = 1.5f;
 
         [Header("Circuit")]
@@ -363,35 +363,21 @@ namespace Oxtail.SpaceshipIncremental
             Vector3 center = m_GridCenter.position;
             float left = center.x - m_GridWidth * 0.5f;
             float right = center.x + m_GridWidth * 0.5f;
-            float bottom = center.y - m_GridHeight * 0.5f;
             float top = center.y + m_GridHeight * 0.5f;
             if (m_FormationCamera != null)
             {
                 float depth = m_FormationCamera.WorldToViewportPoint(target).z;
-                Vector3 lower = m_FormationCamera.ViewportToWorldPoint(new Vector3(0f, 0f, depth));
+                Vector3 upperLeft = m_FormationCamera.ViewportToWorldPoint(new Vector3(0f, 1f, depth));
                 Vector3 upper = m_FormationCamera.ViewportToWorldPoint(new Vector3(1f, 1f, depth));
-                left = Mathf.Min(left, lower.x);
+                left = Mathf.Min(left, upperLeft.x);
                 right = Mathf.Max(right, upper.x);
-                bottom = Mathf.Min(bottom, lower.y);
-                top = Mathf.Max(top, upper.y);
+                top = Mathf.Max(top, Mathf.Max(upperLeft.y, upper.y));
             }
 
-            left -= m_EntranceMargin;
-            right += m_EntranceMargin;
-            bottom -= m_EntranceMargin;
             top += m_EntranceMargin;
-            // Alternate edges and corners without depending on the gaps in the authored cell layout.
-            switch ((index * 5) % 8)
-            {
-                case 0: return new Vector3(left, target.y, target.z);
-                case 1: return new Vector3(left, top, target.z);
-                case 2: return new Vector3(target.x, top, target.z);
-                case 3: return new Vector3(right, top, target.z);
-                case 4: return new Vector3(right, target.y, target.z);
-                case 5: return new Vector3(right, bottom, target.z);
-                case 6: return new Vector3(target.x, bottom, target.z);
-                default: return new Vector3(left, bottom, target.z);
-            }
+            // Spread entrances across the top while keeping every creature above the frame.
+            float horizontalPosition = 0.1f + 0.8f * ((index * 7) % 11) / 10f;
+            return new Vector3(Mathf.Lerp(left, right, horizontalPosition), top, target.z);
         }
 
         private void BeginFormation()
