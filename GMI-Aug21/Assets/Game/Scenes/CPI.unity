@@ -13585,7 +13585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17821d445a7a48d429f455435908533d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.RecordingShortcutController
-  m_MaxDurationSeconds: 65
+  m_MaxDurationSeconds: 100
 --- !u!4 &1749699682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 979799774435054297, guid: bf36e1eb8f12ce844b5b31ab0d5eda26, type: 3}
