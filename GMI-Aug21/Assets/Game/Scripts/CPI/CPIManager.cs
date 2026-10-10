@@ -118,7 +118,8 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Ease m_DinosaurFlyAwayEase = Ease.InQuad;
         [Tooltip("Loops on every dinosaur until it dies: it stretches taller, squashes shorter and " +
             "settles back, then does the same three steps with its width. The bottom of the sprite stays " +
-            "where it is, so the feet do not slide.")]
+            "where it is, so the feet do not slide. A dinosaur with a DinosaurWalker ignores these and " +
+            "uses the Scale Animation settings on that component instead.")]
         [SerializeField] private bool m_DinosaurIdleAnimation = true;
         [SerializeField, Min(0f)] private float m_DinosaurIdleStretchPercent = 5f;
         [SerializeField, Min(0f)] private float m_DinosaurIdleSquashPercent = 6f;
@@ -694,6 +695,10 @@ namespace Oxtail.SpaceshipIncremental
                 dinosaur.IsDead = true;
                 dinosaur.IdleTween?.Kill();
 
+                // Stopped before the death effect takes the transform over, or it would keep being put back.
+                if (dinosaur.Object.TryGetComponent(out DinosaurWalker walker))
+                    walker.enabled = false;
+
                 if (dinosaur.DeathEffect == DinosaurDeathEffect.Explode)
                     ExplodeDinosaur(dinosaur.Object);
                 else
@@ -708,7 +713,9 @@ namespace Oxtail.SpaceshipIncremental
 
             foreach (var dinosaur in m_Dinosaurs)
             {
-                if (dinosaur.Object != null)
+                // A DinosaurWalker plays this animation itself, blended in with its walk. Two things
+                // writing the same scale and position would undo each other.
+                if (dinosaur.Object != null && !dinosaur.Object.TryGetComponent(out DinosaurWalker _))
                     dinosaur.IdleTween = CreateDinosaurIdleTween(dinosaur.Object);
             }
         }

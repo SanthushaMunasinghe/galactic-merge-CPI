@@ -1720,20 +1720,14 @@ MonoBehaviour:
   m_HealthRefillCooldown: 3
   m_StopShootingDuringCooldown: 0
   m_OneHitDrainsPlanetHealth: 1
-  m_OneHitDrainDuration: 2
+  m_OneHitDrainDuration: 1
   m_PlanetDissolve: {fileID: 1367779878}
   m_OverridePlanetSprite: 0
   m_PlanetSprite: {fileID: 21300000, guid: 464eea557254b0c409a58e445d5aaa29, type: 3}
   m_PlanetSpriteRenderers:
   - {fileID: 1367779879}
   m_Dinosaurs:
-  - Object: {fileID: 1900100001}
-    DieHealthPercent: 75
-    DeathEffect: 1
   - Object: {fileID: 1900100011}
-    DieHealthPercent: 50
-    DeathEffect: 1
-  - Object: {fileID: 1900100021}
     DieHealthPercent: 25
     DeathEffect: 1
   m_DinosaurFlyAwayOrigin: {fileID: 408897348}
@@ -1770,7 +1764,7 @@ MonoBehaviour:
   m_FailDelay: 1
   m_GlobalVolume: {fileID: 1717012710}
   m_FailObject: {fileID: 1841117579}
-  m_StartArrowCount: 0
+  m_StartArrowCount: 2
   m_StartArrowTier: 1
   m_StartLineCount: 1
   m_StartMoney: 1000000
@@ -2477,6 +2471,7 @@ Transform:
   - {fileID: 1900100012}
   - {fileID: 1900100022}
   - {fileID: 1900200002}
+  - {fileID: 1900300002}
   m_Father: {fileID: 1298238229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &408897349
@@ -16571,7 +16566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1900100002
 Transform:
   m_ObjectHideFlags: 0
@@ -16656,6 +16651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900100012}
   - component: {fileID: 1900100013}
+  - component: {fileID: 1900100014}
   m_Layer: 11
   m_Name: DinosaurTRex
   m_TagString: Untagged
@@ -16671,13 +16667,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900100011}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.795, y: 0.2, z: 0}
-  m_LocalScale: {x: 0.081, y: 0.081, z: 0.081}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.62, y: 0.48, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 408897348}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &1900100013
 SpriteRenderer:
   serializedVersion: 2
@@ -16737,6 +16733,36 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1900100014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900100011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b770eb0b4c9544b6a0595c6f582e5a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Oxtail.SpaceshipIncremental.DinosaurWalker
+  m_Walk: 1
+  m_PathPoints:
+  - {fileID: 1900300012}
+  - {fileID: 1900300022}
+  - {fileID: 1900300032}
+  m_WalkDuration: 2
+  m_StayDuration: 1
+  m_WalkEase: 4
+  m_SpriteFacesRight: 1
+  m_WalkAnimation: 1
+  m_WalkTiltDegrees: 5
+  m_WalkTiltsPerSecond: 3
+  m_ScaleAnimation: 1
+  m_StretchPercent: 5
+  m_SquashPercent: 6
+  m_StretchDuration: 0.4
+  m_SquashDuration: 0.3
+  m_ReturnDuration: 0.25
 --- !u!1 &1900100021
 GameObject:
   m_ObjectHideFlags: 0
@@ -16753,7 +16779,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1900100022
 Transform:
   m_ObjectHideFlags: 0
@@ -16853,7 +16879,7 @@ Transform:
   m_GameObject: {fileID: 1900200001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.518, y: 0.435, z: 0}
+  m_LocalPosition: {x: 0.29, y: 1.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -17101,7 +17127,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Save us!
+  m_text: Save me!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a9b541aa2bc87a4381310f69408de76, type: 2}
   m_sharedMaterial: {fileID: 6575209224565065218, guid: 3a9b541aa2bc87a4381310f69408de76, type: 2}
@@ -17128,7 +17154,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.55
+  m_fontSize: 31.8
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -17173,6 +17199,133 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1900300001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900300002}
+  m_Layer: 11
+  m_Name: DinosaurTRexPath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900300002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900300001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1900300012}
+  - {fileID: 1900300022}
+  - {fileID: 1900300032}
+  m_Father: {fileID: 408897348}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1900300011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900300012}
+  m_Layer: 11
+  m_Name: PathPoint1RightIsland
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900300012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900300011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.62, y: -0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1900300002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1900300021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900300022}
+  m_Layer: 11
+  m_Name: PathPoint2TopLeftIsland
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900300022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900300021}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.41, y: 0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1900300002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1900300031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900300032}
+  m_Layer: 11
+  m_Name: PathPoint3BottomLeftIsland
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900300032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900300031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.43, y: -0.58, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1900300002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1901919000
 PrefabInstance:
   m_ObjectHideFlags: 0
