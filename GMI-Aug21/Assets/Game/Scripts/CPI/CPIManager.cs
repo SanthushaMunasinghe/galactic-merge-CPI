@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Oxtail.Utils;
 using System;
 using System.Collections;
@@ -23,6 +24,18 @@ namespace Oxtail.SpaceshipIncremental
         public struct CPIWaveStateChangedEvent
         {
             public bool IsWaveActive;
+        }
+
+        [Serializable]
+        private class PlanetDinosaur
+        {
+            public GameObject Object;
+            [Tooltip("The dinosaur flies away when planet health drops from above this percentage to it " +
+                "or below. Starting the scene at or below it does not count: health has to climb above " +
+                "it first.")]
+            [Range(0f, 100f)] public float DieHealthPercent = 50f;
+
+            [NonSerialized] public bool HasFlownAway;
         }
 
         /// <summary>Fired once, right after the fail sequence clears the remaining asteroids and
@@ -75,6 +88,17 @@ namespace Oxtail.SpaceshipIncremental
         [Tooltip("Which renderers the sprite override is applied to. Assign both the greyscale and the " +
             "normal planet sprite so the two stay the same shape.")]
         [SerializeField] private SpriteRenderer[] m_PlanetSpriteRenderers;
+
+        [Header("CPI Dinosaurs")]
+        [SerializeField] private PlanetDinosaur[] m_Dinosaurs;
+        [Tooltip("Dinosaurs fly straight away from this point, so each one leaves in its own direction. " +
+            "Usually the planet.")]
+        [SerializeField] private Transform m_DinosaurFlyAwayOrigin;
+        [Tooltip("How long a dinosaur takes to get from where it stands to fully off screen.")]
+        [SerializeField, Min(0f)] private float m_DinosaurFlyAwayDuration = 1.2f;
+        [Tooltip("Total spin over the whole flight, in degrees. Negative spins clockwise.")]
+        [SerializeField] private float m_DinosaurFlyAwaySpinDegrees = 720f;
+        [SerializeField] private Ease m_DinosaurFlyAwayEase = Ease.InQuad;
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
@@ -327,13 +351,100 @@ namespace Oxtail.SpaceshipIncremental
 
         private void ChangePlanetHealth(float delta)
         {
+            float previousHealth = PlanetHealth;
+
             PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
             ApplyPlanetHealthVisual(false);
+            FlyAwayDinosaursBelowHealth(previousHealth);
 
             if (delta > 0f)
                 UIParticleActions.PlayHpGained(delta);
             else if (delta < 0f)
                 UIParticleActions.PlayHpLost(-delta);
+        }
+
+        /// <summary>
+        /// Sends off every dinosaur whose die health was crossed by the change that just happened.
+        /// Comparing against the health from before the change, rather than only the current value, is
+        /// what keeps a dinosaur on the planet when the scene starts at or below its threshold: it only
+        /// leaves once health has been above it and comes back down.
+        /// </summary>
+        private void FlyAwayDinosaursBelowHealth(float previousHealth)
+        {
+            if (m_Dinosaurs == null)
+                return;
+
+            foreach (var dinosaur in m_Dinosaurs)
+            {
+                if (dinosaur.Object == null || dinosaur.HasFlownAway)
+                    continue;
+
+                if (previousHealth > dinosaur.DieHealthPercent && PlanetHealth <= dinosaur.DieHealthPercent)
+                    FlyAwayDinosaur(dinosaur);
+            }
+        }
+
+        private void FlyAwayDinosaur(PlanetDinosaur dinosaur)
+        {
+            dinosaur.HasFlownAway = true;
+
+            GameObject dinosaurObject = dinosaur.Object;
+            Transform dinosaurTransform = dinosaurObject.transform;
+
+            // Detached before it moves: left under the planet it would be dragged around by every
+            // PlanetEffect scale pulse, further the further out it has flown.
+            dinosaurTransform.SetParent(null, true);
+
+            Vector3 position = dinosaurTransform.position;
+            Vector2 direction = m_DinosaurFlyAwayOrigin != null
+                ? (Vector2)(position - m_DinosaurFlyAwayOrigin.position)
+                : Vector2.zero;
+            direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.up;
+
+            Vector3 target = position + (Vector3)(direction * GetDistanceToLeaveScreen(dinosaurObject, direction));
+
+            dinosaurTransform.DOMove(target, m_DinosaurFlyAwayDuration)
+                .SetEase(m_DinosaurFlyAwayEase)
+                .SetLink(dinosaurObject)
+                .OnComplete(() => dinosaurObject.SetActive(false));
+
+            // Spun at a steady rate whatever the movement ease is, so it is already tumbling the
+            // instant it leaves the ground instead of winding up.
+            dinosaurTransform.DORotate(new Vector3(0f, 0f, m_DinosaurFlyAwaySpinDegrees), m_DinosaurFlyAwayDuration, RotateMode.LocalAxisAdd)
+                .SetEase(Ease.Linear)
+                .SetLink(dinosaurObject);
+        }
+
+        /// <summary>
+        /// How far the object has to travel along the direction before none of it is left inside the
+        /// camera view. Its size is taken as a circle around its pivot, so it stays clear of the edge
+        /// at any angle of its spin.
+        /// </summary>
+        private static float GetDistanceToLeaveScreen(GameObject target, Vector2 direction)
+        {
+            Camera camera = Camera.main;
+            Vector2 position = target.transform.position;
+
+            float radius = 0f;
+            foreach (var renderer in target.GetComponentsInChildren<Renderer>())
+            {
+                Bounds bounds = renderer.bounds;
+                float reach = ((Vector2)bounds.center - position).magnitude + ((Vector2)bounds.extents).magnitude;
+                radius = Mathf.Max(radius, reach);
+            }
+
+            float halfHeight = camera.orthographicSize + radius;
+            float halfWidth = camera.orthographicSize * camera.aspect + radius;
+            Vector2 fromCamera = position - (Vector2)camera.transform.position;
+
+            float distanceX = Mathf.Abs(direction.x) > Mathf.Epsilon
+                ? (Mathf.Sign(direction.x) * halfWidth - fromCamera.x) / direction.x
+                : float.PositiveInfinity;
+            float distanceY = Mathf.Abs(direction.y) > Mathf.Epsilon
+                ? (Mathf.Sign(direction.y) * halfHeight - fromCamera.y) / direction.y
+                : float.PositiveInfinity;
+
+            return Mathf.Max(0f, Mathf.Min(distanceX, distanceY));
         }
 
         /// <summary>
