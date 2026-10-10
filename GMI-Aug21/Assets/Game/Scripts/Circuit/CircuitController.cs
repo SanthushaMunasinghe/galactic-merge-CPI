@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Oxtail.Utils;
+using Shapes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,14 @@ namespace Oxtail.SpaceshipIncremental
         [Header("Shape")]
         [SerializeField] private Transform m_ShapeParent;
 
+        // Each side of an outline stroke gets two stacked glow rings, a tight bright core and a wide
+        // faint halo, which together read as a blur. Width is a fraction of the requested glow width,
+        // Alpha a multiplier on the requested intensity.
+        private static readonly (float Width, float Alpha)[] s_OutlineGlowLayers = { (0.25f, 1.5f), (1f, 0.3f) };
+
         private SpaceshipParent[] m_SpaceshipParents;
         private Tween m_CircuitVibration;
+        private GameObject m_OutlineGlow;
 
         private List<RewardLine> m_InternalRewardLines = new();
 
@@ -93,6 +100,84 @@ namespace Oxtail.SpaceshipIncremental
             {
                 line.SetAppearance(color, dashed, thickness);
             }
+        }
+
+        /// <summary>
+        /// Adds a soft additive halo on both sides of the two outline strokes of this circuit, made
+        /// of Shapes rings that fade out radially, so it needs no texture and no post processing.
+        /// Only a shape drawn as a track ring over a slightly thicker outline ring (the circle
+        /// circuit) is supported. Calling it again rebuilds the halo, and a zero width or intensity
+        /// removes it. Used by CPIManager for local testing; normal gameplay never calls this.
+        /// </summary>
+        public void SetOutlineGlow(Color color, float width, float intensity)
+        {
+            if (m_OutlineGlow != null)
+                Destroy(m_OutlineGlow);
+
+            if (width <= 0f || intensity <= 0f || m_ShapeParent == null)
+                return;
+
+            var rings = m_ShapeParent.Cast<Transform>()
+                .Select(child => child.GetComponent<Disc>())
+                .Where(disc => disc != null && disc.Type == DiscType.Ring)
+                .OrderBy(disc => disc.Thickness)
+                .ToList();
+
+            if (rings.Count < 2)
+            {
+                Debug.LogWarning($"{nameof(CircuitController)}: {name} is not drawn as a track ring over an " +
+                    "outline ring, cannot add an outline glow.", this);
+                return;
+            }
+
+            Disc track = rings.First();
+            Disc outline = rings.Last();
+
+            // Parented to the outline itself so the halo keeps its centre and scale, and shakes with it.
+            m_OutlineGlow = new GameObject("OutlineGlow") { layer = outline.gameObject.layer };
+            m_OutlineGlow.transform.SetParent(outline.transform, false);
+
+            float trackInner = track.Radius - track.Thickness * 0.5f;
+            float trackOuter = track.Radius + track.Thickness * 0.5f;
+            float outlineInner = outline.Radius - outline.Thickness * 0.5f;
+            float outlineOuter = outline.Radius + outline.Thickness * 0.5f;
+
+            // Glow facing away from the track sits behind the outline. Glow spilling onto the track
+            // has to be drawn over it, and stops at the track centre so the two sides never stack
+            // into a solid band.
+            int behindOrder = outline.SortingOrder - 1;
+            int overTrackOrder = track.SortingOrder + 1;
+
+            foreach (var glowLayer in s_OutlineGlowLayers)
+            {
+                var glowColor = new Color(color.r, color.g, color.b, color.a * intensity * glowLayer.Alpha);
+                float layerWidth = width * glowLayer.Width;
+                float trackWidth = Mathf.Min(layerWidth, track.Thickness * 0.5f);
+
+                AddOutlineGlowRing(outline, Mathf.Max(0f, outlineInner - layerWidth), outlineInner, Color.clear, glowColor, behindOrder);
+                AddOutlineGlowRing(outline, trackInner, trackInner + trackWidth, glowColor, Color.clear, overTrackOrder);
+                AddOutlineGlowRing(outline, trackOuter - trackWidth, trackOuter, Color.clear, glowColor, overTrackOrder);
+                AddOutlineGlowRing(outline, outlineOuter, outlineOuter + layerWidth, glowColor, Color.clear, behindOrder);
+            }
+        }
+
+        // Fading both color and alpha to nothing makes the additive result fall off quadratically
+        // rather than linearly, which is what keeps the edge of the halo from showing as a line.
+        private void AddOutlineGlowRing(Disc outline, float innerRadius, float outerRadius, Color innerColor, Color outerColor, int sortingOrder)
+        {
+            var ring = new GameObject("GlowRing") { layer = outline.gameObject.layer };
+            ring.transform.SetParent(m_OutlineGlow.transform, false);
+
+            var disc = ring.AddComponent<Disc>();
+            disc.Type = DiscType.Ring;
+            disc.BlendMode = ShapesBlendMode.Additive;
+            disc.Radius = (innerRadius + outerRadius) * 0.5f;
+            disc.Thickness = outerRadius - innerRadius;
+            disc.ColorMode = Disc.DiscColorMode.Radial;
+            disc.ColorInner = innerColor;
+            disc.ColorOuter = outerColor;
+            disc.SortingLayerID = outline.SortingLayerID;
+            disc.SortingOrder = sortingOrder;
         }
 
         public RewardLine GetNextRewardLineToShow()

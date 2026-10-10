@@ -97,6 +97,15 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private bool m_RewardLineDashed = true;
         [SerializeField, Min(0f)] private float m_RewardLineThickness = 0.05f;
 
+        [Header("CPI Circuit Glow")]
+        [Tooltip("Soft halo around the two outline strokes of the circuit. Can be tuned from here " +
+            "while the scene is playing.")]
+        [SerializeField] private bool m_EnableCircuitGlow = true;
+        [SerializeField] private Color m_CircuitGlowColor = new Color(1f, 0.45f, 0f, 1f);
+        [Tooltip("How far the halo reaches from each outline stroke, in world units.")]
+        [SerializeField, Min(0f)] private float m_CircuitGlowWidth = 0.35f;
+        [SerializeField, Min(0f)] private float m_CircuitGlowIntensity = 1f;
+
         [Header("CPI Floating Text")]
         [SerializeField] private bool m_OverrideFloatingTextGlowColor;
         [SerializeField] private Color m_FloatingTextGlowColor = new Color32(0x15, 0xDB, 0x00, 0x80);
@@ -456,8 +465,33 @@ namespace Oxtail.SpaceshipIncremental
             if (m_OverrideRewardLineAppearance)
                 m_CurrentCircuit.SetRewardLinesAppearance(m_RewardLineColor, m_RewardLineDashed, m_RewardLineThickness);
 
+            ApplyCircuitGlow();
+
             return true;
         }
+
+        private void ApplyCircuitGlow()
+        {
+            // Also reached through a deferred editor call, which can outlive this manager.
+            if (this == null || m_CurrentCircuit == null)
+                return;
+
+            m_CurrentCircuit.SetOutlineGlow(m_CircuitGlowColor, m_CircuitGlowWidth, m_EnableCircuitGlow ? m_CircuitGlowIntensity : 0f);
+        }
+
+#if UNITY_EDITOR
+        // Rebuilds the glow when its values are edited in the inspector during play. Deferred
+        // because OnValidate is not allowed to create or destroy objects, and unsubscribed first so
+        // dragging a slider queues one rebuild rather than one per change.
+        private void OnValidate()
+        {
+            if (!Application.isPlaying || m_CurrentCircuit == null)
+                return;
+
+            UnityEditor.EditorApplication.delayCall -= ApplyCircuitGlow;
+            UnityEditor.EditorApplication.delayCall += ApplyCircuitGlow;
+        }
+#endif
 
         /// <summary>
         /// Points the progression info at an objective type nothing ever reports against, so the non
