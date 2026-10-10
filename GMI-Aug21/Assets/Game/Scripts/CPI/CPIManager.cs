@@ -26,16 +26,26 @@ namespace Oxtail.SpaceshipIncremental
             public bool IsWaveActive;
         }
 
+        private enum DinosaurDeathEffect
+        {
+            FlyAway,
+            Explode
+        }
+
         [Serializable]
         private class PlanetDinosaur
         {
             public GameObject Object;
-            [Tooltip("The dinosaur flies away when planet health drops from above this percentage to it " +
-                "or below. Starting the scene at or below it does not count: health has to climb above " +
-                "it first.")]
+            [Tooltip("The dinosaur dies when planet health drops from above this percentage to it or " +
+                "below. Starting the scene at or below it does not count: health has to climb above it " +
+                "first.")]
             [Range(0f, 100f)] public float DieHealthPercent = 50f;
+            [Tooltip("Fly Away spins it off screen. Explode plays the explosion prefab on it and removes " +
+                "it on the spot.")]
+            public DinosaurDeathEffect DeathEffect;
 
-            [NonSerialized] public bool HasFlownAway;
+            [NonSerialized] public bool IsDead;
+            [NonSerialized] public Tween IdleTween;
         }
 
         /// <summary>Fired once, right after the fail sequence clears the remaining asteroids and
@@ -77,6 +87,12 @@ namespace Oxtail.SpaceshipIncremental
             "Refill Cooldown, resetting together with the health refill block on every hit. When off, " +
             "shooting is never paused by a planet hit.")]
         [SerializeField] private bool m_StopShootingDuringCooldown = true;
+        [Tooltip("When on, the first asteroid to hit the planet does not take Health Loss Percent off " +
+            "it. Instead health drains smoothly from wherever it is down to zero over One Hit Drain " +
+            "Duration, and the fail sequence runs when it gets there. Every other asteroid hit and every " +
+            "collect point is ignored from that first hit on.")]
+        [SerializeField] private bool m_OneHitDrainsPlanetHealth;
+        [SerializeField, Min(0f)] private float m_OneHitDrainDuration = 4f;
         [Tooltip("The dissolve effect on the greyscale planet sprite (the one layered over the colored " +
             "planet). Health drives it: zero health leaves the grey layer intact, full health dissolves " +
             "it away to reveal the colored planet underneath.")]
@@ -99,6 +115,47 @@ namespace Oxtail.SpaceshipIncremental
         [Tooltip("Total spin over the whole flight, in degrees. Negative spins clockwise.")]
         [SerializeField] private float m_DinosaurFlyAwaySpinDegrees = 720f;
         [SerializeField] private Ease m_DinosaurFlyAwayEase = Ease.InQuad;
+        [Tooltip("Loops on every dinosaur until it dies: it stretches taller, squashes shorter and " +
+            "settles back, then does the same three steps with its width. The bottom of the sprite stays " +
+            "where it is, so the feet do not slide.")]
+        [SerializeField] private bool m_DinosaurIdleAnimation = true;
+        [SerializeField, Min(0f)] private float m_DinosaurIdleStretchPercent = 5f;
+        [SerializeField, Min(0f)] private float m_DinosaurIdleSquashPercent = 6f;
+        [SerializeField, Min(0f)] private float m_DinosaurIdleStretchDuration = 0.4f;
+        [SerializeField, Min(0f)] private float m_DinosaurIdleSquashDuration = 0.3f;
+        [SerializeField, Min(0f)] private float m_DinosaurIdleReturnDuration = 0.25f;
+        [Tooltip("Spawned on a dinosaur whose death effect is Explode.")]
+        [SerializeField] private GameObject m_DinosaurExplosionPrefab;
+        [SerializeField, Min(0f)] private float m_DinosaurExplosionScale = 0.6f;
+        [Tooltip("The spawned explosion is destroyed after this long, so set it no shorter than the " +
+            "effect takes to play.")]
+        [SerializeField, Min(0f)] private float m_DinosaurExplosionLifetime = 3f;
+
+        [Header("CPI Zoom")]
+        [Tooltip("Z toggles between the camera as it starts and a close up on this. Usually the planet.")]
+        [SerializeField] private Transform m_ZoomInTarget;
+        [Tooltip("Added to the target position, to frame the close up off centre.")]
+        [SerializeField] private Vector2 m_ZoomInOffset;
+        [Tooltip("Camera orthographic size when zoomed in. Smaller is closer.")]
+        [SerializeField, Min(0.01f)] private float m_ZoomInOrthographicSize = 3.8f;
+        [SerializeField, Min(0f)] private float m_ZoomDuration = 1f;
+        [SerializeField] private Ease m_ZoomEase = Ease.InOutSine;
+        [Tooltip("Layers the camera stops drawing while zoomed in. This is what hides the circuit, the " +
+            "reward lines and the ships: nothing is switched off, so they all keep running and are " +
+            "simply back when the camera zooms out.")]
+        [SerializeField] private LayerMask m_ZoomInHiddenLayers;
+
+        [Header("CPI Talk Cloud")]
+        [Tooltip("T toggles this, and it can be ticked by hand while playing. Whatever it is set to " +
+            "when the scene starts is how the cloud starts, without animating.")]
+        [SerializeField] private bool m_ShowTalkCloud;
+        [Tooltip("Pops in by scaling up from nothing and out by scaling back down, around its own " +
+            "pivot. Keep the pivot on the tip of the tail so the cloud grows out of it.")]
+        [SerializeField] private Transform m_TalkCloud;
+        [SerializeField, Min(0f)] private float m_TalkCloudShowDuration = 0.35f;
+        [SerializeField] private Ease m_TalkCloudShowEase = Ease.OutBack;
+        [SerializeField, Min(0f)] private float m_TalkCloudHideDuration = 0.25f;
+        [SerializeField] private Ease m_TalkCloudHideEase = Ease.InBack;
 
         [Header("CPI Wave Timing")]
         [SerializeField, Min(0f)] private float m_InterWaveDelay = 1f;
@@ -171,7 +228,20 @@ namespace Oxtail.SpaceshipIncremental
         private bool m_SpawningInitialShips;
         private float m_HealthRefillUnlockTime;
         private bool m_HasFailed;
+        private bool m_IsDrainingPlanetHealth;
         private float m_PreOverrideTimeScale = 1f;
+
+        private Camera m_Camera;
+        private Vector3 m_ZoomOutCameraPosition;
+        private float m_ZoomOutOrthographicSize;
+        private int m_ZoomOutCullingMask;
+        private bool m_IsZoomedIn;
+        private float m_ZoomProgress;
+        private Tween m_ZoomTween;
+
+        private Vector3 m_TalkCloudScale;
+        private bool m_IsTalkCloudVisible;
+        private Tween m_TalkCloudTween;
 
         public static new CPIManager Instance => LevelManager.Instance as CPIManager;
 
@@ -241,7 +311,118 @@ namespace Oxtail.SpaceshipIncremental
             // state happens automatically once the wave's asteroids are all destroyed (OnWaveCleared).
             if (shortcutEvent.Key == KeyCode.S && !m_IsWaveActive && !m_HasFailed)
                 SetWaveState(true);
+            else if (shortcutEvent.Key == KeyCode.Z)
+                ToggleZoom();
+            else if (shortcutEvent.Key == KeyCode.T)
+                SetTalkCloudVisible(!m_ShowTalkCloud);
         }
+
+        #region Zoom
+
+        private void InitializeZoom()
+        {
+            m_Camera = Camera.main;
+            if (m_Camera == null)
+                return;
+
+            m_ZoomOutCameraPosition = m_Camera.transform.position;
+            m_ZoomOutOrthographicSize = m_Camera.orthographicSize;
+            m_ZoomOutCullingMask = m_Camera.cullingMask;
+        }
+
+        private void ToggleZoom()
+        {
+            if (m_Camera == null)
+                return;
+
+            m_IsZoomedIn = !m_IsZoomedIn;
+
+            // Switched the moment either move starts rather than when it lands: gone before the camera
+            // closes in on the planet, and already back as it pulls away.
+            m_Camera.cullingMask = m_IsZoomedIn ? m_ZoomOutCullingMask & ~m_ZoomInHiddenLayers : m_ZoomOutCullingMask;
+
+            // Reversing part way through only has the distance already covered to go back over.
+            float targetProgress = m_IsZoomedIn ? 1f : 0f;
+            float duration = m_ZoomDuration * Mathf.Abs(targetProgress - m_ZoomProgress);
+
+            m_ZoomTween?.Kill();
+            m_ZoomTween = DOTween.To(() => m_ZoomProgress, SetZoomProgress, targetProgress, duration)
+                .SetEase(m_ZoomEase)
+                .SetLink(gameObject);
+        }
+
+        /// <summary>
+        /// Places the camera between where it started (0) and the close up (1). The close up is worked
+        /// out again on every call instead of once when the zoom starts, so the target, offset and size
+        /// can be tuned while zoomed in.
+        /// </summary>
+        private void SetZoomProgress(float progress)
+        {
+            m_ZoomProgress = progress;
+
+            Vector3 zoomInPosition = m_ZoomOutCameraPosition;
+            if (m_ZoomInTarget != null)
+            {
+                zoomInPosition.x = m_ZoomInTarget.position.x;
+                zoomInPosition.y = m_ZoomInTarget.position.y;
+            }
+            zoomInPosition += (Vector3)m_ZoomInOffset;
+
+            // Unclamped so an ease that overshoots is not flattened at either end.
+            m_Camera.transform.position = Vector3.LerpUnclamped(m_ZoomOutCameraPosition, zoomInPosition, progress);
+            m_Camera.orthographicSize = Mathf.LerpUnclamped(m_ZoomOutOrthographicSize, m_ZoomInOrthographicSize, progress);
+        }
+
+        #endregion
+
+        #region Talk cloud
+
+        private void InitializeTalkCloud()
+        {
+            if (m_TalkCloud == null)
+                return;
+
+            m_TalkCloudScale = m_TalkCloud.localScale;
+            m_IsTalkCloudVisible = m_ShowTalkCloud;
+            m_TalkCloud.gameObject.SetActive(m_ShowTalkCloud);
+        }
+
+        private void SetTalkCloudVisible(bool visible)
+        {
+            m_ShowTalkCloud = visible;
+
+            if (m_TalkCloud == null || visible == m_IsTalkCloudVisible)
+                return;
+
+            m_IsTalkCloudVisible = visible;
+            m_TalkCloudTween?.Kill();
+
+            GameObject cloudObject = m_TalkCloud.gameObject;
+
+            if (visible)
+            {
+                // Only from nothing when it was fully hidden: shown again mid pop out, it grows back
+                // from the size it had shrunk to instead of blinking out first.
+                if (!cloudObject.activeSelf)
+                {
+                    m_TalkCloud.localScale = Vector3.zero;
+                    cloudObject.SetActive(true);
+                }
+
+                m_TalkCloudTween = m_TalkCloud.DOScale(m_TalkCloudScale, m_TalkCloudShowDuration)
+                    .SetEase(m_TalkCloudShowEase)
+                    .SetLink(cloudObject);
+            }
+            else
+            {
+                m_TalkCloudTween = m_TalkCloud.DOScale(Vector3.zero, m_TalkCloudHideDuration)
+                    .SetEase(m_TalkCloudHideEase)
+                    .SetLink(cloudObject)
+                    .OnComplete(() => cloudObject.SetActive(false));
+            }
+        }
+
+        #endregion
 
         private void OnWaveCleared()
         {
@@ -281,12 +462,21 @@ namespace Oxtail.SpaceshipIncremental
 
         private void OnAsteroidDestroyedByPlanet(AsteroidDestroyedByPlanetEvent evt)
         {
-            if (m_HasFailed)
+            if (m_HasFailed || m_IsDrainingPlanetHealth)
                 return;
 
             bool wasAtZeroHealth = PlanetHealth <= 0f;
 
-            ChangePlanetHealth(-m_HealthLossPercent);
+            if (m_OneHitDrainsPlanetHealth)
+            {
+                m_IsDrainingPlanetHealth = true;
+                StartCoroutine(DrainPlanetHealthCO());
+            }
+            else
+            {
+                ChangePlanetHealth(-m_HealthLossPercent);
+            }
+
             m_HealthRefillUnlockTime = Time.time + m_HealthRefillCooldown;
 
             if (m_StopShootingDuringCooldown)
@@ -294,13 +484,32 @@ namespace Oxtail.SpaceshipIncremental
 
             OnPlanetHit?.Invoke();
 
-            if (wasAtZeroHealth)
+            // A drain fails the planet itself once it reaches zero.
+            if (wasAtZeroHealth && !m_IsDrainingPlanetHealth)
                 TriggerFailSequence();
+        }
+
+        private IEnumerator DrainPlanetHealthCO()
+        {
+            float startHealth = PlanetHealth;
+            float elapsed = 0f;
+
+            while (PlanetHealth > 0f)
+            {
+                yield return null;
+
+                elapsed += Time.deltaTime;
+                SetPlanetHealth(m_OneHitDrainDuration > 0f
+                    ? Mathf.Lerp(startHealth, 0f, elapsed / m_OneHitDrainDuration)
+                    : 0f);
+            }
+
+            TriggerFailSequence();
         }
 
         private void OnCollectPointCollected(CollectPointCollectedEvent evt)
         {
-            if (m_HasFailed || Time.time < m_HealthRefillUnlockTime)
+            if (m_HasFailed || m_IsDrainingPlanetHealth || Time.time < m_HealthRefillUnlockTime)
                 return;
 
             ChangePlanetHealth(m_HealthGainPercent);
@@ -351,11 +560,7 @@ namespace Oxtail.SpaceshipIncremental
 
         private void ChangePlanetHealth(float delta)
         {
-            float previousHealth = PlanetHealth;
-
-            PlanetHealth = Mathf.Clamp(PlanetHealth + delta, 0f, 100f);
-            ApplyPlanetHealthVisual(false);
-            FlyAwayDinosaursBelowHealth(previousHealth);
+            SetPlanetHealth(PlanetHealth + delta);
 
             if (delta > 0f)
                 UIParticleActions.PlayHpGained(delta);
@@ -363,32 +568,143 @@ namespace Oxtail.SpaceshipIncremental
                 UIParticleActions.PlayHpLost(-delta);
         }
 
+        private void SetPlanetHealth(float health)
+        {
+            float previousHealth = PlanetHealth;
+
+            PlanetHealth = Mathf.Clamp(health, 0f, 100f);
+            ApplyPlanetHealthVisual(false);
+            KillDinosaursBelowHealth(previousHealth);
+        }
+
         /// <summary>
-        /// Sends off every dinosaur whose die health was crossed by the change that just happened.
+        /// Kills every dinosaur whose die health was crossed by the change that just happened.
         /// Comparing against the health from before the change, rather than only the current value, is
         /// what keeps a dinosaur on the planet when the scene starts at or below its threshold: it only
-        /// leaves once health has been above it and comes back down.
+        /// dies once health has been above it and comes back down.
         /// </summary>
-        private void FlyAwayDinosaursBelowHealth(float previousHealth)
+        private void KillDinosaursBelowHealth(float previousHealth)
         {
             if (m_Dinosaurs == null)
                 return;
 
             foreach (var dinosaur in m_Dinosaurs)
             {
-                if (dinosaur.Object == null || dinosaur.HasFlownAway)
+                if (dinosaur.Object == null || dinosaur.IsDead)
                     continue;
 
-                if (previousHealth > dinosaur.DieHealthPercent && PlanetHealth <= dinosaur.DieHealthPercent)
-                    FlyAwayDinosaur(dinosaur);
+                if (previousHealth <= dinosaur.DieHealthPercent || PlanetHealth > dinosaur.DieHealthPercent)
+                    continue;
+
+                dinosaur.IsDead = true;
+                dinosaur.IdleTween?.Kill();
+
+                if (dinosaur.DeathEffect == DinosaurDeathEffect.Explode)
+                    ExplodeDinosaur(dinosaur.Object);
+                else
+                    FlyAwayDinosaur(dinosaur.Object);
             }
         }
 
-        private void FlyAwayDinosaur(PlanetDinosaur dinosaur)
+        private void StartDinosaurIdleAnimations()
         {
-            dinosaur.HasFlownAway = true;
+            if (!m_DinosaurIdleAnimation || m_Dinosaurs == null)
+                return;
 
-            GameObject dinosaurObject = dinosaur.Object;
+            foreach (var dinosaur in m_Dinosaurs)
+            {
+                if (dinosaur.Object != null)
+                    dinosaur.IdleTween = CreateDinosaurIdleTween(dinosaur.Object);
+            }
+        }
+
+        private Tween CreateDinosaurIdleTween(GameObject dinosaurObject)
+        {
+            float cycleDuration = (m_DinosaurIdleStretchDuration + m_DinosaurIdleSquashDuration + m_DinosaurIdleReturnDuration) * 2f;
+            if (cycleDuration <= 0f)
+                return null;
+
+            Transform dinosaurTransform = dinosaurObject.transform;
+            Vector3 baseScale = dinosaurTransform.localScale;
+            Vector3 basePosition = dinosaurTransform.localPosition;
+
+            // The sprites are pivoted at their centre, so scaling alone would push the feet down into
+            // the planet as much as it lifts the head. The position is shifted with every scale change
+            // to keep this point, the middle of the sprite's bottom edge, exactly where it started.
+            Vector3 anchor = Vector3.zero;
+            var spriteRenderer = dinosaurObject.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null && spriteRenderer.sprite != null)
+            {
+                Bounds spriteBounds = spriteRenderer.sprite.bounds;
+                anchor = new Vector3(spriteBounds.center.x, spriteBounds.min.y, 0f);
+            }
+
+            Vector2 stretch = Vector2.one;
+
+            void ApplyStretch(Vector2 value)
+            {
+                stretch = value;
+
+                Vector3 scale = new Vector3(baseScale.x * value.x, baseScale.y * value.y, baseScale.z);
+                dinosaurTransform.localScale = scale;
+                dinosaurTransform.localPosition = basePosition + dinosaurTransform.localRotation * Vector3.Scale(baseScale - scale, anchor);
+            }
+
+            Tween Step(Vector2 target, float duration)
+            {
+                return DOTween.To(() => stretch, ApplyStretch, target, duration).SetEase(Ease.InOutSine);
+            }
+
+            float stretched = 1f + m_DinosaurIdleStretchPercent / 100f;
+            float squashed = 1f - m_DinosaurIdleSquashPercent / 100f;
+
+            Sequence idle = DOTween.Sequence()
+                .Append(Step(new Vector2(1f, stretched), m_DinosaurIdleStretchDuration))
+                .Append(Step(new Vector2(1f, squashed), m_DinosaurIdleSquashDuration))
+                .Append(Step(Vector2.one, m_DinosaurIdleReturnDuration))
+                .Append(Step(new Vector2(stretched, 1f), m_DinosaurIdleStretchDuration))
+                .Append(Step(new Vector2(squashed, 1f), m_DinosaurIdleSquashDuration))
+                .Append(Step(Vector2.one, m_DinosaurIdleReturnDuration))
+                .SetLoops(-1)
+                .SetLink(dinosaurObject);
+
+            // Started part way through, somewhere different for each, so they do not all pulse in step.
+            idle.Goto(UnityEngine.Random.Range(0f, cycleDuration), true);
+
+            return idle;
+        }
+
+        private void ExplodeDinosaur(GameObject dinosaurObject)
+        {
+            if (m_DinosaurExplosionPrefab != null)
+            {
+                // Centred on what is drawn rather than on the pivot, which need not be mid sprite.
+                var dinosaurRenderer = dinosaurObject.GetComponentInChildren<Renderer>();
+                Vector3 position = dinosaurRenderer != null ? dinosaurRenderer.bounds.center : dinosaurObject.transform.position;
+
+                // Left unparented so the planet's scale pulse does not stretch it while it plays.
+                GameObject explosion = Instantiate(m_DinosaurExplosionPrefab, position, Quaternion.identity);
+                explosion.transform.localScale *= m_DinosaurExplosionScale;
+
+                // Effect prefabs come on the Default sorting layer, which draws behind the planet. Moved
+                // to just above the dinosaur, keeping whatever order the effect has between its own parts.
+                if (dinosaurRenderer != null)
+                {
+                    foreach (var renderer in explosion.GetComponentsInChildren<Renderer>(true))
+                    {
+                        renderer.sortingLayerID = dinosaurRenderer.sortingLayerID;
+                        renderer.sortingOrder += dinosaurRenderer.sortingOrder + 1;
+                    }
+                }
+
+                Destroy(explosion, m_DinosaurExplosionLifetime);
+            }
+
+            dinosaurObject.SetActive(false);
+        }
+
+        private void FlyAwayDinosaur(GameObject dinosaurObject)
+        {
             Transform dinosaurTransform = dinosaurObject.transform;
 
             // Detached before it moves: left under the planet it would be dragged around by every
@@ -489,6 +805,9 @@ namespace Oxtail.SpaceshipIncremental
             // 0, and this component's execution order runs its Awake first, so a value pushed there would be
             // wiped straight back to a fully intact planet.
             ApplyPlanetHealthVisual(true);
+            StartDinosaurIdleAnimations();
+            InitializeZoom();
+            InitializeTalkCloud();
 
             if (!SetupCircuit())
                 return;
@@ -591,16 +910,30 @@ namespace Oxtail.SpaceshipIncremental
         }
 
 #if UNITY_EDITOR
-        // Rebuilds the glow when its values are edited in the inspector during play. Deferred
-        // because OnValidate is not allowed to create or destroy objects, and unsubscribed first so
-        // dragging a slider queues one rebuild rather than one per change.
+        // Applies the glow, zoom and talk cloud values when they are edited in the inspector during
+        // play. Deferred because OnValidate is not allowed to create, destroy or activate objects, and
+        // unsubscribed first so dragging a slider queues one pass rather than one per change.
         private void OnValidate()
         {
             if (!Application.isPlaying || m_CurrentCircuit == null)
                 return;
 
-            UnityEditor.EditorApplication.delayCall -= ApplyCircuitGlow;
-            UnityEditor.EditorApplication.delayCall += ApplyCircuitGlow;
+            UnityEditor.EditorApplication.delayCall -= ApplyPlayModeEdits;
+            UnityEditor.EditorApplication.delayCall += ApplyPlayModeEdits;
+        }
+
+        private void ApplyPlayModeEdits()
+        {
+            // A deferred editor call can outlive this manager.
+            if (this == null)
+                return;
+
+            ApplyCircuitGlow();
+            SetTalkCloudVisible(m_ShowTalkCloud);
+
+            // Left alone mid move, where the running zoom is about to write these anyway.
+            if (m_Camera != null && (m_ZoomTween == null || !m_ZoomTween.IsActive()))
+                SetZoomProgress(m_ZoomProgress);
         }
 #endif
 
