@@ -1719,8 +1719,8 @@ MonoBehaviour:
   m_HealthLossPercent: 8
   m_HealthRefillCooldown: 3
   m_StopShootingDuringCooldown: 0
-  m_OneHitDrainsPlanetHealth: 0
-  m_OneHitDrainDuration: 1
+  m_OneHitDrainsPlanetHealth: 1
+  m_OneHitDrainDuration: 2
   m_PlanetDissolve: {fileID: 1367779878}
   m_OverridePlanetSprite: 0
   m_PlanetSprite: {fileID: 21300000, guid: 464eea557254b0c409a58e445d5aaa29, type: 3}
@@ -1770,7 +1770,7 @@ MonoBehaviour:
   m_FailDelay: 1
   m_GlobalVolume: {fileID: 1717012710}
   m_FailObject: {fileID: 1841117579}
-  m_StartArrowCount: 2
+  m_StartArrowCount: 0
   m_StartArrowTier: 1
   m_StartLineCount: 1
   m_StartMoney: 1000000
@@ -17487,6 +17487,7 @@ MonoBehaviour:
   m_SpawnIntervalRange: {x: 0.1, y: 0.1}
   m_JumpSpeedRange: {x: 2, y: 6}
   m_CenteringSpeedRange: {x: 0.5, y: 0.5}
+  m_DisableCollectPoints: 1
   m_CollectPointPrefab: {fileID: 6759713092405949200, guid: 0801f5bd234e6c1488e98618d6b825fc, type: 3}
   m_CollectPointSpeed: 3
   m_UseManualWaveSpawnPoints: 1

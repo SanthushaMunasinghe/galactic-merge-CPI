@@ -54,6 +54,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Vector2 m_CenteringSpeedRange = new Vector2(2f, 6f);
 
         [Header("Collect Point")]
+        [Tooltip("When on, a destroyed asteroid is simply destroyed: no collect point is spawned, so " +
+            "there is nothing to fly to the planet and give it health back.")]
+        [SerializeField] private bool m_DisableCollectPoints;
         [SerializeField] private CollectPoint m_CollectPointPrefab;
         [SerializeField] private float m_CollectPointSpeed = 5f;
 
@@ -385,6 +388,9 @@ namespace Oxtail.SpaceshipIncremental
 
         public void SpawnCollectPoint(Vector3 worldPosition)
         {
+            if (m_DisableCollectPoints)
+                return;
+
             if (m_CollectPointPrefab == null)
             {
                 Debug.LogError($"{nameof(AsteroidSpawnManager)}: Collect Point Prefab must be assigned.", this);
