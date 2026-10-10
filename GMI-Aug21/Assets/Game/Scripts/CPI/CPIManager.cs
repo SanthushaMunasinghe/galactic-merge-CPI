@@ -8,6 +8,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace Oxtail.SpaceshipIncremental
 {
@@ -140,10 +141,23 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField, Min(0.01f)] private float m_ZoomInOrthographicSize = 3.8f;
         [SerializeField, Min(0f)] private float m_ZoomDuration = 1f;
         [SerializeField] private Ease m_ZoomEase = Ease.InOutSine;
-        [Tooltip("Layers the camera stops drawing while zoomed in. This is what hides the circuit, the " +
-            "reward lines and the ships: nothing is switched off, so they all keep running and are " +
-            "simply back when the camera zooms out.")]
-        [SerializeField] private LayerMask m_ZoomInHiddenLayers;
+
+        [Header("CPI Hide UI And Circuit")]
+        [Tooltip("U hides the UI together with everything on these layers, leaving just the planet, and " +
+            "U again brings both back. The layers are hidden by the camera no longer drawing them: " +
+            "nothing is switched off, so the circuit, the reward lines and the ships keep running while " +
+            "out of sight.")]
+        [FormerlySerializedAs("m_ZoomInHiddenLayers")]
+        [SerializeField] private LayerMask m_HiddenLayers;
+
+        [Header("CPI Zoom Effect")]
+        [Tooltip("L plays the whole close up in one go: zoom in, wait this long, pop the talk cloud in.")]
+        [SerializeField, Min(0f)] private float m_ZoomEffectShowCloudDelay = 0.5f;
+        [Tooltip("How long the talk cloud stays up before the camera starts zooming back out.")]
+        [SerializeField, Min(0f)] private float m_ZoomEffectHoldDuration = 1f;
+        [Tooltip("How long after the camera is back out the talk cloud pops away. The UI and the " +
+            "circuit come back at the same moment if U had hidden them.")]
+        [SerializeField, Min(0f)] private float m_ZoomEffectHideCloudDelay = 0.5f;
 
         [Header("CPI Talk Cloud")]
         [Tooltip("T toggles this, and it can be ticked by hand while playing. Whatever it is set to " +
@@ -234,10 +248,14 @@ namespace Oxtail.SpaceshipIncremental
         private Camera m_Camera;
         private Vector3 m_ZoomOutCameraPosition;
         private float m_ZoomOutOrthographicSize;
-        private int m_ZoomOutCullingMask;
+        private int m_CameraCullingMask;
         private bool m_IsZoomedIn;
         private float m_ZoomProgress;
         private Tween m_ZoomTween;
+        private Coroutine m_ZoomEffectCO;
+
+        private readonly List<Canvas> m_HiddenCanvases = new List<Canvas>();
+        private bool m_IsUIAndCircuitHidden;
 
         private Vector3 m_TalkCloudScale;
         private bool m_IsTalkCloudVisible;
@@ -312,9 +330,13 @@ namespace Oxtail.SpaceshipIncremental
             if (shortcutEvent.Key == KeyCode.S && !m_IsWaveActive && !m_HasFailed)
                 SetWaveState(true);
             else if (shortcutEvent.Key == KeyCode.Z)
-                ToggleZoom();
+                SetZoomedIn(!m_IsZoomedIn);
             else if (shortcutEvent.Key == KeyCode.T)
                 SetTalkCloudVisible(!m_ShowTalkCloud);
+            else if (shortcutEvent.Key == KeyCode.U)
+                SetUIAndCircuitVisible(m_IsUIAndCircuitHidden);
+            else if (shortcutEvent.Key == KeyCode.L && m_ZoomEffectCO == null)
+                m_ZoomEffectCO = StartCoroutine(ZoomEffectCO());
         }
 
         #region Zoom
@@ -327,19 +349,15 @@ namespace Oxtail.SpaceshipIncremental
 
             m_ZoomOutCameraPosition = m_Camera.transform.position;
             m_ZoomOutOrthographicSize = m_Camera.orthographicSize;
-            m_ZoomOutCullingMask = m_Camera.cullingMask;
+            m_CameraCullingMask = m_Camera.cullingMask;
         }
 
-        private void ToggleZoom()
+        private void SetZoomedIn(bool zoomedIn)
         {
-            if (m_Camera == null)
+            if (m_Camera == null || zoomedIn == m_IsZoomedIn)
                 return;
 
-            m_IsZoomedIn = !m_IsZoomedIn;
-
-            // Switched the moment either move starts rather than when it lands: gone before the camera
-            // closes in on the planet, and already back as it pulls away.
-            m_Camera.cullingMask = m_IsZoomedIn ? m_ZoomOutCullingMask & ~m_ZoomInHiddenLayers : m_ZoomOutCullingMask;
+            m_IsZoomedIn = zoomedIn;
 
             // Reversing part way through only has the distance already covered to go back over.
             float targetProgress = m_IsZoomedIn ? 1f : 0f;
@@ -371,6 +389,83 @@ namespace Oxtail.SpaceshipIncremental
             // Unclamped so an ease that overshoots is not flattened at either end.
             m_Camera.transform.position = Vector3.LerpUnclamped(m_ZoomOutCameraPosition, zoomInPosition, progress);
             m_Camera.orthographicSize = Mathf.LerpUnclamped(m_ZoomOutOrthographicSize, m_ZoomInOrthographicSize, progress);
+        }
+
+        /// <summary>
+        /// The whole close up as one take: zoom in, show the talk cloud, hold, zoom out, hide the talk
+        /// cloud and bring the UI and circuit back if U had hidden them. Each step sets the state it
+        /// wants rather than toggling, so starting it already zoomed in or with the cloud up just skips
+        /// that step.
+        /// </summary>
+        private IEnumerator ZoomEffectCO()
+        {
+            SetZoomedIn(true);
+            yield return WaitForZoomCO();
+            yield return new WaitForSeconds(m_ZoomEffectShowCloudDelay);
+
+            SetTalkCloudVisible(true);
+            yield return new WaitForSeconds(m_ZoomEffectHoldDuration);
+
+            SetZoomedIn(false);
+            yield return WaitForZoomCO();
+            yield return new WaitForSeconds(m_ZoomEffectHideCloudDelay);
+
+            SetTalkCloudVisible(false);
+            SetUIAndCircuitVisible(true);
+
+            m_ZoomEffectCO = null;
+        }
+
+        private IEnumerator WaitForZoomCO()
+        {
+            if (m_ZoomTween != null && m_ZoomTween.IsActive())
+                yield return m_ZoomTween.WaitForCompletion();
+        }
+
+        #endregion
+
+        #region UI and circuit
+
+        /// <summary>
+        /// Leaves only the planet on screen, or brings the rest back. Nothing is deactivated either way,
+        /// so it all keeps running while hidden. The circuit, reward lines and ships go by the camera
+        /// skipping their layers. The interface goes by switching its canvases off rather than their
+        /// GameObjects, so other code that activates or deactivates UI objects in the meantime (the hand
+        /// pointer on a wave change, for one) is not fought over, and only the canvases this turned off
+        /// are turned back on.
+        /// </summary>
+        private void SetUIAndCircuitVisible(bool visible)
+        {
+            if (visible != m_IsUIAndCircuitHidden)
+                return;
+
+            m_IsUIAndCircuitHidden = !visible;
+
+            if (m_Camera != null)
+                m_Camera.cullingMask = visible ? m_CameraCullingMask : m_CameraCullingMask & ~m_HiddenLayers;
+
+            if (visible)
+            {
+                foreach (var canvas in m_HiddenCanvases)
+                {
+                    if (canvas != null)
+                        canvas.enabled = true;
+                }
+
+                m_HiddenCanvases.Clear();
+                return;
+            }
+
+            foreach (var canvas in FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                // World space canvases are part of the scene (the talk cloud text, floating money),
+                // not the interface.
+                if (!canvas.enabled || canvas.renderMode == RenderMode.WorldSpace)
+                    continue;
+
+                canvas.enabled = false;
+                m_HiddenCanvases.Add(canvas);
+            }
         }
 
         #endregion
