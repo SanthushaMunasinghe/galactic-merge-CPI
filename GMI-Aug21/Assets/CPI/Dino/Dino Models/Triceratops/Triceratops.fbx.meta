@@ -1,0 +1,35 @@
+fileFormatVersion: 2
+guid: 83d56b96ba5c49289de7c640819a38cb
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 58c953b0b95e43f5b5ef304e8449f6a4, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    importBlendShapes: 0
+    meshCompression: 0
+    isReadable: 0
+    optimizeMesh: 1
+    weldVertices: 1
+    indexFormat: 0
+    importVisibility: 0
+    importCameras: 0
+    importLights: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  animationType: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

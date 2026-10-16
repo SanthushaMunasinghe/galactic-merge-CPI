@@ -1,0 +1,55 @@
+fileFormatVersion: 2
+guid: 9ce9065b61e549ad9f91be535f18ab95
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Earth_Ocean
+    second: {fileID: 2100000, guid: d979154d053b4bcb934ace56df157517, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Earth_Grass
+    second: {fileID: 2100000, guid: ce66c8e584e542b482f226595fefd451, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Earth_Sand
+    second: {fileID: 2100000, guid: bb9da2e9260141ec929d0daf375d8237, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Earth_Rock
+    second: {fileID: 2100000, guid: c70f7acd97f34742b13dd8184303e3f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Earth_Snow
+    second: {fileID: 2100000, guid: 7b8088e5559545e3aa83f5de3b313e23, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    importBlendShapes: 0
+    meshCompression: 0
+    isReadable: 0
+    optimizeMesh: 1
+    weldVertices: 1
+    indexFormat: 0
+    importVisibility: 0
+    importCameras: 0
+    importLights: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  animationType: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

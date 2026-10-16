@@ -1,0 +1,35 @@
+fileFormatVersion: 2
+guid: 950d4f16ecb449998747c61e7cbe1f8f
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brachiosaurus_Mat
+    second: {fileID: 2100000, guid: a8a8b0fd86ac48a4b16ce12f156397c6, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    importBlendShapes: 0
+    meshCompression: 0
+    isReadable: 0
+    optimizeMesh: 1
+    weldVertices: 1
+    indexFormat: 0
+    importVisibility: 0
+    importCameras: 0
+    importLights: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  animationType: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,35 @@
+fileFormatVersion: 2
+guid: 6b7b0a2d7501420ca96cd06d2161f2f2
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TRex_Mat
+    second: {fileID: 2100000, guid: 3223169c30064a87be579a8a5fbddff9, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    importBlendShapes: 0
+    meshCompression: 0
+    isReadable: 0
+    optimizeMesh: 1
+    weldVertices: 1
+    indexFormat: 0
+    importVisibility: 0
+    importCameras: 0
+    importLights: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  animationType: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
