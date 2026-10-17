@@ -15,6 +15,7 @@ Material:
   - TCP2_REFLECTIONS_FRESNEL
   - TCP2_RIM_LIGHTING_LIGHTMASK
   - TCP2_SHADOW_LIGHT_COLOR
+  - TCP2_SHADOW_TEXTURE
   - _NORMALMAP
   m_InvalidKeywords:
   - TCP2_UV_NORMALS_FULL
@@ -127,7 +128,7 @@ Material:
     - _UseReflections: 0
     - _UseRim: 0
     - _UseRimLightMask: 1
-    - _UseShadowTexture: 0
+    - _UseShadowTexture: 1
     - _UseSpecular: 0
     - _ZWrite: 1
     m_Colors:
@@ -138,7 +139,7 @@ Material:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 0.9, b: 0.6, a: 1}
-    - _SColor: {r: 0.56, g: 0.53, b: 0.6, a: 1}
+    - _SColor: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
