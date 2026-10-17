@@ -26,11 +26,17 @@ namespace Oxtail.SpaceshipIncremental
     /// (local -Z hemisphere) with the same X/Y bounds. If Use 3D Jump is on, every asteroid's jump
     /// target (regardless of spawn mode) becomes a point on a true jump sphere along its own spawn
     /// direction instead of the oval formula — see ComputeJumpLocalPosition.
+    ///
+    /// Enable Fire turns the fire-trail particle on or off for every asteroid this spawner creates;
+    /// toggling it during Play Mode also updates asteroids already in flight.
     /// </summary>
     public class AsteroidSpawnManager : MonoBehaviour
     {
         [Header("Prefab")]
         [SerializeField] private AsteroidProjectile m_AsteroidPrefab;
+
+        [Header("Fire")]
+        [SerializeField] private bool m_EnableFire = true;
 
         [Header("Spawn Area")]
         [SerializeField, Min(0f)] private float m_SpawnRadius = 10f;
@@ -232,6 +238,7 @@ namespace Oxtail.SpaceshipIncremental
             Vector3 jumpLocalPos = ComputeJumpLocalPosition(spawnLocalPos);
 
             AsteroidProjectile asteroid = Instantiate(m_AsteroidPrefab, transform.TransformPoint(spawnLocalPos), Quaternion.identity, transform);
+            asteroid.SetFireEnabled(m_EnableFire);
             m_AsteroidsPendingJump++;
 
             float jumpSpeed = UnityEngine.Random.Range(m_JumpSpeedRange.x, m_JumpSpeedRange.y);
@@ -388,6 +395,18 @@ namespace Oxtail.SpaceshipIncremental
         {
             if (m_JumpRadius > m_SpawnRadius)
                 Debug.LogWarning($"{nameof(AsteroidSpawnManager)}: Jump Radius is usually smaller than Spawn Radius.", this);
+
+            if (Application.isPlaying)
+                ApplyFireToActiveAsteroids();
+        }
+
+        private void ApplyFireToActiveAsteroids()
+        {
+            foreach (AsteroidProjectile asteroid in AsteroidProjectile.ActiveAsteroids)
+            {
+                if (asteroid != null && asteroid.transform.parent == transform)
+                    asteroid.SetFireEnabled(m_EnableFire);
+            }
         }
 
         private void OnDrawGizmosSelected()

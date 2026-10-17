@@ -21,7 +21,9 @@ namespace Oxtail.SpaceshipIncremental
     /// kinematic Rigidbody on this GameObject so Unity fires OnTriggerEnter for a script-moved object.
     /// On destruction (via DestroyWithEffect), it immediately stops moving/rotating/colliding, hides
     /// Active Visual, and scatters Debris Parent's children outward while shrinking them before the
-    /// GameObject is destroyed.
+    /// GameObject is destroyed. Fire Effect is an optional fire-trail particle system that the
+    /// spawner turns on or off per asteroid via SetFireEnabled; on destruction it stops emitting so
+    /// the existing flames fade out with the debris.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class AsteroidProjectile : MonoBehaviour
@@ -44,6 +46,9 @@ namespace Oxtail.SpaceshipIncremental
         [SerializeField] private Transform m_DebrisParent;
         [SerializeField, Min(0f)] private float m_DebrisMaxDistance = 2f;
         [SerializeField, Min(0f)] private float m_DebrisDuration = 1f;
+
+        [Header("Fire")]
+        [SerializeField] private ParticleSystem m_FireEffect;
 
         private Rigidbody m_Rigidbody;
         private Collider m_Collider;
@@ -90,6 +95,24 @@ namespace Oxtail.SpaceshipIncremental
                 return;
 
             m_ActiveVisual.transform.Rotate(m_RotationAxis, m_RotationSpeed * Time.deltaTime, Space.World);
+
+            OrientFire();
+        }
+
+        /// <summary>
+        /// Points Fire Effect's local +Z away from the shared center this asteroid is flying toward,
+        /// so a trail emitted along +Z always streams out behind it.
+        /// </summary>
+        private void OrientFire()
+        {
+            if (m_FireEffect == null || !m_FireEffect.gameObject.activeSelf)
+                return;
+
+            Vector3 centerWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+            Vector3 awayFromCenter = transform.position - centerWorldPos;
+
+            if (awayFromCenter.sqrMagnitude > 0.0001f)
+                m_FireEffect.transform.rotation = Quaternion.LookRotation(awayFromCenter);
         }
 
         public void Initialize(Vector3 localJumpPosition, float jumpSpeed, float centeringSpeed, Action onJumpComplete = null)
@@ -104,6 +127,27 @@ namespace Oxtail.SpaceshipIncremental
             transform.DOLocalMove(localJumpPosition, duration)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(BeginHoming);
+        }
+
+        /// <summary>Shows or hides the fire trail. Safe to call at any time, including mid-flight.</summary>
+        public void SetFireEnabled(bool fireEnabled)
+        {
+            if (m_FireEffect == null)
+                return;
+
+            if (fireEnabled)
+            {
+                m_FireEffect.gameObject.SetActive(true);
+                OrientFire();
+
+                if (!m_IsDestroyed)
+                    m_FireEffect.Play(true);
+            }
+            else
+            {
+                m_FireEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                m_FireEffect.gameObject.SetActive(false);
+            }
         }
 
         private void BeginHoming()
@@ -183,6 +227,10 @@ namespace Oxtail.SpaceshipIncremental
 
             if (m_ActiveVisual != null)
                 m_ActiveVisual.SetActive(false);
+
+            // Stops emitting rather than clearing, so flames already in the air fade out with the debris.
+            if (m_FireEffect != null)
+                m_FireEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
             PlayDebrisEffect();
 
